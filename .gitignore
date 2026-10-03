@@ -1,0 +1,32 @@
+# Secrets / local config
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Playwright auth state and artifacts
+playwright/.auth/
+*.har
+test-results/
+traces/
+
+# Raw (unsanitised) evidence and pipeline outputs
+evidence-raw/
+outputs/
+
+# GCP service-account key files (not a blanket *.json: validation JSON evidence must be committable)
+*service-account*.json
+*service_account*.json
+*-sa-key*.json
+*sa-key*.json
+gcp-key*.json
+gcp-credentials*.json
+keys/
+secrets/
