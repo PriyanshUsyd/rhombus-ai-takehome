@@ -12,6 +12,7 @@ Both cases run on the **schedule**.
 | `semantic-dollars-to-cents` | Multiply both `price` and `total` by 100 | `total = price × qty` still holds; only the unit changes |
 | `semantic-date-swap` | Only ambiguous, valid dates (day ≤ 12), day and month swapped | Every date still parses; the meaning changes |
 
+- [ ] **[CLAUDE]** `semantic-date-swap` construction: swap day and month **inside the canonical ISO `transaction_date` values** (`YYYY-MM-DD` → `YYYY-DD-MM`), only on rows whose day ≤ 12, so every result is still a valid ISO date. Never use slash formats: the baseline policy rejects ambiguous slash dates, which would turn this semantic case into a rejection case. Rows with day > 12 and the non-ISO formatted dates stay unchanged.
 - [ ] **[CLAUDE]** Unit test: schema identical to baseline; cross-field rule still holds (cents case); every date valid (date case).
 - [ ] Optional, separate cases only if time allows: `robustness-invalid-dates`, `crossfield-broken-total`. Never mixed into the two required cases.
 

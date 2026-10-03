@@ -5,18 +5,19 @@ Goal: one successful **scheduled** run of an AI-built cleaning pipeline (S3 → 
 ## Checklist
 
 ### Dataset & policy (before touching Rhombus)
-- [ ] **[CLAUDE]** Write `scripts/generate_datasets.py` (fixed seed). Baseline ~200–300 synthetic rows, unless Phase 1 found limits that make a smaller file more reliable.
+- [x] **[CLAUDE]** Write `scripts/generate_datasets.py` (fixed seed). Baseline ~200–300 synthetic rows, unless Phase 1 found limits that make a smaller file more reliable.
   - Columns: `id, name, email, country, price, qty, total, transaction_date, status`.
   - Known, documented count of each defect: exact duplicates, missing values, inconsistent formatting (casing, whitespace, mixed formats), invalid entries.
   - Edge case: emails differing only by case/whitespace.
   - Writes a `datasets/baseline.manifest.json` with every defect count and the SHA-256 of the file.
-- [ ] **[CLAUDE]** Write `datasets/cleaning-policy.md` **before the first run**:
+  - Dataset filenames use underscores, not hyphens (D1 quirk: Rhombus showed `connection-test.csv` as `connection_test`).
+- [x] **[CLAUDE]** Write `datasets/cleaning-policy.md` **before the first run**:
   - Dedup key; whether email match ignores case and trims whitespace; which duplicate survives (first/last/normalised).
   - For each invalid value type: reject row / repair / keep with null.
   - Target output formats (date format, casing, numeric format).
-- [ ] **[BOTH]** Review the policy together; you approve it.
-- [ ] **[CLAUDE]** Turn the policy into plain-English AI builder prompts (`datasets/ai-builder-prompts.md`).
-- [ ] **[CLAUDE]** Unit tests for the generator (`pytest -m "not live"`): defect counts match manifest; same seed → same bytes.
+- [x] **[BOTH]** Review the policy together; you approve it. (Approved 2026-10-03.)
+- [ ] **[CLAUDE]** Turn the policy into plain-English AI builder prompts (`datasets/ai-builder-prompts.md`). Credits are limited (~6 per message): one consolidated prompt + at most one short correction follow-up.
+- [x] **[CLAUDE]** Unit tests for the generator (`pytest -m "not live"`): defect counts match manifest; same seed → same bytes.
 
 ### Build in Rhombus
 - [ ] **[YOU]** Upload `datasets/baseline.csv` to S3 at the key in `.env`.

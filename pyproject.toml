@@ -5,15 +5,14 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "rhombus-ai-takehome"
 version = "0.1.0"
-description = "QA and observability tests for a Rhombus AI S3 -> GCS scheduled pipeline"
+description = "QA and observability tests for a Rhombus AI scheduled pipeline (Azure Blob -> Azure Blob)"
 requires-python = ">=3.11"
 dependencies = [
     "pytest==9.1.1",
     "pytest-playwright==0.9.0",
     "requests==2.34.2",
     "pandas==3.0.6",
-    "boto3==1.43.108",
-    "google-cloud-storage==3.16.0",
+    "azure-storage-blob==12.31.0",
     "python-dotenv==1.2.4",
     "ruff==0.16.10",
 ]
@@ -23,7 +22,8 @@ dependencies = [
 packages = []
 
 [tool.pytest.ini_options]
-testpaths = ["ui-tests", "api-tests", "data-validation"]
+testpaths = ["ui-tests", "api-tests", "data-validation", "scripts"]
+pythonpath = ["scripts"]
 markers = [
     "live: hits the real Rhombus app or cloud buckets (opt-in: pytest -m live)",
 ]

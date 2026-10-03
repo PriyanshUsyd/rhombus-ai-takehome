@@ -1,0 +1,3 @@
+# Keep dataset bytes exact (SHA-256 in manifests); no CRLF conversion on Windows checkouts.
+datasets/*.csv -text
+datasets/*.json -text

@@ -22,14 +22,18 @@ All 5 cases run on the **schedule** (brief: "before the next scheduled run, chan
 - [ ] **[CLAUDE]** Unit test: each drifted file differs from baseline only by its intended change.
 
 ## Protocol — repeat for each case
+> **Do NOT edit or Apply any node between a file swap and the scheduled run.** Clicking Apply (observed on the Data Output node) triggers a pipeline run, which would replace the scheduled run being tested.
+>
+> Azure source sync: Rhombus syncs files from the Azure `source` container; a manual sync may be needed after the swap and before the scheduled run (TODO: verify in Phase 3). Record whether a sync was needed.
+
 - [ ] 1. **[YOU]** Pre-state: source key + checksum, pipeline config (export/screenshot), schedule status, destination objects with generation + checksum, last successful run, scenario ID. (**[CLAUDE]** provides `scripts/capture_state.py` for the cloud parts.)
-- [ ] 2. **[YOU]** Upload the drifted file to S3; note time.
+- [ ] 2. **[YOU]** Upload the drifted file to the Azure `source` container (replacing the input blob); note time. Sync in Rhombus if required (see note above) — without touching Apply.
 - [ ] 3. **[YOU]** Wait for the next scheduled run.
 - [ ] 4. **[YOU]** Record outcome: stopped / warned / carried on.
 - [ ] 5. **[YOU]** Run `fetch_output.py`; compare run identity with pre-state (rule out stale output).
 - [ ] 6. **[YOU]** Copy log **text** (not just screenshots) + screenshots into `evidence-raw/`.
 - [ ] 7. **[YOU]** Chatbot:
-  - save original config;
+  - save original config (wrench → Version Control snapshot + screenshot; no config export seen);
   - give it the exact error/log excerpt; ask for diagnosis and smallest fix;
   - record diagnosis + proposed change verbatim;
   - apply the change; save new config;

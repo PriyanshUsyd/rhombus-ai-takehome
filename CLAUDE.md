@@ -7,9 +7,16 @@ A take-home exercise for the Rhombus AI "Software Engineer Intern (LLM Observabi
 Test Rhombus AI as a scheduled ETL pipeline: Amazon S3 (source) → AI-built cleaning pipeline → Google Cloud Storage (destination), then break the input on purpose (schema drift, semantic drift) and report how the platform responds.
 They grade judgement, test quality and clarity of reporting — not the platform.
 
+## Documented deviation D1 (decided 2026-10-03) — route is Azure Blob → Azure Blob
+- **Amazon S3 source is BLOCKED** (access-denied despite the Rhombus-generated bucket policy). **Google Cloud Storage is NOT used** (GCP billing requires a card; none available). Full record in `PLAN.md` → "Deviations".
+- **Actual route:** Azure Blob Storage container `source` → AI-built cleaning pipeline → Azure Blob Storage container `output` (storage account `priyanshrhombus`). Auth = SAS connection strings.
+- Everything else in all phases is unchanged. Wherever a phase or this file says **S3**, read it as Azure container **`source`**; wherever it says **GCS**, read it as Azure container **`output`**.
+- The S3 failure itself is documented as evidence (`observations/setup-s3-connection-blocked.md`) and is a candidate negative API/UI test (see `phases/phase-5-code.md`).
+- Dataset filenames use underscores, not hyphens (observed: Rhombus listed blob `connection-test.csv` as `connection_test`).
+
 ## Division of work
 - **YOU (human):** every live action — sign-ups, cloud consoles, Rhombus UI, AI builder prompts, chatbot conversations, uploading drifted files, waiting for runs, screenshots, DevTools captures, demo video, final email.
-- **CLAUDE:** code, datasets, configs, docs, observation drafts, README, checklists. Claude cannot log into Rhombus/AWS/GCP and must not pretend it did.
+- **CLAUDE:** code, datasets, configs, docs, observation drafts, README, checklists. Claude cannot log into Rhombus/AWS/GCP/Azure and must not pretend it did.
 
 ## Hard rules (never break)
 1. **No hallucination.** Never invent Rhombus UI elements, selectors, endpoints, request/response shapes, log text, schedule options or chatbot behaviour. If unknown, write `TODO: verify in app` and ask the human for evidence (screenshot, copied text, DevTools "Copy as cURL" with secrets removed).
@@ -23,7 +30,7 @@ They grade judgement, test quality and clarity of reporting — not the platform
 9. Before marking any checklist item done, the evidence/file must exist. Update `PLAN.md` tracker when a phase item completes.
 
 ## Stack (pinned in pyproject.toml)
-pytest, pytest-playwright, requests, pandas, boto3, google-cloud-storage, python-dotenv, ruff. Stdlib: `decimal`, `hashlib`, `json`. Reports: `pytest --junitxml`.
+pytest, pytest-playwright, requests, pandas, azure-storage-blob, python-dotenv, ruff. Stdlib: `decimal`, `hashlib`, `json`. Reports: `pytest --junitxml`.
 - Live tests: `pytest -m live` (opt-in). Default: `pytest -m "not live"` (offline, local files, no cloud calls).
 
 ## Required repo layout (from the brief)

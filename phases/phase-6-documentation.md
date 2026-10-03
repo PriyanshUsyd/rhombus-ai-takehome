@@ -18,6 +18,7 @@ Goal: observations and README that a reviewer can reproduce from.
   11. Severity + one-line justification
   12. Reproduction steps (numbered, from clean baseline)
   13. Evidence links (`observations/evidence/...`)
+- [ ] Deviation D1 (see `PLAN.md`): `observations/setup-s3-connection-blocked.md` — what was tried, exact error, chatbot reply, evidence. (Setup issue, not a drift case; the 13-point template above does not apply.)
 - [ ] Unknown items written as "not observed" — never guessed.
 
 ## Evidence sanitisation — [YOU] with [CLAUDE] checklist
@@ -38,6 +39,7 @@ Goal: observations and README that a reviewer can reproduce from.
 - [ ] 3. **Usability feedback** — **[YOU]** write 1–2 paragraphs: most helpful/enjoyable, frustrating/difficult, how to make it more useful and efficient. Only real experiences.
 - [ ] 4. **Demo video link** — **[YOU]** record a short walkthrough of UI tests, API tests, data validation (no secrets on screen); upload unlisted; paste link. **[CLAUDE]** can write a script for the video.
 - [ ] 5. **Limitations**: include verbatim — "Required scheduled scenarios: 1 baseline + 7 drift scenarios = 8 scheduled runs. Additional determinism and chatbot-fix runs are labelled separately as manual or retest runs." Plus runs per case and platform features that couldn't be verified.
+- [ ] 6. **Deviations** — note explaining why the route is Azure Blob `source` → Azure Blob `output` instead of S3 → GCS: S3 connection blocked; GCS not used because GCP billing needs a card (Deviation D1 in `PLAN.md`). Link `observations/setup-s3-connection-blocked.md`.
 
 ## Done when
-7 drift observation files + baseline exist, all link to sanitised evidence; README has all 4 required sections + limitations.
+7 drift observation files + baseline + `setup-s3-connection-blocked.md` exist, all link to sanitised evidence; README has all 4 required sections + limitations + deviations.
