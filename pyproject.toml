@@ -23,7 +23,7 @@ packages = []
 
 [tool.pytest.ini_options]
 testpaths = ["ui-tests", "api-tests", "data-validation", "scripts"]
-pythonpath = ["scripts"]
+pythonpath = ["scripts", "data-validation"]
 markers = [
     "live: hits the real Rhombus app or cloud buckets (opt-in: pytest -m live)",
 ]

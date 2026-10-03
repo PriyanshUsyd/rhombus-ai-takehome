@@ -6,6 +6,8 @@ TODO
 
 TODO
 
+Note: the reference policy engine in `data-validation/cleaning_policy.py` only computes the **expected** output for comparison; it never modifies the pipeline output. The brief's "AI builder only, no manual transformations" rule applies to the pipeline, and is respected.
+
 ## Observations summary
 
 TODO
@@ -21,6 +23,15 @@ TODO
 ## Limitations
 
 TODO
+
+- The validator's semantic anomaly thresholds are documented, **untuned heuristics** (constants at the top of `data-validation/validate.py`), compared against the baseline output:
+  - row count: relative change > 10%;
+  - money (`price`, `total`): median or sum ratio outside 0.5–2.0;
+  - null rate: absolute increase > 0.05 in any column;
+  - date parse success rate: drop > 0.01;
+  - dates outside the baseline output's date range;
+  - month histogram or `country`/`status` distribution: total variation distance > 0.25, or values not seen in the baseline;
+  - any increase in duplicate-key count or `total ≠ price × qty` failures.
 
 ## Deviations
 

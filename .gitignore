@@ -30,3 +30,7 @@ gcp-key*.json
 gcp-credentials*.json
 keys/
 secrets/
+
+# OS files
+desktop.ini
+Thumbs.db

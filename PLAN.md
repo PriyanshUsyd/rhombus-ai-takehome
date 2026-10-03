@@ -9,7 +9,7 @@ Status: ⬜ not started · 🟨 in progress · ✅ done · ⛔ blocked (write re
 | 2 | Baseline pipeline | `phases/phase-2-baseline.md` | 🟨 | Generator + manifest done; policy approved 2026-10-03; AI builder prompt drafted, awaiting review. |
 | 3 | Schema drift (5 cases) | `phases/phase-3-schema-drift.md` | ⬜ | |
 | 4 | Semantic drift (2 cases) | `phases/phase-4-semantic-drift.md` | ⬜ | |
-| 5 | Code: validation, UI, API | `phases/phase-5-code.md` | ⬜ | |
+| 5 | Code: validation, UI, API | `phases/phase-5-code.md` | 🟨 | Validator (section A) built + offline tests green; UI/API pending. |
 | 6 | Documentation | `phases/phase-6-documentation.md` | ⬜ | |
 | 7 | Bonus dashboard (optional) | `phases/phase-7-dashboard.md` | ⬜ | Only after 1–6 |
 | 8 | Submit | `phases/phase-8-submit.md` | ⬜ | |

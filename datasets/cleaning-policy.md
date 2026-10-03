@@ -33,6 +33,7 @@ Normalising before deduplicating is what makes the email near-duplicates collaps
 ## 3. Deduplication
 
 - **Dedup key:** `id`.
+- **Missing or non-integer `id` → reject the row** (added 2026-10-03). Such a row cannot be deduplicated, so it is rejected before dedup. The baseline has none, so the expected counts are unchanged.
 - **Email matching:** emails are compared after trimming whitespace and lowercasing. Email is *not* part of the dedup key.
 - **Survivor rule:** keep the **first occurrence in file order**; drop later rows with the same `id`. In the baseline every duplicate is a copy of a clean row (exact copies, or copies whose email differs only by case/whitespace), so after normalisation the survivor is the same whichever copy is kept.
 - **Not duplicates:** rows with different `id`s that share a normalised email (the same customer on different transactions). They must **all be kept**. The `email_case_whitespace_variant` rows test this: a pipeline that deduplicates by email would wrongly drop them.
@@ -63,6 +64,7 @@ Normalising before deduplicating is what makes the email near-duplicates collaps
 | `price_non_numeric` | 2 | **reject row** | |
 | `qty_non_positive` | 3 | **reject row** | |
 | `date_impossible` | 2 | **reject row** | e.g. `2025-02-30`; never "rolled" to a nearby date |
+| (missing or non-integer `id`) | 0 | **reject row** | cannot be deduplicated; not present in the baseline |
 | `total_mismatch` | 3 | **reject row** | `total` ≠ `price × qty` rounded to 2 dp; cannot tell which field is wrong |
 
 Reasoning in short: a field that is derivable or purely cosmetic gets **repaired**. A descriptive field that is missing or invalid becomes **null**, and the transaction is kept. A row whose money or date cannot be trusted is **rejected**.
