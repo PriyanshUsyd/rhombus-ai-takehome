@@ -109,6 +109,19 @@ What worked well. The natural-language AI builder was genuinely impressive: one 
 
 What was frustrating, and how it could improve. Most of my time went into getting data in and runs to happen rather than testing. The S3 source was denied even with Rhombus's whole AWS account allowed; the Azure source's sync made the file disappear; and the hourly schedule never fired, with no execution history and a blank "Next run". When things went wrong, the logs often showed raw Python traces, or "completed successfully" next to a failure in the same second, and runs that silently dropped every row or delivered ×100 prices were reported as successes. The chatbot diagnosed some errors correctly but usually guessed without reading the input, applied fixes without asking, and in several cases made the data worse while saying it was fixed. Concrete suggestions: show the chatbot's proposed change as a diff and ask before applying it; have it read the actual input header before diagnosing; treat "0 rows output" or large distribution shifts as a warning or failure, not a success; show a single, accurate status per run; and add schedule execution history and alerts so a schedule that never fires is visible.
 
+## Observability dashboard
+
+https://priyanshusyd.github.io/rhombus-ai-takehome/ (GitHub Pages, served from `docs/`).
+
+It has four panels: pipeline health by scenario, output consistency (hash groups plus the run 3 cell differences), a capability heat map (drift type × platform, chatbot fix, validator, severity) and run timing. A filterable table lists all 24 runs. Every value comes from the repo's recorded evidence (`observations/`, `observations/evidence/validation-*.json`, `PLAN.md`, `datasets/*.manifest.json`); anything not recorded shows as "not recorded". All runs are manual, retest or UI-test ▶ runs, because the scheduler never fired.
+
+To rebuild after changing the evidence:
+```
+python scripts/build_dashboard.py              # writes docs/data.json
+python -m http.server -d docs 8000             # view at http://localhost:8000/
+```
+The build fails if a run's blob name, logged time or quoted phrase isn't found in the file it cites. `scripts/tests/test_build_dashboard.py` (offline) checks the `data.json` schema and that the published `docs/data.json` is current.
+
 ## Demo video link
 
 https://drive.google.com/file/d/13-agE8Q_QdSieu_eOxxMlew75dbkPwRM/view?usp=sharing — Silent walkthrough: README, UI tests (Playwright, incl. end-to-end run), API tests, data validation (dollars→cents caught), offline suite.

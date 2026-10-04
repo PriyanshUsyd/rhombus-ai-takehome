@@ -1,0 +1,1298 @@
+{
+  "generated_from": "tracked repo files only (observations/, PLAN.md, datasets/)",
+  "timezone": "AEDT (UTC+11)",
+  "github_base": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/",
+  "scenarios": [
+    {
+      "id": "baseline",
+      "label": "Baseline",
+      "category": "baseline",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/baseline.md",
+      "severity": "High / Low",
+      "change": ""
+    },
+    {
+      "id": "schema-drop-column",
+      "label": "Drop column",
+      "category": "schema",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-drop-column.md",
+      "severity": "High",
+      "change": "column 'country' removed"
+    },
+    {
+      "id": "schema-rename-column",
+      "label": "Rename column",
+      "category": "schema",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-rename-column.md",
+      "severity": "High",
+      "change": "column 'transaction_date' renamed to 'order_date', values unchanged"
+    },
+    {
+      "id": "schema-type-change",
+      "label": "Type change",
+      "category": "schema",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-type-change.md",
+      "severity": "High",
+      "change": "column 'price' changed from numeric to text"
+    },
+    {
+      "id": "schema-add-column",
+      "label": "Add column",
+      "category": "schema",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-add-column.md",
+      "severity": "Info",
+      "change": "column 'channel' added as the last column"
+    },
+    {
+      "id": "schema-combined",
+      "label": "Combined",
+      "category": "schema",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-combined.md",
+      "severity": "Medium",
+      "change": "aggressive: 'channel' added, 'price' numeric -> text, 'transaction_date' renamed to 'order_date', dedup key 'id' removed"
+    },
+    {
+      "id": "semantic-dollars-to-cents",
+      "label": "Dollars → cents",
+      "category": "semantic",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/semantic-dollars-to-cents.md",
+      "severity": "High",
+      "change": "price and total multiplied by 100 (dollars -> cents); total = price x qty still holds"
+    },
+    {
+      "id": "semantic-date-swap",
+      "label": "Date swap",
+      "category": "semantic",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/semantic-date-swap.md",
+      "severity": "High",
+      "change": "day and month swapped in valid ISO transaction_date values with day <= 12"
+    },
+    {
+      "id": "ui-test-session",
+      "label": "UI test session",
+      "category": "ui-test",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/PLAN.md",
+      "severity": "not assessed",
+      "change": ""
+    }
+  ],
+  "runs": [
+    {
+      "id": "baseline-run-1",
+      "scenario": "baseline",
+      "scenario_label": "Baseline",
+      "category": "baseline",
+      "label": "Run 1",
+      "run_type": "manual",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "2026-10-04T14:10:30+11:00",
+      "duration_s": null,
+      "outcome": "carried_on",
+      "health": "success",
+      "output_blob": "RhombusAI_output_1791083430615.csv",
+      "rows_out": 218,
+      "validator_overall": "fail",
+      "failed_checks": [
+        "rule_name_missing_kept_null",
+        "values_match_policy",
+        "output_format"
+      ],
+      "semantic_anomaly": "n/a",
+      "semantic_metrics": [],
+      "raw_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "canonical_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "hash_basis": "validator report",
+      "chatbot_fix": "not used",
+      "severity": "High / Low",
+      "note": "Known baseline defects only (3 `None` names, 70 money cells missing a trailing zero).",
+      "observation": "observations/baseline.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/baseline.md",
+      "sources": [
+        "observations/baseline.md",
+        "observations/evidence/validation-manual-dryrun-1.json"
+      ]
+    },
+    {
+      "id": "baseline-run-2",
+      "scenario": "baseline",
+      "scenario_label": "Baseline",
+      "category": "baseline",
+      "label": "Run 2",
+      "run_type": "manual",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "2026-10-04T15:00:20+11:00",
+      "duration_s": null,
+      "outcome": "carried_on",
+      "health": "success",
+      "output_blob": "RhombusAI_output_1791086420064.csv",
+      "rows_out": 218,
+      "validator_overall": "fail",
+      "failed_checks": [
+        "rule_name_missing_kept_null",
+        "values_match_policy",
+        "output_format"
+      ],
+      "semantic_anomaly": "no",
+      "semantic_metrics": [],
+      "raw_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "canonical_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "hash_basis": "validator report",
+      "chatbot_fix": "not used",
+      "severity": "High / Low",
+      "note": "Byte-identical to run 1.",
+      "observation": "observations/baseline.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/baseline.md",
+      "sources": [
+        "observations/baseline.md",
+        "observations/evidence/validation-manual-dryrun-2.json"
+      ]
+    },
+    {
+      "id": "baseline-run-3",
+      "scenario": "baseline",
+      "scenario_label": "Baseline",
+      "category": "baseline",
+      "label": "Run 3",
+      "run_type": "manual",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "2026-10-04T15:04:43+11:00",
+      "duration_s": null,
+      "outcome": "carried_on",
+      "health": "success_wrong_or_empty",
+      "output_blob": "RhombusAI_output_1791086683413.csv",
+      "rows_out": 218,
+      "validator_overall": "fail",
+      "failed_checks": [
+        "output_format",
+        "determinism"
+      ],
+      "semantic_anomaly": "no",
+      "semantic_metrics": [],
+      "raw_sha256": "84550ef95b385f181f00d70bebcf4727143358048150c83744973785bd1ec3fa",
+      "canonical_sha256": "84550ef95b385f181f00d70bebcf4727143358048150c83744973785bd1ec3fa",
+      "hash_basis": "validator report",
+      "chatbot_fix": "not used",
+      "severity": "High / Low",
+      "note": "Modified pipeline (how is not recorded): every id and qty written as a decimal. Reverted before run 4.",
+      "observation": "observations/baseline.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/baseline.md",
+      "sources": [
+        "observations/baseline.md",
+        "observations/evidence/validation-manual-dryrun-3.json"
+      ]
+    },
+    {
+      "id": "baseline-run-4",
+      "scenario": "baseline",
+      "scenario_label": "Baseline",
+      "category": "baseline",
+      "label": "Run 4 (reference)",
+      "run_type": "manual",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "2026-10-04T15:11:16+11:00",
+      "duration_s": null,
+      "outcome": "carried_on",
+      "health": "success",
+      "output_blob": "RhombusAI_output_1791087076533.csv",
+      "rows_out": 218,
+      "validator_overall": "fail",
+      "failed_checks": [
+        "rule_name_missing_kept_null",
+        "values_match_policy",
+        "output_format"
+      ],
+      "semantic_anomaly": "no",
+      "semantic_metrics": [],
+      "raw_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "canonical_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "hash_basis": "validator report",
+      "chatbot_fix": "not used",
+      "severity": "High / Low",
+      "note": "The baseline every drift case is compared with.",
+      "observation": "observations/baseline.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/baseline.md",
+      "sources": [
+        "observations/baseline.md",
+        "observations/evidence/validation-manual-dryrun-4.json"
+      ]
+    },
+    {
+      "id": "drop-column-manual",
+      "scenario": "schema-drop-column",
+      "scenario_label": "Drop column",
+      "category": "schema",
+      "label": "First run",
+      "run_type": "manual",
+      "trigger_time": "2026-10-04T15:46:21+11:00",
+      "completion_time": "2026-10-04T15:46:26+11:00",
+      "output_time": "not recorded",
+      "duration_s": 5,
+      "outcome": "stopped",
+      "health": "failed",
+      "output_blob": "none",
+      "rows_out": 0,
+      "validator_overall": "not run (no output)",
+      "failed_checks": [],
+      "semantic_anomaly": "n/a",
+      "semantic_metrics": [],
+      "raw_sha256": "none",
+      "canonical_sha256": "none",
+      "hash_basis": null,
+      "chatbot_fix": "not used",
+      "severity": "High",
+      "note": "Failed at clean_transactions: ['country'] not in index. No output.",
+      "observation": "observations/schema-drop-column.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-drop-column.md",
+      "sources": [
+        "observations/schema-drop-column.md"
+      ]
+    },
+    {
+      "id": "drop-column-retest",
+      "scenario": "schema-drop-column",
+      "scenario_label": "Drop column",
+      "category": "schema",
+      "label": "Retest",
+      "run_type": "retest",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "2026-10-04T15:49:21+11:00",
+      "duration_s": null,
+      "outcome": "carried_on",
+      "health": "success_wrong_or_empty",
+      "output_blob": "RhombusAI_output_1791089361234.csv",
+      "rows_out": 222,
+      "validator_overall": "fail",
+      "failed_checks": [
+        "input_contract",
+        "output_format",
+        "semantic_anomaly"
+      ],
+      "semantic_anomaly": "yes",
+      "semantic_metrics": [
+        "country.null_rate",
+        "country.distribution"
+      ],
+      "raw_sha256": "9a6c4db4cca57097a13e2b6c9439c4e56aa1d0968e91501fc2b1b0d3970a2729",
+      "canonical_sha256": "9a6c4db4cca57097a13e2b6c9439c4e56aa1d0968e91501fc2b1b0d3970a2729",
+      "hash_basis": "validator report",
+      "chatbot_fix": "didn't work, harmful",
+      "severity": "High",
+      "note": "country empty on all 222 rows; 4 rows kept that should be rejected; 3 valid prices wiped.",
+      "observation": "observations/schema-drop-column.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-drop-column.md",
+      "sources": [
+        "observations/schema-drop-column.md",
+        "observations/evidence/validation-schema-drop-column-retest.json"
+      ]
+    },
+    {
+      "id": "rename-column-manual",
+      "scenario": "schema-rename-column",
+      "scenario_label": "Rename column",
+      "category": "schema",
+      "label": "First run",
+      "run_type": "manual",
+      "trigger_time": "2026-10-04T15:53:35+11:00",
+      "completion_time": "2026-10-04T15:53:39+11:00",
+      "output_time": "not recorded",
+      "duration_s": 4,
+      "outcome": "stopped",
+      "health": "failed",
+      "output_blob": "none",
+      "rows_out": 0,
+      "validator_overall": "not run (no output)",
+      "failed_checks": [],
+      "semantic_anomaly": "n/a",
+      "semantic_metrics": [],
+      "raw_sha256": "none",
+      "canonical_sha256": "none",
+      "hash_basis": null,
+      "chatbot_fix": "not used",
+      "severity": "High",
+      "note": "Failed at clean_transactions: ['transaction_date'] not in index. No output.",
+      "observation": "observations/schema-rename-column.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-rename-column.md",
+      "sources": [
+        "observations/schema-rename-column.md"
+      ]
+    },
+    {
+      "id": "rename-column-retest",
+      "scenario": "schema-rename-column",
+      "scenario_label": "Rename column",
+      "category": "schema",
+      "label": "Retest",
+      "run_type": "retest",
+      "trigger_time": "2026-10-04T15:54:52+11:00",
+      "completion_time": "2026-10-04T15:55:07+11:00",
+      "output_time": "2026-10-04T15:55:09+11:00",
+      "duration_s": 15,
+      "outcome": "warned",
+      "health": "success_wrong_or_empty",
+      "output_blob": "RhombusAI_output_1791089709537.csv",
+      "rows_out": 0,
+      "validator_overall": "fail",
+      "failed_checks": [
+        "input_contract",
+        "semantic_anomaly"
+      ],
+      "semantic_anomaly": "yes",
+      "semantic_metrics": [
+        "row_count",
+        "country.distribution",
+        "price.sum",
+        "total.sum",
+        "transaction_date.month_histogram",
+        "status.distribution"
+      ],
+      "raw_sha256": "260801d0552dc4ca9a28f8c641e41984e1e5e7c3dac33a45f8703a25df0afb3c",
+      "canonical_sha256": "260801d0552dc4ca9a28f8c641e41984e1e5e7c3dac33a45f8703a25df0afb3c",
+      "hash_basis": "validator report",
+      "chatbot_fix": "didn't work, harmful",
+      "severity": "High",
+      "note": "Warning \"No results found…\" next to \"Pipeline completed successfully\"; header-only file (0 of 218 rows).",
+      "observation": "observations/schema-rename-column.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-rename-column.md",
+      "sources": [
+        "observations/schema-rename-column.md",
+        "observations/evidence/validation-schema-rename-column-retest.json"
+      ]
+    },
+    {
+      "id": "type-change-manual",
+      "scenario": "schema-type-change",
+      "scenario_label": "Type change",
+      "category": "schema",
+      "label": "First run",
+      "run_type": "manual",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "2026-10-04T15:57:20+11:00",
+      "duration_s": null,
+      "outcome": "warned",
+      "health": "success_wrong_or_empty",
+      "output_blob": "RhombusAI_output_1791089840449.csv",
+      "rows_out": 0,
+      "validator_overall": "fail",
+      "failed_checks": [
+        "semantic_anomaly"
+      ],
+      "semantic_anomaly": "yes",
+      "semantic_metrics": [
+        "row_count",
+        "country.distribution",
+        "price.sum",
+        "total.sum",
+        "transaction_date.month_histogram",
+        "status.distribution"
+      ],
+      "raw_sha256": "260801d0552dc4ca9a28f8c641e41984e1e5e7c3dac33a45f8703a25df0afb3c",
+      "canonical_sha256": "260801d0552dc4ca9a28f8c641e41984e1e5e7c3dac33a45f8703a25df0afb3c",
+      "hash_basis": "validator report",
+      "chatbot_fix": "not used",
+      "severity": "High",
+      "note": "No error; warning \"No results found…\"; header-only file (0 of 218 rows).",
+      "observation": "observations/schema-type-change.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-type-change.md",
+      "sources": [
+        "observations/schema-type-change.md",
+        "observations/evidence/validation-schema-type-change.json"
+      ]
+    },
+    {
+      "id": "type-change-retest",
+      "scenario": "schema-type-change",
+      "scenario_label": "Type change",
+      "category": "schema",
+      "label": "Retest",
+      "run_type": "retest",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "2026-10-04T16:02:39+11:00",
+      "duration_s": null,
+      "outcome": "not recorded",
+      "health": "success_wrong_or_empty",
+      "output_blob": "RhombusAI_output_1791090159425.csv",
+      "rows_out": 0,
+      "validator_overall": "fail",
+      "failed_checks": [
+        "semantic_anomaly"
+      ],
+      "semantic_anomaly": "yes",
+      "semantic_metrics": [
+        "row_count",
+        "country.distribution",
+        "price.sum",
+        "total.sum",
+        "transaction_date.month_histogram",
+        "status.distribution"
+      ],
+      "raw_sha256": "260801d0552dc4ca9a28f8c641e41984e1e5e7c3dac33a45f8703a25df0afb3c",
+      "canonical_sha256": "260801d0552dc4ca9a28f8c641e41984e1e5e7c3dac33a45f8703a25df0afb3c",
+      "hash_basis": "validator report",
+      "chatbot_fix": "didn't work, harmful",
+      "severity": "High",
+      "note": "Still header-only (0 rows), byte-identical to the first run.",
+      "observation": "observations/schema-type-change.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-type-change.md",
+      "sources": [
+        "observations/schema-type-change.md",
+        "observations/evidence/validation-schema-type-change-retest.json"
+      ]
+    },
+    {
+      "id": "add-column-manual",
+      "scenario": "schema-add-column",
+      "scenario_label": "Add column",
+      "category": "schema",
+      "label": "Run",
+      "run_type": "manual",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "2026-10-04T16:04:44+11:00",
+      "duration_s": null,
+      "outcome": "carried_on",
+      "health": "success",
+      "output_blob": "RhombusAI_output_1791090284446.csv",
+      "rows_out": 218,
+      "validator_overall": "fail",
+      "failed_checks": [
+        "rule_name_missing_kept_null",
+        "values_match_policy",
+        "output_format"
+      ],
+      "semantic_anomaly": "no",
+      "semantic_metrics": [],
+      "raw_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "canonical_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "hash_basis": "validator report",
+      "chatbot_fix": "not used",
+      "severity": "Info",
+      "note": "channel dropped; byte-identical to baseline run 4.",
+      "observation": "observations/schema-add-column.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-add-column.md",
+      "sources": [
+        "observations/schema-add-column.md",
+        "observations/evidence/validation-schema-add-column.json"
+      ]
+    },
+    {
+      "id": "add-column-rerun-1",
+      "scenario": "schema-add-column",
+      "scenario_label": "Add column",
+      "category": "schema",
+      "label": "Re-run 18:30 (a)",
+      "run_type": "manual",
+      "trigger_time": "2026-10-04T18:30:12+11:00",
+      "completion_time": "2026-10-04T18:30:15+11:00",
+      "output_time": "2026-10-04T18:30:18+11:00",
+      "duration_s": 3,
+      "outcome": "carried_on",
+      "health": "success",
+      "output_blob": "RhombusAI_output_1791099018130.csv",
+      "rows_out": 218,
+      "validator_overall": "not recorded",
+      "failed_checks": [],
+      "semantic_anomaly": "not recorded",
+      "semantic_metrics": [],
+      "raw_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "canonical_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "hash_basis": "stated byte-identical to baseline-run-4",
+      "chatbot_fix": "not used",
+      "severity": "Info",
+      "note": "Confirmation re-run with schema_add_column.csv visibly selected.",
+      "observation": "observations/schema-add-column.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-add-column.md",
+      "sources": [
+        "observations/schema-add-column.md"
+      ]
+    },
+    {
+      "id": "add-column-rerun-2",
+      "scenario": "schema-add-column",
+      "scenario_label": "Add column",
+      "category": "schema",
+      "label": "Re-run 18:30 (b)",
+      "run_type": "manual",
+      "trigger_time": "2026-10-04T18:30:25+11:00",
+      "completion_time": "2026-10-04T18:30:29+11:00",
+      "output_time": "2026-10-04T18:30:31+11:00",
+      "duration_s": 4,
+      "outcome": "carried_on",
+      "health": "success",
+      "output_blob": "RhombusAI_output_1791099031596.csv",
+      "rows_out": 218,
+      "validator_overall": "not recorded",
+      "failed_checks": [],
+      "semantic_anomaly": "not recorded",
+      "semantic_metrics": [],
+      "raw_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "canonical_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "hash_basis": "stated byte-identical to baseline-run-4",
+      "chatbot_fix": "not used",
+      "severity": "Info",
+      "note": "Confirmation re-run with schema_add_column.csv visibly selected.",
+      "observation": "observations/schema-add-column.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-add-column.md",
+      "sources": [
+        "observations/schema-add-column.md"
+      ]
+    },
+    {
+      "id": "combined-manual",
+      "scenario": "schema-combined",
+      "scenario_label": "Combined",
+      "category": "schema",
+      "label": "First run",
+      "run_type": "manual",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "not recorded",
+      "duration_s": null,
+      "outcome": "stopped",
+      "health": "failed",
+      "output_blob": "none",
+      "rows_out": 0,
+      "validator_overall": "not run (no output)",
+      "failed_checks": [],
+      "semantic_anomaly": "n/a",
+      "semantic_metrics": [],
+      "raw_sha256": "none",
+      "canonical_sha256": "none",
+      "hash_basis": null,
+      "chatbot_fix": "not used",
+      "severity": "Medium",
+      "note": "Failed: ['id', 'transaction_date'] not in index. No output.",
+      "observation": "observations/schema-combined.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-combined.md",
+      "sources": [
+        "observations/schema-combined.md"
+      ]
+    },
+    {
+      "id": "combined-retest",
+      "scenario": "schema-combined",
+      "scenario_label": "Combined",
+      "category": "schema",
+      "label": "Retest",
+      "run_type": "retest",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "not recorded",
+      "duration_s": null,
+      "outcome": "stopped",
+      "health": "failed",
+      "output_blob": "none",
+      "rows_out": 0,
+      "validator_overall": "not run (no output)",
+      "failed_checks": [],
+      "semantic_anomaly": "n/a",
+      "semantic_metrics": [],
+      "raw_sha256": "none",
+      "canonical_sha256": "none",
+      "hash_basis": null,
+      "chatbot_fix": "didn't work",
+      "severity": "Medium",
+      "note": "Identical error after the chatbot's header-lowercasing fix. No output.",
+      "observation": "observations/schema-combined.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-combined.md",
+      "sources": [
+        "observations/schema-combined.md"
+      ]
+    },
+    {
+      "id": "dollars-to-cents-manual",
+      "scenario": "semantic-dollars-to-cents",
+      "scenario_label": "Dollars → cents",
+      "category": "semantic",
+      "label": "Run",
+      "run_type": "manual",
+      "trigger_time": "2026-10-04T16:14:31+11:00",
+      "completion_time": "2026-10-04T16:14:34+11:00",
+      "output_time": "not recorded",
+      "duration_s": 3,
+      "outcome": "carried_on",
+      "health": "success_wrong_or_empty",
+      "output_blob": "RhombusAI_output_1791090876827.csv",
+      "rows_out": 218,
+      "validator_overall": "fail",
+      "failed_checks": [
+        "rule_name_missing_kept_null",
+        "values_match_policy",
+        "output_format",
+        "semantic_anomaly"
+      ],
+      "semantic_anomaly": "yes",
+      "semantic_metrics": [
+        "price.p50",
+        "price.sum",
+        "total.p50",
+        "total.sum"
+      ],
+      "raw_sha256": "0d4ab83ac114be1e9a798970e16c1e3caab6169c97f44563c878047c700997a5",
+      "canonical_sha256": "0d4ab83ac114be1e9a798970e16c1e3caab6169c97f44563c878047c700997a5",
+      "hash_basis": "validator report",
+      "chatbot_fix": "not used",
+      "severity": "High",
+      "note": "\"Pipeline completed successfully\", no warning; every money value ×100.",
+      "observation": "observations/semantic-dollars-to-cents.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/semantic-dollars-to-cents.md",
+      "sources": [
+        "observations/semantic-dollars-to-cents.md",
+        "observations/evidence/validation-semantic-dollars-to-cents.json"
+      ]
+    },
+    {
+      "id": "date-swap-manual",
+      "scenario": "semantic-date-swap",
+      "scenario_label": "Date swap",
+      "category": "semantic",
+      "label": "Run",
+      "run_type": "manual",
+      "trigger_time": "not recorded",
+      "completion_time": "2026-10-04T16:16:54+11:00",
+      "output_time": "not recorded",
+      "duration_s": null,
+      "outcome": "carried_on",
+      "health": "success_wrong_or_empty",
+      "output_blob": "RhombusAI_output_1791091017015.csv",
+      "rows_out": 218,
+      "validator_overall": "fail",
+      "failed_checks": [
+        "rule_name_missing_kept_null",
+        "values_match_policy",
+        "output_format",
+        "semantic_anomaly"
+      ],
+      "semantic_anomaly": "yes",
+      "semantic_metrics": [
+        "transaction_date.range"
+      ],
+      "raw_sha256": "1b01de957a33703047bac1e8a3885de2afba3934e9bb55578dabeaaeeb785664",
+      "canonical_sha256": "1b01de957a33703047bac1e8a3885de2afba3934e9bb55578dabeaaeeb785664",
+      "hash_basis": "validator report",
+      "chatbot_fix": "not used",
+      "severity": "High",
+      "note": "Start ambiguous: two \"started\" entries (16:16:47, 16:16:52), so duration not computed. 81 of 218 dates wrong.",
+      "observation": "observations/semantic-date-swap.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/semantic-date-swap.md",
+      "sources": [
+        "observations/semantic-date-swap.md",
+        "observations/evidence/validation-semantic-date-swap.json"
+      ]
+    },
+    {
+      "id": "ui-1707-a",
+      "scenario": "ui-test-session",
+      "scenario_label": "UI test session",
+      "category": "ui-test",
+      "label": "~17:07 test 6 (1st)",
+      "run_type": "ui-test",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "not recorded",
+      "duration_s": null,
+      "outcome": "stopped",
+      "health": "failed",
+      "output_blob": "none",
+      "rows_out": 0,
+      "validator_overall": "not run (no output)",
+      "failed_checks": [],
+      "semantic_anomaly": "n/a",
+      "semantic_metrics": [],
+      "raw_sha256": "none",
+      "canonical_sha256": "none",
+      "hash_basis": null,
+      "chatbot_fix": "not used",
+      "severity": "not assessed",
+      "note": "src_output failure logged (card at 05:07:32 PM); no export; 300 s Azure poll timed out.",
+      "observation": "PLAN.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/PLAN.md",
+      "sources": [
+        "PLAN.md"
+      ]
+    },
+    {
+      "id": "ui-1707-b",
+      "scenario": "ui-test-session",
+      "scenario_label": "UI test session",
+      "category": "ui-test",
+      "label": "~17:07 test 6 (2nd)",
+      "run_type": "ui-test",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "not recorded",
+      "duration_s": null,
+      "outcome": "not recorded",
+      "health": "failed",
+      "output_blob": "none",
+      "rows_out": 0,
+      "validator_overall": "not run (no output)",
+      "failed_checks": [],
+      "semantic_anomaly": "n/a",
+      "semantic_metrics": [],
+      "raw_sha256": "none",
+      "canonical_sha256": "none",
+      "hash_basis": null,
+      "chatbot_fix": "not used",
+      "severity": "not assessed",
+      "note": "No export. Whether a src_output failure was logged isn't established.",
+      "observation": "PLAN.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/PLAN.md",
+      "sources": [
+        "PLAN.md"
+      ]
+    },
+    {
+      "id": "ui-1723-manual",
+      "scenario": "ui-test-session",
+      "scenario_label": "UI test session",
+      "category": "ui-test",
+      "label": "17:23 ▶ normal browser",
+      "run_type": "manual",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "2026-10-04T17:23:06+11:00",
+      "duration_s": null,
+      "outcome": "carried_on",
+      "health": "success",
+      "output_blob": "RhombusAI_output_1791094986135.csv",
+      "rows_out": "not recorded",
+      "validator_overall": "not recorded",
+      "failed_checks": [],
+      "semantic_anomaly": "not recorded",
+      "semantic_metrics": [],
+      "raw_sha256": "not recorded",
+      "canonical_sha256": "not recorded",
+      "hash_basis": null,
+      "chatbot_fix": "not used",
+      "severity": "not assessed",
+      "note": "No failure logged; exported. Output not validated.",
+      "observation": "PLAN.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/PLAN.md",
+      "sources": [
+        "PLAN.md"
+      ]
+    },
+    {
+      "id": "ui-1724",
+      "scenario": "ui-test-session",
+      "scenario_label": "UI test session",
+      "category": "ui-test",
+      "label": "17:24 test 6",
+      "run_type": "ui-test",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "2026-10-04T17:24:30+11:00",
+      "duration_s": null,
+      "outcome": "carried_on",
+      "health": "success",
+      "output_blob": "RhombusAI_output_1791095070309.csv",
+      "rows_out": 218,
+      "validator_overall": "not recorded",
+      "failed_checks": [],
+      "semantic_anomaly": "not recorded",
+      "semantic_metrics": [],
+      "raw_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "canonical_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "hash_basis": "stated byte-identical to baseline-run-4",
+      "chatbot_fix": "not used",
+      "severity": "not assessed",
+      "note": "No failure logged; byte-identical to baseline run 4.",
+      "observation": "PLAN.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/PLAN.md",
+      "sources": [
+        "PLAN.md"
+      ]
+    },
+    {
+      "id": "ui-1803",
+      "scenario": "ui-test-session",
+      "scenario_label": "UI test session",
+      "category": "ui-test",
+      "label": "~18:03 test 6",
+      "run_type": "ui-test",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "not recorded",
+      "duration_s": null,
+      "outcome": "not recorded",
+      "health": "failed",
+      "output_blob": "none",
+      "rows_out": 0,
+      "validator_overall": "not run (no output)",
+      "failed_checks": [],
+      "semantic_anomaly": "n/a",
+      "semantic_metrics": [],
+      "raw_sha256": "none",
+      "canonical_sha256": "none",
+      "hash_basis": null,
+      "chatbot_fix": "not used",
+      "severity": "not assessed",
+      "note": "No export. Whether a src_output failure was logged isn't established.",
+      "observation": "PLAN.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/PLAN.md",
+      "sources": [
+        "PLAN.md"
+      ]
+    },
+    {
+      "id": "ui-1806",
+      "scenario": "ui-test-session",
+      "scenario_label": "UI test session",
+      "category": "ui-test",
+      "label": "18:06 test 6",
+      "run_type": "ui-test",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "2026-10-04T18:07:03+11:00",
+      "duration_s": null,
+      "outcome": "contradictory",
+      "health": "success",
+      "output_blob": "RhombusAI_output_1791097623381.csv",
+      "rows_out": 218,
+      "validator_overall": "fail",
+      "failed_checks": [
+        "rule_name_missing_kept_null",
+        "values_match_policy",
+        "output_format"
+      ],
+      "semantic_anomaly": "no",
+      "semantic_metrics": [],
+      "raw_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "canonical_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "hash_basis": "validator report",
+      "chatbot_fix": "not used",
+      "severity": "not assessed",
+      "note": "src_output failure logged at 18:06:43, yet a correct export 20 s later.",
+      "observation": "PLAN.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/PLAN.md",
+      "sources": [
+        "PLAN.md",
+        "observations/evidence/validation-ui-run-1806.json"
+      ]
+    },
+    {
+      "id": "ui-1852",
+      "scenario": "ui-test-session",
+      "scenario_label": "UI test session",
+      "category": "ui-test",
+      "label": "18:52 test 6",
+      "run_type": "ui-test",
+      "trigger_time": "not recorded",
+      "completion_time": "not recorded",
+      "output_time": "2026-10-04T18:56:23+11:00",
+      "duration_s": null,
+      "outcome": "contradictory",
+      "health": "success",
+      "output_blob": "RhombusAI_output_1791100583085.csv",
+      "rows_out": 218,
+      "validator_overall": "fail",
+      "failed_checks": [
+        "rule_name_missing_kept_null",
+        "values_match_policy",
+        "output_format"
+      ],
+      "semantic_anomaly": "not recorded",
+      "semantic_metrics": [],
+      "raw_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "canonical_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "hash_basis": "stated byte-identical to baseline-run-4",
+      "chatbot_fix": "not used",
+      "severity": "not assessed",
+      "note": "src_output failure reported by the user; correct export about 4 min later. Output files named by ui-tests/test_journey.py (ui-run-20261004-1852z).",
+      "observation": "PLAN.md",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/PLAN.md",
+      "sources": [
+        "PLAN.md"
+      ]
+    }
+  ],
+  "heatmap": [
+    {
+      "scenario": "schema-drop-column",
+      "label": "Drop column",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-drop-column.md",
+      "severity": "High",
+      "behaviour": {
+        "class": "broke",
+        "text": "Stopped: raw Python KeyError, no output"
+      },
+      "chatbot": {
+        "class": "silent",
+        "text": "Auto-applied guard → silent wrong output (country empty, 3 prices wiped, 4 bad rows kept)"
+      },
+      "validator": {
+        "class": "caught",
+        "text": "Caught empty country; missed 4 extra rows and 3 wiped prices"
+      }
+    },
+    {
+      "scenario": "schema-rename-column",
+      "label": "Rename column",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-rename-column.md",
+      "severity": "High",
+      "behaviour": {
+        "class": "broke",
+        "text": "Stopped: raw Python KeyError, no output"
+      },
+      "chatbot": {
+        "class": "broke",
+        "text": "Guessed alias map → header-only file under \"Pipeline completed successfully\""
+      },
+      "validator": {
+        "class": "caught",
+        "text": "Caught: row_count 218 → 0"
+      }
+    },
+    {
+      "scenario": "schema-type-change",
+      "label": "Type change",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-type-change.md",
+      "severity": "High",
+      "behaviour": {
+        "class": "warned",
+        "text": "Carried on: header-only file, warning only"
+      },
+      "chatbot": {
+        "class": "broke",
+        "text": "Still 0 rows; re-applied reverted fixes"
+      },
+      "validator": {
+        "class": "caught",
+        "text": "Caught by semantic check only (row_count 218 → 0)"
+      }
+    },
+    {
+      "scenario": "schema-add-column",
+      "label": "Add column",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-add-column.md",
+      "severity": "Info",
+      "behaviour": {
+        "class": "handled",
+        "text": "Handled: extra column dropped, output identical to baseline"
+      },
+      "chatbot": {
+        "class": "n/a",
+        "text": "Not used (no error)"
+      },
+      "validator": {
+        "class": "handled",
+        "text": "No anomaly; only known baseline defects"
+      }
+    },
+    {
+      "scenario": "schema-combined",
+      "label": "Combined",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/schema-combined.md",
+      "severity": "Medium",
+      "behaviour": {
+        "class": "broke",
+        "text": "Stopped: error names 2 of 4 changes"
+      },
+      "chatbot": {
+        "class": "broke",
+        "text": "Made-up diagnosis; identical error after fix"
+      },
+      "validator": {
+        "class": "n/a",
+        "text": "Not run: no output"
+      }
+    },
+    {
+      "scenario": "semantic-dollars-to-cents",
+      "label": "Dollars → cents",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/semantic-dollars-to-cents.md",
+      "severity": "High",
+      "behaviour": {
+        "class": "missed",
+        "text": "Missed: \"completed successfully\", every money value ×100"
+      },
+      "chatbot": {
+        "class": "n/a",
+        "text": "Not used (no error)"
+      },
+      "validator": {
+        "class": "caught",
+        "text": "Caught: 4 money metrics, each ×100"
+      }
+    },
+    {
+      "scenario": "semantic-date-swap",
+      "label": "Date swap",
+      "observation_url": "https://github.com/PriyanshUsyd/rhombus-ai-takehome/blob/main/observations/semantic-date-swap.md",
+      "severity": "High",
+      "behaviour": {
+        "class": "missed",
+        "text": "Missed: \"completed successfully\", 81 of 218 dates wrong"
+      },
+      "chatbot": {
+        "class": "n/a",
+        "text": "Not used (no error)"
+      },
+      "validator": {
+        "class": "caught",
+        "text": "Caught weakly: date range only; 40 of 81 wrong dates invisible"
+      }
+    }
+  ],
+  "run3_differences": [
+    {
+      "id": 1001,
+      "column": "id",
+      "reference": "1001",
+      "run_3": "1001.0"
+    },
+    {
+      "id": 1001,
+      "column": "qty",
+      "reference": "5",
+      "run_3": "5.0"
+    },
+    {
+      "id": 1002,
+      "column": "id",
+      "reference": "1002",
+      "run_3": "1002.0"
+    },
+    {
+      "id": 1002,
+      "column": "qty",
+      "reference": "2",
+      "run_3": "2.0"
+    },
+    {
+      "id": 1003,
+      "column": "id",
+      "reference": "1003",
+      "run_3": "1003.0"
+    },
+    {
+      "id": 1003,
+      "column": "qty",
+      "reference": "9",
+      "run_3": "9.0"
+    },
+    {
+      "id": 1004,
+      "column": "id",
+      "reference": "1004",
+      "run_3": "1004.0"
+    },
+    {
+      "id": 1004,
+      "column": "qty",
+      "reference": "7",
+      "run_3": "7.0"
+    },
+    {
+      "id": 1005,
+      "column": "id",
+      "reference": "1005",
+      "run_3": "1005.0"
+    },
+    {
+      "id": 1005,
+      "column": "qty",
+      "reference": "3",
+      "run_3": "3.0"
+    },
+    {
+      "id": 1006,
+      "column": "id",
+      "reference": "1006",
+      "run_3": "1006.0"
+    },
+    {
+      "id": 1006,
+      "column": "qty",
+      "reference": "2",
+      "run_3": "2.0"
+    },
+    {
+      "id": 1007,
+      "column": "id",
+      "reference": "1007",
+      "run_3": "1007.0"
+    },
+    {
+      "id": 1007,
+      "column": "qty",
+      "reference": "5",
+      "run_3": "5.0"
+    },
+    {
+      "id": 1008,
+      "column": "id",
+      "reference": "1008",
+      "run_3": "1008.0"
+    },
+    {
+      "id": 1008,
+      "column": "qty",
+      "reference": "2",
+      "run_3": "2.0"
+    },
+    {
+      "id": 1009,
+      "column": "id",
+      "reference": "1009",
+      "run_3": "1009.0"
+    },
+    {
+      "id": 1009,
+      "column": "qty",
+      "reference": "2",
+      "run_3": "2.0"
+    },
+    {
+      "id": 1010,
+      "column": "id",
+      "reference": "1010",
+      "run_3": "1010.0"
+    },
+    {
+      "id": 1010,
+      "column": "qty",
+      "reference": "9",
+      "run_3": "9.0"
+    },
+    {
+      "id": 1011,
+      "column": "id",
+      "reference": "1011",
+      "run_3": "1011.0"
+    },
+    {
+      "id": 1011,
+      "column": "qty",
+      "reference": "10",
+      "run_3": "10.0"
+    },
+    {
+      "id": 1012,
+      "column": "id",
+      "reference": "1012",
+      "run_3": "1012.0"
+    },
+    {
+      "id": 1012,
+      "column": "qty",
+      "reference": "10",
+      "run_3": "10.0"
+    },
+    {
+      "id": 1013,
+      "column": "id",
+      "reference": "1013",
+      "run_3": "1013.0"
+    },
+    {
+      "id": 1013,
+      "column": "qty",
+      "reference": "3",
+      "run_3": "3.0"
+    },
+    {
+      "id": 1014,
+      "column": "id",
+      "reference": "1014",
+      "run_3": "1014.0"
+    },
+    {
+      "id": 1014,
+      "column": "qty",
+      "reference": "9",
+      "run_3": "9.0"
+    },
+    {
+      "id": 1015,
+      "column": "id",
+      "reference": "1015",
+      "run_3": "1015.0"
+    },
+    {
+      "id": 1015,
+      "column": "qty",
+      "reference": "8",
+      "run_3": "8.0"
+    },
+    {
+      "id": 1016,
+      "column": "id",
+      "reference": "1016",
+      "run_3": "1016.0"
+    },
+    {
+      "id": 1016,
+      "column": "qty",
+      "reference": "7",
+      "run_3": "7.0"
+    },
+    {
+      "id": 1017,
+      "column": "id",
+      "reference": "1017",
+      "run_3": "1017.0"
+    },
+    {
+      "id": 1017,
+      "column": "name",
+      "reference": "None",
+      "run_3": ""
+    },
+    {
+      "id": 1017,
+      "column": "qty",
+      "reference": "7",
+      "run_3": "7.0"
+    },
+    {
+      "id": 1019,
+      "column": "id",
+      "reference": "1019",
+      "run_3": "1019.0"
+    },
+    {
+      "id": 1019,
+      "column": "qty",
+      "reference": "8",
+      "run_3": "8.0"
+    },
+    {
+      "id": 1020,
+      "column": "id",
+      "reference": "1020",
+      "run_3": "1020.0"
+    },
+    {
+      "id": 1020,
+      "column": "qty",
+      "reference": "5",
+      "run_3": "5.0"
+    },
+    {
+      "id": 1021,
+      "column": "id",
+      "reference": "1021",
+      "run_3": "1021.0"
+    },
+    {
+      "id": 1021,
+      "column": "qty",
+      "reference": "7",
+      "run_3": "7.0"
+    }
+  ],
+  "excluded": [
+    "Log anomaly at 16:14:23–16:14:26 before the dollars-to-cents run (not a test run).",
+    "Mistaken rename-case run on baseline.csv (RhombusAI_output_1791089499109.csv).",
+    "Runs logged at 17:00:02 and 18:05:27 with no ▶ or Apply click (no output).",
+    "Unattributed output blobs listed in the observations."
+  ]
+}
