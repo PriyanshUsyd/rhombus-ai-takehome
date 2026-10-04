@@ -148,6 +148,7 @@ Each drift case ran once, so whether drift outputs are repeatable wasn't tested.
 - **API tests** use a short-lived DevTools token. They cover only three endpoints observed for one account on 2026-10-04.
 - **The validator's input contract checks column names, not types.** A column-wide type change (`price` → text) looks like ordinary row defects.
 - **When the input contract is broken,** row-level checks are `blocked_by_schema`. The extra rows and wiped prices in Drop column were found by a manual cell-by-cell comparison, not by the validator.
+- **Cloud resources removed:** after submission (2026-10-04) the cloud resources were removed — S3 buckets, Azure resource group (storage + SAS strings) and the Rhombus schedule — so live tests (`-m live`) need new credentials/resources to re-run; offline tests (`-m "not live"`) run anywhere.
 
 **Validator heuristics**
 - The validator's semantic anomaly thresholds are documented, **untuned heuristics** (constants at the top of `data-validation/validate.py`), compared against the baseline output:
