@@ -1,0 +1,33 @@
+{
+  "dataset": "schema_drop_column.csv",
+  "scenario": "schema-drop-column",
+  "category": "schema",
+  "generator": "scripts/generate_datasets.py",
+  "seed": 20261003,
+  "derived_from": {
+    "dataset": "baseline.csv",
+    "sha256": "f2c301dc6fd7046e1f22599f30c9cc37736626150ba6aebaa02c4b13a8d2c0a2"
+  },
+  "change": "column 'country' removed",
+  "columns": [
+    "id",
+    "name",
+    "email",
+    "price",
+    "qty",
+    "total",
+    "transaction_date",
+    "status"
+  ],
+  "row_count": 250,
+  "details": {
+    "dropped_column": "country"
+  },
+  "notes": [
+    "Derived from baseline.csv; only the change above differs.",
+    "Row-wise changes also apply to duplicate copies, so exact duplicates stay exact.",
+    "CSV: UTF-8, LF line endings, header row, empty field = missing value."
+  ],
+  "sha256": "670db8d3969e30a911e265f391597b244794818dd11ab2e4b5412afac993f675",
+  "bytes": 19033
+}

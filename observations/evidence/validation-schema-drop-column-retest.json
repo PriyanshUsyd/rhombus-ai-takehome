@@ -1,0 +1,439 @@
+{
+  "scenario": "schema-drop-column-retest",
+  "generated_at": "2026-10-04T04:50:11+00:00",
+  "policy": "datasets/cleaning-policy.md (approved 2026-10-03)",
+  "files": {
+    "input": {
+      "path": "datasets\\schema_drop_column.csv",
+      "sha256": "670db8d3969e30a911e265f391597b244794818dd11ab2e4b5412afac993f675"
+    },
+    "output": {
+      "path": "outputs\\schema-drop-column-retest.csv",
+      "raw_output_sha256": "9a6c4db4cca57097a13e2b6c9439c4e56aa1d0968e91501fc2b1b0d3970a2729",
+      "canonical_data_sha256": "9a6c4db4cca57097a13e2b6c9439c4e56aa1d0968e91501fc2b1b0d3970a2729"
+    },
+    "baseline_output": {
+      "path": "outputs\\manual-dryrun-4.csv",
+      "raw_output_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "canonical_data_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda"
+    },
+    "canonicalisation": "BOM removed; cells stripped; rows sorted by integer id; LF line endings; minimal quoting; no value reformatting"
+  },
+  "expected": null,
+  "checks": {
+    "input_contract": {
+      "status": "fail",
+      "violations": [
+        "required column country is missing"
+      ],
+      "warnings": []
+    },
+    "schema": {
+      "status": "pass",
+      "violations": []
+    },
+    "deduplication": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "row_count_reconciliation": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "manifest_consistency": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "rule_name_normalised": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "rule_name_missing_kept_null": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "rule_email_normalised": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "rule_email_invalid_to_null": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "rule_email_missing_kept_null": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "rule_country_normalised": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "rule_country_unknown_to_null": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "rule_country_missing_kept_null": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "rule_status_normalised": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "rule_status_unknown_to_null": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "rule_status_missing_kept_null": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "rule_price_symbol_stripped": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "rule_date_reformatted": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "rule_total_filled": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "values_match_policy": {
+      "status": "blocked_by_schema",
+      "reason": "source contract broken: required column country is missing — expectations cannot be derived safely"
+    },
+    "output_format": {
+      "status": "fail",
+      "violations": {
+        "money_two_decimals": {
+          "count": 71,
+          "sample": [
+            {
+              "row": 11,
+              "column": "total",
+              "value": "2151.2"
+            },
+            {
+              "row": 12,
+              "column": "total",
+              "value": "4618.9"
+            },
+            {
+              "row": 21,
+              "column": "price",
+              "value": "356.9"
+            },
+            {
+              "row": 21,
+              "column": "total",
+              "value": "1070.7"
+            },
+            {
+              "row": 22,
+              "column": "total",
+              "value": "2162.5"
+            },
+            {
+              "row": 24,
+              "column": "price",
+              "value": "223.3"
+            },
+            {
+              "row": 24,
+              "column": "total",
+              "value": "446.6"
+            },
+            {
+              "row": 25,
+              "column": "total",
+              "value": "3059.3"
+            },
+            {
+              "row": 28,
+              "column": "total",
+              "value": "1102.7"
+            },
+            {
+              "row": 29,
+              "column": "total",
+              "value": "2456.7"
+            },
+            {
+              "row": 30,
+              "column": "price",
+              "value": "194.0"
+            },
+            {
+              "row": 30,
+              "column": "total",
+              "value": "1552.0"
+            },
+            {
+              "row": 31,
+              "column": "price",
+              "value": "154.2"
+            },
+            {
+              "row": 31,
+              "column": "total",
+              "value": "616.8"
+            },
+            {
+              "row": 33,
+              "column": "total",
+              "value": "3845.9"
+            },
+            {
+              "row": 44,
+              "column": "total",
+              "value": "1066.4"
+            },
+            {
+              "row": 45,
+              "column": "total",
+              "value": "4574.2"
+            },
+            {
+              "row": 46,
+              "column": "total",
+              "value": "1928.1"
+            },
+            {
+              "row": 49,
+              "column": "price",
+              "value": "168.2"
+            },
+            {
+              "row": 49,
+              "column": "total",
+              "value": "1345.6"
+            }
+          ]
+        }
+      }
+    },
+    "determinism": {
+      "status": "not_applicable",
+      "reason": "input is not the baseline dataset; determinism compares runs of the same input only"
+    },
+    "semantic_anomaly": {
+      "status": "fail",
+      "anomalies": [
+        {
+          "metric": "country.null_rate",
+          "baseline": 0.022936,
+          "current": 1.0,
+          "rule": "absolute increase > 0.05"
+        },
+        {
+          "metric": "country.distribution",
+          "baseline": {
+            "Australia": 18,
+            "Canada": 28,
+            "Germany": 19,
+            "India": 44,
+            "New Zealand": 21,
+            "Singapore": 26,
+            "United Kingdom": 38,
+            "United States": 19
+          },
+          "current": {},
+          "rule": "total variation distance > 0.25"
+        }
+      ],
+      "note": "anomaly detector vs baseline output, not proof of correctness"
+    }
+  },
+  "semantic_fingerprint": {
+    "output": {
+      "row_count": 222,
+      "columns": {
+        "id": {
+          "null_rate": 0.0,
+          "distinct_count": 222
+        },
+        "name": {
+          "null_rate": 0.0,
+          "distinct_count": 60
+        },
+        "email": {
+          "null_rate": 0.027027,
+          "distinct_count": 58
+        },
+        "country": {
+          "null_rate": 1.0,
+          "distinct_count": 0,
+          "distribution": {}
+        },
+        "price": {
+          "null_rate": 0.031532,
+          "distinct_count": 215,
+          "numeric_count": 215,
+          "sum": "53303.96",
+          "min": "5.33",
+          "max": "497.84",
+          "p10": "54.13",
+          "p25": "132.1",
+          "p50": "237.29",
+          "p75": "376.22",
+          "p90": "428.35"
+        },
+        "qty": {
+          "null_rate": 0.0,
+          "distinct_count": 10,
+          "numeric_count": 222,
+          "sum": "1243",
+          "min": "1",
+          "max": "10",
+          "p10": "1",
+          "p25": "3",
+          "p50": "6",
+          "p75": "8",
+          "p90": "9"
+        },
+        "total": {
+          "null_rate": 0.0,
+          "distinct_count": 222,
+          "numeric_count": 222,
+          "sum": "317093.51",
+          "min": "22.56",
+          "max": "4618.9",
+          "p10": "197.6",
+          "p25": "464.22",
+          "p50": "1052.17",
+          "p75": "2353.14",
+          "p90": "3156.65"
+        },
+        "transaction_date": {
+          "null_rate": 0.0,
+          "distinct_count": 127,
+          "parse_success_rate": 1.0,
+          "min": "2025-01-01",
+          "max": "2025-06-30",
+          "month_histogram": {
+            "2025-01": 35,
+            "2025-02": 35,
+            "2025-03": 40,
+            "2025-04": 30,
+            "2025-05": 41,
+            "2025-06": 41
+          },
+          "day_le_12_share": 0.405405
+        },
+        "status": {
+          "null_rate": 0.022523,
+          "distinct_count": 4,
+          "distribution": {
+            "cancelled": 53,
+            "completed": 44,
+            "pending": 64,
+            "refunded": 56
+          }
+        }
+      },
+      "duplicate_key_count": 0,
+      "cross_field_failures": 0
+    },
+    "baseline_output": {
+      "row_count": 218,
+      "columns": {
+        "id": {
+          "null_rate": 0.0,
+          "distinct_count": 218
+        },
+        "name": {
+          "null_rate": 0.0,
+          "distinct_count": 60
+        },
+        "email": {
+          "null_rate": 0.027523,
+          "distinct_count": 58
+        },
+        "country": {
+          "null_rate": 0.022936,
+          "distinct_count": 8,
+          "distribution": {
+            "Australia": 18,
+            "Canada": 28,
+            "Germany": 19,
+            "India": 44,
+            "New Zealand": 21,
+            "Singapore": 26,
+            "United Kingdom": 38,
+            "United States": 19
+          }
+        },
+        "price": {
+          "null_rate": 0.0,
+          "distinct_count": 218,
+          "numeric_count": 218,
+          "sum": "54012.32",
+          "min": "5.33",
+          "max": "497.84",
+          "p10": "54.13",
+          "p25": "132.1",
+          "p50": "237.29",
+          "p75": "376.22",
+          "p90": "420.14"
+        },
+        "qty": {
+          "null_rate": 0.0,
+          "distinct_count": 10,
+          "numeric_count": 218,
+          "sum": "1219",
+          "min": "1",
+          "max": "10",
+          "p10": "1",
+          "p25": "3",
+          "p50": "6",
+          "p75": "8",
+          "p90": "9"
+        },
+        "total": {
+          "null_rate": 0.0,
+          "distinct_count": 218,
+          "numeric_count": 218,
+          "sum": "309572.79",
+          "min": "22.56",
+          "max": "4618.9",
+          "p10": "197.6",
+          "p25": "446.6",
+          "p50": "1052.17",
+          "p75": "2342.9",
+          "p90": "3107.72"
+        },
+        "transaction_date": {
+          "null_rate": 0.0,
+          "distinct_count": 125,
+          "parse_success_rate": 1.0,
+          "min": "2025-01-01",
+          "max": "2025-06-30",
+          "month_histogram": {
+            "2025-01": 34,
+            "2025-02": 34,
+            "2025-03": 40,
+            "2025-04": 30,
+            "2025-05": 40,
+            "2025-06": 40
+          },
+          "day_le_12_share": 0.40367
+        },
+        "status": {
+          "null_rate": 0.022936,
+          "distinct_count": 4,
+          "distribution": {
+            "cancelled": 53,
+            "completed": 43,
+            "pending": 63,
+            "refunded": 54
+          }
+        }
+      },
+      "duplicate_key_count": 0,
+      "cross_field_failures": 0
+    }
+  },
+  "overall": "fail"
+}

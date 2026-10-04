@@ -1,0 +1,37 @@
+{
+  "dataset": "schema_rename_column.csv",
+  "scenario": "schema-rename-column",
+  "category": "schema",
+  "generator": "scripts/generate_datasets.py",
+  "seed": 20261003,
+  "derived_from": {
+    "dataset": "baseline.csv",
+    "sha256": "f2c301dc6fd7046e1f22599f30c9cc37736626150ba6aebaa02c4b13a8d2c0a2"
+  },
+  "change": "column 'transaction_date' renamed to 'order_date', values unchanged",
+  "columns": [
+    "id",
+    "name",
+    "email",
+    "country",
+    "price",
+    "qty",
+    "total",
+    "order_date",
+    "status"
+  ],
+  "row_count": 250,
+  "details": {
+    "renamed_column": {
+      "from": "transaction_date",
+      "to": "order_date"
+    }
+  },
+  "notes": [
+    "Derived from baseline.csv; only the change above differs.",
+    "Row-wise changes also apply to duplicate copies, so exact duplicates stay exact.",
+    "CSV: UTF-8, LF line endings, header row, empty field = missing value."
+  ],
+  "sha256": "741a11242e625701782b057255c2d7389c52bea8fefb32276b982dc75b515623",
+  "bytes": 21532
+}

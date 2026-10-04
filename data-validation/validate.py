@@ -95,8 +95,13 @@ def read_csv(path: Path) -> CsvFile:
 
 
 def canonical_id(value: str | None) -> str | None:
-    value = (value or "").strip()
-    return str(int(value)) if re.fullmatch(r"\d+", value) else None
+    """Output id used for matching: '1001' and '1001.0' both match id 1001.
+
+    Only zero fractions are accepted ('1001.5' is still invalid). The text form is
+    still flagged separately by output_format (whole_number).
+    """
+    m = re.fullmatch(r"(\d+)(?:\.0+)?", (value or "").strip())
+    return str(int(m.group(1))) if m else None
 
 
 def canonical_bytes(f: CsvFile) -> bytes:

@@ -1,0 +1,672 @@
+{
+  "scenario": "semantic-dollars-to-cents",
+  "generated_at": "2026-10-04T05:15:10+00:00",
+  "policy": "datasets/cleaning-policy.md (approved 2026-10-03)",
+  "files": {
+    "input": {
+      "path": "datasets\\semantic_dollars_to_cents.csv",
+      "sha256": "2e459bbe8a861f89da195b8b79c26bdae3b5ac6c9cc4b6d1030332133a5ccef1"
+    },
+    "output": {
+      "path": "outputs\\semantic-dollars-to-cents.csv",
+      "raw_output_sha256": "0d4ab83ac114be1e9a798970e16c1e3caab6169c97f44563c878047c700997a5",
+      "canonical_data_sha256": "0d4ab83ac114be1e9a798970e16c1e3caab6169c97f44563c878047c700997a5"
+    },
+    "baseline_output": {
+      "path": "outputs\\manual-dryrun-4.csv",
+      "raw_output_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda",
+      "canonical_data_sha256": "ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda"
+    },
+    "canonicalisation": "BOM removed; cells stripped; rows sorted by integer id; LF line endings; minimal quoting; no value reformatting"
+  },
+  "expected": {
+    "input_rows": 250,
+    "duplicates_removed": 16,
+    "rejected": 16,
+    "expected_output_rows": 218,
+    "kept_unchanged": 164,
+    "kept_with_null": 19,
+    "kept_repaired_only": 35
+  },
+  "checks": {
+    "input_contract": {
+      "status": "pass",
+      "violations": [],
+      "warnings": []
+    },
+    "schema": {
+      "status": "pass",
+      "violations": []
+    },
+    "deduplication": {
+      "status": "pass",
+      "key": "id",
+      "survivor": "first occurrence in file order",
+      "input_duplicate_rows": {
+        "exact": 10,
+        "near": 6,
+        "conflicting": 0
+      },
+      "duplicate_ids_in_output": {
+        "count": 0,
+        "sample": []
+      },
+      "distinct_ids_sharing_email": {
+        "expected_kept": 207,
+        "missing_from_output": {
+          "count": 0,
+          "sample": []
+        }
+      }
+    },
+    "row_count_reconciliation": {
+      "status": "pass",
+      "input_count": 250,
+      "expected_output_count": 218,
+      "actual_output_count": 218,
+      "rules": [
+        {
+          "rule": "dedup_exact",
+          "expected_removed": 10,
+          "actual_removed": 10,
+          "ids_not_removed": []
+        },
+        {
+          "rule": "dedup_near",
+          "expected_removed": 6,
+          "actual_removed": 6,
+          "ids_not_removed": []
+        },
+        {
+          "rule": "reject_price_missing",
+          "expected_removed": 2,
+          "actual_removed": 2,
+          "ids_not_removed": []
+        },
+        {
+          "rule": "reject_price_non_numeric",
+          "expected_removed": 2,
+          "actual_removed": 2,
+          "ids_not_removed": []
+        },
+        {
+          "rule": "reject_qty_missing",
+          "expected_removed": 2,
+          "actual_removed": 2,
+          "ids_not_removed": []
+        },
+        {
+          "rule": "reject_qty_non_positive",
+          "expected_removed": 3,
+          "actual_removed": 3,
+          "ids_not_removed": []
+        },
+        {
+          "rule": "reject_date_missing",
+          "expected_removed": 2,
+          "actual_removed": 2,
+          "ids_not_removed": []
+        },
+        {
+          "rule": "reject_date_impossible",
+          "expected_removed": 2,
+          "actual_removed": 2,
+          "ids_not_removed": []
+        },
+        {
+          "rule": "reject_total_mismatch",
+          "expected_removed": 3,
+          "actual_removed": 3,
+          "ids_not_removed": []
+        }
+      ],
+      "unaccounted_rows": {
+        "missing_from_output": {
+          "count": 0,
+          "sample": []
+        },
+        "unexpected_in_output": {
+          "count": 0,
+          "sample": []
+        },
+        "count": 0
+      }
+    },
+    "manifest_consistency": {
+      "status": "not_applicable",
+      "reason": "manifest describes a different file (sha256 differs from input)"
+    },
+    "rule_name_normalised": {
+      "status": "pass",
+      "column": "name",
+      "affected_rows": 5,
+      "evaluated_rows": 5,
+      "mismatches": {
+        "count": 0,
+        "sample": []
+      }
+    },
+    "rule_name_missing_kept_null": {
+      "status": "fail",
+      "column": "name",
+      "affected_rows": 3,
+      "evaluated_rows": 3,
+      "mismatches": {
+        "count": 3,
+        "sample": [
+          {
+            "id": "1017",
+            "column": "name",
+            "expected": "",
+            "actual": "None"
+          },
+          {
+            "id": "1039",
+            "column": "name",
+            "expected": "",
+            "actual": "None"
+          },
+          {
+            "id": "1198",
+            "column": "name",
+            "expected": "",
+            "actual": "None"
+          }
+        ]
+      }
+    },
+    "rule_email_normalised": {
+      "status": "pass",
+      "column": "email",
+      "affected_rows": 6,
+      "evaluated_rows": 6,
+      "mismatches": {
+        "count": 0,
+        "sample": []
+      }
+    },
+    "rule_email_invalid_to_null": {
+      "status": "pass",
+      "column": "email",
+      "affected_rows": 3,
+      "evaluated_rows": 3,
+      "mismatches": {
+        "count": 0,
+        "sample": []
+      }
+    },
+    "rule_email_missing_kept_null": {
+      "status": "pass",
+      "column": "email",
+      "affected_rows": 3,
+      "evaluated_rows": 3,
+      "mismatches": {
+        "count": 0,
+        "sample": []
+      }
+    },
+    "rule_country_normalised": {
+      "status": "pass",
+      "column": "country",
+      "affected_rows": 5,
+      "evaluated_rows": 5,
+      "mismatches": {
+        "count": 0,
+        "sample": []
+      }
+    },
+    "rule_country_unknown_to_null": {
+      "status": "pass",
+      "column": "country",
+      "affected_rows": 2,
+      "evaluated_rows": 2,
+      "mismatches": {
+        "count": 0,
+        "sample": []
+      }
+    },
+    "rule_country_missing_kept_null": {
+      "status": "pass",
+      "column": "country",
+      "affected_rows": 3,
+      "evaluated_rows": 3,
+      "mismatches": {
+        "count": 0,
+        "sample": []
+      }
+    },
+    "rule_status_normalised": {
+      "status": "pass",
+      "column": "status",
+      "affected_rows": 5,
+      "evaluated_rows": 5,
+      "mismatches": {
+        "count": 0,
+        "sample": []
+      }
+    },
+    "rule_status_unknown_to_null": {
+      "status": "pass",
+      "column": "status",
+      "affected_rows": 2,
+      "evaluated_rows": 2,
+      "mismatches": {
+        "count": 0,
+        "sample": []
+      }
+    },
+    "rule_status_missing_kept_null": {
+      "status": "pass",
+      "column": "status",
+      "affected_rows": 3,
+      "evaluated_rows": 3,
+      "mismatches": {
+        "count": 0,
+        "sample": []
+      }
+    },
+    "rule_price_symbol_stripped": {
+      "status": "pass",
+      "column": "price",
+      "affected_rows": 3,
+      "evaluated_rows": 3,
+      "mismatches": {
+        "count": 0,
+        "sample": []
+      }
+    },
+    "rule_date_reformatted": {
+      "status": "pass",
+      "column": "transaction_date",
+      "affected_rows": 8,
+      "evaluated_rows": 8,
+      "mismatches": {
+        "count": 0,
+        "sample": []
+      }
+    },
+    "rule_total_filled": {
+      "status": "pass",
+      "column": "total",
+      "affected_rows": 3,
+      "evaluated_rows": 3,
+      "mismatches": {
+        "count": 0,
+        "sample": []
+      }
+    },
+    "values_match_policy": {
+      "status": "fail",
+      "evaluated_rows": 218,
+      "mismatches_by_column": {
+        "name": 3
+      },
+      "mismatches": {
+        "count": 3,
+        "sample": [
+          {
+            "id": "1017",
+            "column": "name",
+            "expected": "",
+            "actual": "None"
+          },
+          {
+            "id": "1039",
+            "column": "name",
+            "expected": "",
+            "actual": "None"
+          },
+          {
+            "id": "1198",
+            "column": "name",
+            "expected": "",
+            "actual": "None"
+          }
+        ]
+      }
+    },
+    "output_format": {
+      "status": "fail",
+      "violations": {
+        "money_two_decimals": {
+          "count": 436,
+          "sample": [
+            {
+              "row": 1,
+              "column": "price",
+              "value": "22297.0"
+            },
+            {
+              "row": 1,
+              "column": "total",
+              "value": "111485.0"
+            },
+            {
+              "row": 2,
+              "column": "price",
+              "value": "5483.0"
+            },
+            {
+              "row": 2,
+              "column": "total",
+              "value": "10966.0"
+            },
+            {
+              "row": 3,
+              "column": "price",
+              "value": "3506.0"
+            },
+            {
+              "row": 3,
+              "column": "total",
+              "value": "31554.0"
+            },
+            {
+              "row": 4,
+              "column": "price",
+              "value": "7241.0"
+            },
+            {
+              "row": 4,
+              "column": "total",
+              "value": "50687.0"
+            },
+            {
+              "row": 5,
+              "column": "price",
+              "value": "39871.0"
+            },
+            {
+              "row": 5,
+              "column": "total",
+              "value": "119613.0"
+            },
+            {
+              "row": 6,
+              "column": "price",
+              "value": "26849.0"
+            },
+            {
+              "row": 6,
+              "column": "total",
+              "value": "53698.0"
+            },
+            {
+              "row": 7,
+              "column": "price",
+              "value": "21477.0"
+            },
+            {
+              "row": 7,
+              "column": "total",
+              "value": "107385.0"
+            },
+            {
+              "row": 8,
+              "column": "price",
+              "value": "25553.0"
+            },
+            {
+              "row": 8,
+              "column": "total",
+              "value": "51106.0"
+            },
+            {
+              "row": 9,
+              "column": "price",
+              "value": "15159.0"
+            },
+            {
+              "row": 9,
+              "column": "total",
+              "value": "30318.0"
+            },
+            {
+              "row": 10,
+              "column": "price",
+              "value": "29108.0"
+            },
+            {
+              "row": 10,
+              "column": "total",
+              "value": "261972.0"
+            }
+          ]
+        }
+      }
+    },
+    "determinism": {
+      "status": "not_applicable",
+      "reason": "input is not the baseline dataset; determinism compares runs of the same input only"
+    },
+    "semantic_anomaly": {
+      "status": "fail",
+      "anomalies": [
+        {
+          "metric": "price.p50",
+          "baseline": "237.29",
+          "current": "23729.0",
+          "rule": "ratio outside [0.5, 2.0]"
+        },
+        {
+          "metric": "price.sum",
+          "baseline": "54012.32",
+          "current": "5401232.0",
+          "rule": "ratio outside [0.5, 2.0]"
+        },
+        {
+          "metric": "total.p50",
+          "baseline": "1052.17",
+          "current": "105217.0",
+          "rule": "ratio outside [0.5, 2.0]"
+        },
+        {
+          "metric": "total.sum",
+          "baseline": "309572.79",
+          "current": "30957279.0",
+          "rule": "ratio outside [0.5, 2.0]"
+        }
+      ],
+      "note": "anomaly detector vs baseline output, not proof of correctness"
+    }
+  },
+  "semantic_fingerprint": {
+    "output": {
+      "row_count": 218,
+      "columns": {
+        "id": {
+          "null_rate": 0.0,
+          "distinct_count": 218
+        },
+        "name": {
+          "null_rate": 0.0,
+          "distinct_count": 60
+        },
+        "email": {
+          "null_rate": 0.027523,
+          "distinct_count": 58
+        },
+        "country": {
+          "null_rate": 0.022936,
+          "distinct_count": 8,
+          "distribution": {
+            "Australia": 18,
+            "Canada": 28,
+            "Germany": 19,
+            "India": 44,
+            "New Zealand": 21,
+            "Singapore": 26,
+            "United Kingdom": 38,
+            "United States": 19
+          }
+        },
+        "price": {
+          "null_rate": 0.0,
+          "distinct_count": 218,
+          "numeric_count": 218,
+          "sum": "5401232.0",
+          "min": "533.0",
+          "max": "49784.0",
+          "p10": "5413.0",
+          "p25": "13210.0",
+          "p50": "23729.0",
+          "p75": "37622.0",
+          "p90": "42014.0"
+        },
+        "qty": {
+          "null_rate": 0.0,
+          "distinct_count": 10,
+          "numeric_count": 218,
+          "sum": "1219",
+          "min": "1",
+          "max": "10",
+          "p10": "1",
+          "p25": "3",
+          "p50": "6",
+          "p75": "8",
+          "p90": "9"
+        },
+        "total": {
+          "null_rate": 0.0,
+          "distinct_count": 218,
+          "numeric_count": 218,
+          "sum": "30957279.0",
+          "min": "2256.0",
+          "max": "461890.0",
+          "p10": "19760.0",
+          "p25": "44660.0",
+          "p50": "105217.0",
+          "p75": "234290.0",
+          "p90": "310772.0"
+        },
+        "transaction_date": {
+          "null_rate": 0.0,
+          "distinct_count": 125,
+          "parse_success_rate": 1.0,
+          "min": "2025-01-01",
+          "max": "2025-06-30",
+          "month_histogram": {
+            "2025-01": 34,
+            "2025-02": 34,
+            "2025-03": 40,
+            "2025-04": 30,
+            "2025-05": 40,
+            "2025-06": 40
+          },
+          "day_le_12_share": 0.40367
+        },
+        "status": {
+          "null_rate": 0.022936,
+          "distinct_count": 4,
+          "distribution": {
+            "cancelled": 53,
+            "completed": 43,
+            "pending": 63,
+            "refunded": 54
+          }
+        }
+      },
+      "duplicate_key_count": 0,
+      "cross_field_failures": 0
+    },
+    "baseline_output": {
+      "row_count": 218,
+      "columns": {
+        "id": {
+          "null_rate": 0.0,
+          "distinct_count": 218
+        },
+        "name": {
+          "null_rate": 0.0,
+          "distinct_count": 60
+        },
+        "email": {
+          "null_rate": 0.027523,
+          "distinct_count": 58
+        },
+        "country": {
+          "null_rate": 0.022936,
+          "distinct_count": 8,
+          "distribution": {
+            "Australia": 18,
+            "Canada": 28,
+            "Germany": 19,
+            "India": 44,
+            "New Zealand": 21,
+            "Singapore": 26,
+            "United Kingdom": 38,
+            "United States": 19
+          }
+        },
+        "price": {
+          "null_rate": 0.0,
+          "distinct_count": 218,
+          "numeric_count": 218,
+          "sum": "54012.32",
+          "min": "5.33",
+          "max": "497.84",
+          "p10": "54.13",
+          "p25": "132.1",
+          "p50": "237.29",
+          "p75": "376.22",
+          "p90": "420.14"
+        },
+        "qty": {
+          "null_rate": 0.0,
+          "distinct_count": 10,
+          "numeric_count": 218,
+          "sum": "1219",
+          "min": "1",
+          "max": "10",
+          "p10": "1",
+          "p25": "3",
+          "p50": "6",
+          "p75": "8",
+          "p90": "9"
+        },
+        "total": {
+          "null_rate": 0.0,
+          "distinct_count": 218,
+          "numeric_count": 218,
+          "sum": "309572.79",
+          "min": "22.56",
+          "max": "4618.9",
+          "p10": "197.6",
+          "p25": "446.6",
+          "p50": "1052.17",
+          "p75": "2342.9",
+          "p90": "3107.72"
+        },
+        "transaction_date": {
+          "null_rate": 0.0,
+          "distinct_count": 125,
+          "parse_success_rate": 1.0,
+          "min": "2025-01-01",
+          "max": "2025-06-30",
+          "month_histogram": {
+            "2025-01": 34,
+            "2025-02": 34,
+            "2025-03": 40,
+            "2025-04": 30,
+            "2025-05": 40,
+            "2025-06": 40
+          },
+          "day_le_12_share": 0.40367
+        },
+        "status": {
+          "null_rate": 0.022936,
+          "distinct_count": 4,
+          "distribution": {
+            "cancelled": 53,
+            "completed": 43,
+            "pending": 63,
+            "refunded": 54
+          }
+        }
+      },
+      "duplicate_key_count": 0,
+      "cross_field_failures": 0
+    }
+  },
+  "overall": "fail"
+}

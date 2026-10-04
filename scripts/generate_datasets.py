@@ -1,4 +1,4 @@
-"""Generate the synthetic baseline dataset and its manifest.
+"""Generate the synthetic baseline dataset, the drifted datasets, and their manifests.
 
 Deterministic: the same seed always produces byte-identical files. No wall-clock
 time, locale, or environment is read.
@@ -6,6 +6,10 @@ time, locale, or environment is read.
 Every injected defect is applied to its own row (one defect per row) so each
 count in the manifest is unambiguous. Exact and near duplicates are copies of
 clean rows. See datasets/cleaning-policy.md for how each defect should be handled.
+
+Each drifted file (phases 3 and 4) is derived from the baseline bytes; only the
+intended change differs. Row-wise changes are applied to duplicate copies too, so
+exact duplicates stay exact.
 
 Usage:
     python scripts/generate_datasets.py [--out-dir datasets] [--seed 20261003]
@@ -19,8 +23,9 @@ import hashlib
 import io
 import json
 import random
+import re
 from datetime import date, timedelta
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
 SEED = 20261003
@@ -285,15 +290,219 @@ def generate(seed: int = SEED) -> tuple[bytes, dict]:
     return data, manifest
 
 
-def write(out_dir: Path, seed: int = SEED) -> tuple[Path, Path]:
-    data, manifest = generate(seed)
+# ---------------------------------------------------------------- drifted datasets
+
+DROPPED_COLUMN = "country"  # rule-dependent (normalise, unknown -> null); arithmetic untouched
+RENAMED_COLUMN = ("transaction_date", "order_date")  # rule-dependent (reformat, reject)
+TEXT_PRICE_PREFIX = "USD "  # price numeric -> text, e.g. "222.97" -> "USD 222.97"
+ADDED_COLUMN = "channel"  # appended last; values derived from id, so duplicates agree
+CHANNELS = ["web", "store", "app"]
+COMBINED_DROPPED_COLUMN = "id"  # the dedup key
+CENTS_FACTOR = Decimal(100)
+ISO_DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
+
+
+def read_rows(data: bytes) -> tuple[list[str], list[dict]]:
+    reader = csv.DictReader(io.StringIO(data.decode("utf-8"), newline=""))
+    return list(reader.fieldnames or []), list(reader)
+
+
+def to_csv(columns: list[str], rows: list[dict]) -> bytes:
+    buf = io.StringIO(newline="")
+    writer = csv.DictWriter(buf, fieldnames=columns, lineterminator="\n")
+    writer.writeheader()
+    writer.writerows(rows)
+    return buf.getvalue().encode("utf-8")
+
+
+def numeric_price(value: str) -> Decimal | None:
+    """The number in a price cell (optional leading '$'), or None if empty/non-numeric."""
+    try:
+        return Decimal(value.removeprefix("$")) if value else None
+    except InvalidOperation:
+        return None
+
+
+def iso_date(value: str) -> date | None:
+    if not ISO_DATE_RE.fullmatch(value):
+        return None
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        return None
+
+
+def drop_column(columns, rows, col):
+    return ([c for c in columns if c != col],
+            [{k: v for k, v in r.items() if k != col} for r in rows],
+            {"dropped_column": col})
+
+
+def rename_column(columns, rows, old, new):
+    return ([new if c == old else c for c in columns],
+            [{(new if k == old else k): v for k, v in r.items()} for r in rows],
+            {"renamed_column": {"from": old, "to": new}})
+
+
+def price_to_text(columns, rows):
+    out, changed, unchanged = [], set(), set()
+    for r in rows:
+        r = dict(r)
+        if numeric_price(r["price"]) is None:
+            unchanged.add(int(r["id"]))
+        else:
+            r["price"] = TEXT_PRICE_PREFIX + r["price"].removeprefix("$")
+            changed.add(int(r["id"]))
+        out.append(r)
+    return columns, out, {
+        "type_changed_column": {
+            "column": "price", "from": "numeric", "to": "text",
+            "rule": (f"every numeric price (with or without a leading '$') is written as "
+                     f"'{TEXT_PRICE_PREFIX}<number>'; empty and already non-numeric cells "
+                     "are unchanged"),
+            "changed_ids": sorted(changed),
+            "unchanged_ids": sorted(unchanged),
+        }
+    }
+
+
+def add_column(columns, rows):
+    out = [{**r, ADDED_COLUMN: CHANNELS[int(r["id"]) % len(CHANNELS)]} for r in rows]
+    return columns + [ADDED_COLUMN], out, {
+        "added_column": {"column": ADDED_COLUMN, "position": "last", "values": CHANNELS,
+                         "rule": "CHANNELS[id % 3]; never empty"}
+    }
+
+
+def dollars_to_cents(columns, rows):
+    out, price_ids, total_ids = [], set(), set()
+    for r in rows:
+        r = dict(r)
+        p = numeric_price(r["price"])
+        if p is not None:
+            prefix = "$" if r["price"].startswith("$") else ""
+            r["price"] = prefix + money(p * CENTS_FACTOR)
+            price_ids.add(int(r["id"]))
+        if r["total"]:
+            r["total"] = money(Decimal(r["total"]) * CENTS_FACTOR)
+            total_ids.add(int(r["id"]))
+        out.append(r)
+    return columns, out, {
+        "factor": str(CENTS_FACTOR),
+        "rule": ("numeric price and non-empty total multiplied by 100, same text format "
+                 "(2 decimals, '$' kept); empty and non-numeric cells unchanged"),
+        "price_changed_ids": sorted(price_ids),
+        "total_changed_ids": sorted(total_ids),
+    }
+
+
+def swap_day_month(columns, rows):
+    out, swapped, same = [], set(), set()
+    for r in rows:
+        r = dict(r)
+        d = iso_date(r["transaction_date"])
+        if d is not None and d.day <= 12:
+            if d.day == d.month:
+                same.add(int(r["id"]))
+            else:
+                r["transaction_date"] = date(d.year, d.day, d.month).isoformat()
+                swapped.add(int(r["id"]))
+        out.append(r)
+    return columns, out, {
+        "rule": ("valid ISO dates with day <= 12 become YYYY-DD-MM (day and month swapped); "
+                 "dates with day > 12, non-ISO formats, impossible and empty dates unchanged"),
+        "swapped_ids": sorted(swapped),
+        "day_equals_month_unchanged_ids": sorted(same),
+    }
+
+
+def combined(columns, rows):
+    details = {}
+    for step in (add_column, price_to_text,
+                 lambda c, r: rename_column(c, r, *RENAMED_COLUMN),
+                 lambda c, r: drop_column(c, r, COMBINED_DROPPED_COLUMN)):
+        columns, rows, d = step(columns, rows)
+        details.update(d)
+    return columns, rows, details
+
+
+# file stem -> (scenario id, category, change, derive(columns, rows) -> (columns, rows, details))
+DRIFT_CASES = {
+    "schema_drop_column": (
+        "schema-drop-column", "schema", f"column '{DROPPED_COLUMN}' removed",
+        lambda c, r: drop_column(c, r, DROPPED_COLUMN)),
+    "schema_rename_column": (
+        "schema-rename-column", "schema",
+        f"column '{RENAMED_COLUMN[0]}' renamed to '{RENAMED_COLUMN[1]}', values unchanged",
+        lambda c, r: rename_column(c, r, *RENAMED_COLUMN)),
+    "schema_type_change": (
+        "schema-type-change", "schema", "column 'price' changed from numeric to text",
+        price_to_text),
+    "schema_add_column": (
+        "schema-add-column", "schema", f"column '{ADDED_COLUMN}' added as the last column",
+        add_column),
+    "schema_combined": (
+        "schema-combined", "schema",
+        (f"aggressive: '{ADDED_COLUMN}' added, 'price' numeric -> text, "
+         f"'{RENAMED_COLUMN[0]}' renamed to '{RENAMED_COLUMN[1]}', "
+         f"dedup key '{COMBINED_DROPPED_COLUMN}' removed"),
+        combined),
+    "semantic_dollars_to_cents": (
+        "semantic-dollars-to-cents", "semantic",
+        "price and total multiplied by 100 (dollars -> cents); total = price x qty still holds",
+        dollars_to_cents),
+    "semantic_date_swap": (
+        "semantic-date-swap", "semantic",
+        "day and month swapped in valid ISO transaction_date values with day <= 12",
+        swap_day_month),
+}
+
+
+def generate_drift(name: str, baseline: bytes, seed: int = SEED) -> tuple[bytes, dict]:
+    """Return (csv_bytes, manifest_without_file_fields) for one drift case."""
+    scenario, category, change, derive = DRIFT_CASES[name]
+    columns, rows = read_rows(baseline)
+    columns, rows, details = derive(columns, rows)
+    data = to_csv(columns, rows)
+    manifest = {
+        "dataset": f"{name}.csv",
+        "scenario": scenario,
+        "category": category,
+        "generator": "scripts/generate_datasets.py",
+        "seed": seed,
+        "derived_from": {"dataset": "baseline.csv",
+                         "sha256": hashlib.sha256(baseline).hexdigest()},
+        "change": change,
+        "columns": columns,
+        "row_count": len(rows),
+        "details": details,
+        "notes": [
+            "Derived from baseline.csv; only the change above differs.",
+            "Row-wise changes also apply to duplicate copies, so exact duplicates stay exact.",
+            "CSV: UTF-8, LF line endings, header row, empty field = missing value.",
+        ],
+    }
+    return data, manifest
+
+
+def write_file(out_dir: Path, stem: str, data: bytes, manifest: dict) -> tuple[Path, Path]:
     out_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = out_dir / "baseline.csv"
+    csv_path = out_dir / f"{stem}.csv"
     csv_path.write_bytes(data)
     manifest = {**manifest, "sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data)}
-    man_path = out_dir / "baseline.manifest.json"
+    man_path = out_dir / f"{stem}.manifest.json"
     man_path.write_bytes((json.dumps(manifest, indent=2) + "\n").encode("utf-8"))
     return csv_path, man_path
+
+
+def write_drift(out_dir: Path, seed: int = SEED) -> dict[str, tuple[Path, Path]]:
+    baseline, _ = generate(seed)
+    return {name: write_file(out_dir, name, *generate_drift(name, baseline, seed))
+            for name in DRIFT_CASES}
+
+
+def write(out_dir: Path, seed: int = SEED) -> tuple[Path, Path]:
+    return write_file(out_dir, "baseline", *generate(seed))
 
 
 def main() -> None:
@@ -301,8 +510,9 @@ def main() -> None:
     parser.add_argument("--out-dir", type=Path, default=Path(__file__).resolve().parent.parent / "datasets")
     parser.add_argument("--seed", type=int, default=SEED)
     args = parser.parse_args()
-    csv_path, man_path = write(args.out_dir, args.seed)
-    print(f"wrote {csv_path} and {man_path}")
+    for csv_path, man_path in [write(args.out_dir, args.seed),
+                               *write_drift(args.out_dir, args.seed).values()]:
+        print(f"wrote {csv_path} and {man_path}")
 
 
 if __name__ == "__main__":

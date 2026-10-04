@@ -1,0 +1,44 @@
+{
+  "dataset": "schema_add_column.csv",
+  "scenario": "schema-add-column",
+  "category": "schema",
+  "generator": "scripts/generate_datasets.py",
+  "seed": 20261003,
+  "derived_from": {
+    "dataset": "baseline.csv",
+    "sha256": "f2c301dc6fd7046e1f22599f30c9cc37736626150ba6aebaa02c4b13a8d2c0a2"
+  },
+  "change": "column 'channel' added as the last column",
+  "columns": [
+    "id",
+    "name",
+    "email",
+    "country",
+    "price",
+    "qty",
+    "total",
+    "transaction_date",
+    "status",
+    "channel"
+  ],
+  "row_count": 250,
+  "details": {
+    "added_column": {
+      "column": "channel",
+      "position": "last",
+      "values": [
+        "web",
+        "store",
+        "app"
+      ],
+      "rule": "CHANNELS[id % 3]; never empty"
+    }
+  },
+  "notes": [
+    "Derived from baseline.csv; only the change above differs.",
+    "Row-wise changes also apply to duplicate copies, so exact duplicates stay exact.",
+    "CSV: UTF-8, LF line endings, header row, empty field = missing value."
+  ],
+  "sha256": "3616d51123e91c5ae262bd0a1f990b91dbbe260008a3159ff33db42d9a631d31",
+  "bytes": 22718
+}

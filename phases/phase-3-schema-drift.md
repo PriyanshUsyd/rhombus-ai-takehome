@@ -4,12 +4,12 @@ Goal: for each case, answer the brief's four questions with evidence:
 1. Does Rhombus stop, warn, or carry on? If it carries on, what reaches GCS?
 2. Do the logs explain the problem clearly?
 3. Does the chatbot diagnose the error correctly, and does its fix actually work?
-4. What happens to the schedule afterwards?
+4. What happens to the schedule afterwards? (Per D2 the scheduler never fired for workflow 5257. Record the schedule state before and after each case; if it fires, record that run separately as `scheduled`. Otherwise answer "not testable — scheduler never fired".)
 
-All 5 cases run on the **schedule** (brief: "before the next scheduled run, change the source file"). Chatbot-fix retests may be manual runs if available — label them `retest`.
+All 5 cases run as a **manual ▶ run (labelled `manual`)** per D2. The scheduler never fired for workflow 5257 (see `PLAN.md` → "Findings log"). The brief asks to change the source file "before the next scheduled run"; this is a documented deviation. Chatbot-fix retests are also manual runs; label them `retest`.
 
 ## Datasets
-- [ ] **[CLAUDE]** Extend `scripts/generate_datasets.py` to derive each file from the baseline (only the intended change differs); record SHA-256 in each manifest.
+- [x] **[CLAUDE]** Extend `scripts/generate_datasets.py` to derive each file from the baseline (only the intended change differs); record SHA-256 in each manifest.
 
 | Scenario ID | Change |
 |---|---|
@@ -19,16 +19,16 @@ All 5 cases run on the **schedule** (brief: "before the next scheduled run, chan
 | `schema-add-column` | Add one new column |
 | `schema-combined` | All four at once, aggressive: drop the dedup key, rename a column a cleaning rule depends on, change `price` type, add a column |
 
-- [ ] **[CLAUDE]** Unit test: each drifted file differs from baseline only by its intended change.
+- [x] **[CLAUDE]** Unit test: each drifted file differs from baseline only by its intended change.
 
 ## Protocol — repeat for each case
-> **Do NOT edit or Apply any node between a file swap and the scheduled run.** Clicking Apply (observed on the Data Output node) triggers a pipeline run, which would replace the scheduled run being tested.
+> **Do NOT edit or Apply any node between a file swap and the manual ▶ run.** Clicking Apply (observed on the Data Output node) triggers an extra pipeline run, which would be an unlabelled run mixed in with the one being tested.
 >
-> Azure source sync: Rhombus syncs files from the Azure `source` container; a manual sync may be needed after the swap and before the scheduled run (TODO: verify in Phase 3). Record whether a sync was needed.
+> Input is a From Device upload (D1); the Azure `source` container and its sync are no longer used.
 
-- [ ] 1. **[YOU]** Pre-state: source key + checksum, pipeline config (export/screenshot), schedule status, destination objects with generation + checksum, last successful run, scenario ID. (**[CLAUDE]** provides `scripts/capture_state.py` for the cloud parts.)
-- [ ] 2. **[YOU]** Upload the drifted file to the Azure `source` container (replacing the input blob); note time. Sync in Rhombus if required (see note above) — without touching Apply.
-- [ ] 3. **[YOU]** Wait for the next scheduled run.
+- [ ] 1. **[YOU]** Pre-state: uploaded file name + SHA-256 (from its manifest), pipeline config (export/screenshot), schedule status, destination objects with generation + checksum, last successful run, scenario ID. (**[CLAUDE]** provides `scripts/capture_state.py` for the cloud parts.)
+- [ ] 2. **[YOU]** Upload the drifted file via Data Input → "From Device" (replacing the baseline input); note time. Do not touch Apply.
+- [ ] 3. **[YOU]** Trigger a manual ▶ run (labelled `manual`); note time.
 - [ ] 4. **[YOU]** Record outcome: stopped / warned / carried on.
 - [ ] 5. **[YOU]** Run `fetch_output.py`; compare run identity with pre-state (rule out stale output).
 - [ ] 6. **[YOU]** Copy log **text** (not just screenshots) + screenshots into `evidence-raw/`.
@@ -41,7 +41,7 @@ All 5 cases run on the **schedule** (brief: "before the next scheduled run, chan
   - retest; grade fix: worked / partial / didn't / not testable.
 - [ ] 8. **[YOU]** Post-state: same fields as pre-state, incl. schedule state.
 - [ ] 9. **[YOU/CLAUDE]** Run validator; save JSON report to `observations/evidence/`.
-- [ ] 10. **[YOU]** Restore baseline file (and baseline pipeline config if the chatbot fix changed it). Confirm the next run is clean before the next case.
+- [ ] 10. **[YOU]** Restore baseline file (and baseline pipeline config if the chatbot fix changed it). Trigger a manual ▶ run (labelled `manual`) and confirm it matches the baseline (run 4) before the next case.
 - [ ] 11. **[CLAUDE]** Draft `observations/<scenario-id>.md` from the evidence (Phase 6 template).
 
 ## Case tracker

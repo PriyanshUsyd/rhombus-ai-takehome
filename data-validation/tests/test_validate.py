@@ -226,6 +226,34 @@ def test_money_value_equal_but_format_wrong(tmp_path):
     assert fmt["status"] == "fail" and "money_two_decimals" in fmt["violations"]
 
 
+def test_float_formatted_ids_still_match_but_fail_format(tmp_path):
+    """'1.0' matches id 1 for dedup/reconciliation; output_format still flags the text."""
+    rows = list(csv.reader(io.StringIO(EXPECTED)))
+    for r in rows[1:]:
+        r[0], r[5] = f"{r[0]}.0", f"{r[5]}.0"
+    buf = io.StringIO()
+    csv.writer(buf, lineterminator="\n").writerows(rows)
+    _, report = run(tmp_path, buf.getvalue(), baseline_text=EXPECTED)
+    for check in ("deduplication", "row_count_reconciliation", "values_match_policy",
+                  "rule_name_normalised", "rule_total_filled", "semantic_anomaly"):
+        assert status(report, check) == "pass", check
+    rec = report["checks"]["row_count_reconciliation"]
+    assert rec["unaccounted_rows"]["count"] == 0
+    assert report["semantic_fingerprint"]["output"]["duplicate_key_count"] == 0
+    fmt = report["checks"]["output_format"]
+    assert fmt["status"] == "fail"
+    assert fmt["violations"]["whole_number"]["count"] == 2 * (len(rows) - 1)
+    assert report["overall"] == "fail"
+
+
+def test_non_zero_fraction_id_is_not_matched(tmp_path):
+    out = edit_output([("\n1,Alice", "\n1.5,Alice")])
+    _, report = run(tmp_path, out)
+    rec = report["checks"]["row_count_reconciliation"]
+    assert rec["status"] == "fail"
+    assert "1" in rec["unaccounted_rows"]["missing_from_output"]["sample"]
+
+
 def test_output_missing_column_blocks_dependent_checks(tmp_path):
     rows = [r.rsplit(",", 1)[0] for r in EXPECTED.strip().split("\n")]
     _, report = run(tmp_path, "\n".join(rows) + "\n")

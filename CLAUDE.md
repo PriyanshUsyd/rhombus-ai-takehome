@@ -7,10 +7,13 @@ A take-home exercise for the Rhombus AI "Software Engineer Intern (LLM Observabi
 Test Rhombus AI as a scheduled ETL pipeline: Amazon S3 (source) → AI-built cleaning pipeline → Google Cloud Storage (destination), then break the input on purpose (schema drift, semantic drift) and report how the platform responds.
 They grade judgement, test quality and clarity of reporting — not the platform.
 
-## Documented deviation D1 (decided 2026-10-03) — route is Azure Blob → Azure Blob
+## Documented deviation D1 (decided 2026-10-03, updated 2026-10-04) — route is local upload → Azure Blob
 - **Amazon S3 source is BLOCKED** (access-denied despite the Rhombus-generated bucket policy). **Google Cloud Storage is NOT used** (GCP billing requires a card; none available). Full record in `PLAN.md` → "Deviations".
-- **Actual route:** Azure Blob Storage container `source` → AI-built cleaning pipeline → Azure Blob Storage container `output` (storage account `priyanshrhombus`). Auth = SAS connection strings.
-- Everything else in all phases is unchanged. Wherever a phase or this file says **S3**, read it as Azure container **`source`**; wherever it says **GCS**, read it as Azure container **`output`**.
+- **Azure Blob source dropped (2026-10-04):** Azure Blob source auto-sync removes the file after initial setup, although the file is still in Azure (SAS list API returns `baseline.csv`, 21538 bytes). Reproduced several times on 2026-10-04; reported to Rhombus.
+- **Actual route:** local upload via Data Input → "From Device" (`datasets/baseline.csv`) → AI-built cleaning pipeline → Azure Blob Storage container `output` (storage account `priyanshrhombus`, SAS connection string). Verified: `RhombusAI_output_1791083010935.csv` written 2026-10-04 14:03:30.
+- **Projects:** current = `rhombus-takehome-v2` (workflow 5257). Old `rhombus-takehome` (workflow 5251) is kept as evidence of the chatbot fix attempts.
+- **Drift cases:** the drifted CSV is uploaded via From Device before each manual run (see run-mode rule D2).
+- Everything else in all phases is unchanged. Wherever a phase or this file says **S3**, read it as the **From Device upload** of the dataset file; wherever it says **GCS**, read it as Azure container **`output`**.
 - The S3 failure itself is documented as evidence (`observations/setup-s3-connection-blocked.md`) and is a candidate negative API/UI test (see `phases/phase-5-code.md`).
 - Dataset filenames use underscores, not hyphens (observed: Rhombus listed blob `connection-test.csv` as `connection_test`).
 
@@ -56,8 +59,12 @@ Every check returns: `pass` | `fail` | `not_applicable` (input absent, with reas
 - **Info:** handled well, or non-blocking improvement.
 - Principle: silent semantic corruption ranks above a visible failure.
 
-## Run-mode rule
-Required scheduled scenarios: 1 baseline + 7 drift scenarios = 8 scheduled runs. Additional determinism and chatbot-fix runs are labelled separately as manual or retest runs (only if the app offers manual runs).
+## Run-mode rule (D2, decided 2026-10-04)
+- **All required runs are manual ▶ runs:** 1 baseline + 7 drift scenarios = 8 manual runs. Label each one `manual` in its evidence, observation and the README.
+- **Why:** the scheduler never fired for workflow 5257 (see `PLAN.md` → "Findings log"). The schedule is left ON; if it ever fires, record that run separately and label it `scheduled`.
+- **Baseline = manual run 4** (`outputs/manual-dryrun-4.csv`). Runs 1, 2 and 4 are byte-identical (determinism evidence).
+- **Chatbot-fix runs** are labelled `retest`.
+- **Never present a manual run as scheduled.**
 
 ## Submission (from the invitation email)
 New email to careers@rhombusai.com, subject exactly: `Rhombus AI – Take-Home Exercise`, include the GitHub repo link. Queries: rhombusinsights@rhombusai.com.

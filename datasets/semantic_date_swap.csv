@@ -1,0 +1,251 @@
+id,name,email,country,price,qty,total,transaction_date,status
+1001,George Wilson,george.wilson@example.org,India,222.97,5,1114.85,2025-03-05,cancelled
+1002,Farah Smith,farah.smith@example.org,India,54.83,2,109.66,2025-02-05,pending
+1003,Hana Lee,hana.lee@example.com,  CANADA,35.06,9,315.54,2025-03-24,pending
+1004,Isaac Brown,isaac.brown@example.com,New Zealand,72.41,7,506.87,2025-03-28,cancelled
+1005,Emma Walker,emma.walker@example.org,,398.71,3,1196.13,2025-03-14,refunded
+1006,Sofia Taylor,sofia.taylor@example.net,United Kingdom,268.49,2,536.98,2025-01-23,refunded
+1007,Ravi Silva,ravi.silva@example.net,United Kingdom,214.77,5,1073.85,2025-01-18,pending
+1008,Isaac Brown,isaac.brown@example.com,New Zealand,255.53,2,,2025-12-02,completed
+1009,Isaac Silva,isaac.silva@example.net,India,151.59,2,303.18,2025-06-04,refunded
+1010,Sofia Taylor,sofia.taylor@example.net,United Kingdom,291.08,9,2619.72,2025-11-06,refunded
+1011,Sofia Taylor,sofia.taylor@example.net,United Kingdom,215.12,10,2151.20,2025/03/02,refunded
+1012,Lena Wilson,lena.wilson@example.org,Singapore,461.89,10,4618.90,2025-04-06,cancelled
+1013,Daniel Lee, Daniel.Lee@EXAMPLE.COM ,India,192.21,3,576.63,2025-04-20,completed
+1014,Alice Rossi,alice.rossi@example.org,United Kingdom,273.85,9,2464.65,2025-07-02,completed
+1015,George Rossi,george.rossi@example.org,Singapore,87.42,8,699.36,2025-02-20,completed
+1016,Priya Khan,priya.khan@example.com,Canada,140.56,7,983.92,2025-04-27,cancelled
+1017,,george.wilson@example.org,India,391.32,7,2739.24,2025-06-30,completed
+1018,Isaac Smith,isaac.smith@example.com,United States,392.95,4,1571.80,2025-02-30,refunded
+1019,Marco Wilson,marco.wilson@example.org,Germany,370.24,8,2961.92,2025-05-17,pending
+1020,Emma Taylor,emma.taylor@example.net,India,261.19,5,1305.95,2025-07-05,cancelled
+1021,Nina Patel,nina.patel@example.com,United Kingdom,339.44,7,2376.08,2025-04-03,cancelled
+1022,Emma Khan,,Canada,356.90,3,1070.70,2025-05-24,pending
+1023,Alice Rossi,alice.rossi@example.org,United Kingdom,216.25,10,2162.50,2025-06-23,refunded
+1024,Isaac Silva,isaac.silva@example.net,India,402.23,9,3620.07,2025-04-25,completed
+1025,Alice Khan,alice.khan@example.org,Canada,223.30,2,446.60,2025-05-30,completed
+1026,Chloe Taylor,chloe.taylor@example.net,Singapore,305.93,10,3059.30,2025-03-04,cancelled
+1027,Priya Khan,priya.khan@example.com,Canada,203.34,2,406.68,2025-07-04,cancelled
+1028,Sofia Khan,sofia.khan@example.net,New Zealand,247.08,6,1482.48,2025-01-31,completed
+1029,Quinn Taylor,quinn.taylor@example.net,United Kingdom,110.27,10,1102.70,2025-07-03,refunded
+1030,Marco Taylor,marco.taylor@example.net,Australia,409.45,6,2456.70,2025-05-13,refunded
+1031,Isaac Patel,isaac.patel@example.org,Singapore,194.00,8,1552.00,2025-06-16,cancelled
+1032,Chloe Patel,chloe.patel@example.com,Australia,154.20,4,616.80,2025-05-17,pending
+1033,Chloe Taylor,chloe.taylor@example.net,Singapore,180.01,4,720.04,2025/03/25,pending
+1034,Isaac Patel,isaac.patel@example.org,Singapore,384.59,10,3845.90,2025-03-26,cancelled
+1035,Daniel Lee,daniel.lee@example.com,India,387.31,3,1161.93,2025-04-04,refunded
+1036,Oscar Khan,oscar.khan@example.org,India,245.94,,491.88,2025-05-02,completed
+1037,Jade Patel,jade.patel@example.net,New Zealand,170.53,8,1364.24,2025-05-13,pending
+1038,Priya Khan,priya.khan@example.com,Canada,95.16,3,285.48,2025-06-16,refunded
+1039,,hana.martin@example.com,United Kingdom,125.53,4,502.12,2025-02-21,pending
+1040,Isaac Patel,isaac.patel@example.org,Singapore,250.72,1,250.72,2025-05-21,PENDING
+1041,Oscar Wilson,oscar.wilson@example.com,New Zealand,154.34,7,1080.38,2025-13-05,pending
+1042,Chloe Patel,chloe.patel@example.com,Australia,183.28,3,549.84,2025-01-17,cancelled
+1043,Farah Smith,farah.smith@example.org,India,363.68,3,1091.04,2025-09-05,cancelled
+1044,Jade Chen,jade.chen@example.com,Singapore,191.20,9,1720.80,,refunded
+1010,Sofia Taylor,sofia.taylor@example.net,United Kingdom,291.08,9,2619.72,2025-11-06,refunded
+1045,Ravi Nguyen,ravi.nguyen@example.net,Singapore,157.38,2,314.76,2025-02-04,pending
+1046,Emma Walker,emma.walker@example.org,Canada,428.35,1,428.35,2025-05-05,completed
+1047,Hana Lee,hana.lee@example.com,Canada,450.95,7,3156.65,2025-03-01,refunded
+1048,Ravi Nguyen,ravi.nguyen@example.net,Singapore,106.64,10,1066.40,22/02/2025,refunded
+1049,Farah Silva,farah.silva@example.com,Australia,457.42,10,4574.20,16/03/2025,refunded
+1050,Oscar Khan,,India,385.62,5,1928.10,2025-02-20,refunded
+1051,Tom Singh,tom.singh@example.org,Germany,144.12,3,432.36,2025-02-25,pending
+1052,Oscar Taylor,oscar.taylor@example.net,Singapore,30.65,5,153.25,2025-09-02,cancelled
+1053,George Martin,george.martin@example.net,New Zealand,168.20,8,1345.60,2025-02-06,cancelled
+1054,Lena Wilson,lena.wilson@example.org,Singapore,260.41,4,1041.64,2025-02-21,pending
+1055,Daniel Silva,daniel.silva@example.org,Canada,42.45,1,42.45,2025-05-27,refunded
+1056,Chloe Walker,chloe.walker@example.net,Singapore,225.83,8,1806.64,2025-03-14,cancelled
+1057,Alice Rossi,alice.rossi@example.org,United Kingdom,364.83,8,2918.64,2025-01-05,refunded
+1058,Sofia Khan,sofia.khan@example.net,New Zealand,158.40,7,1108.80,"June 27, 2025",pending
+1059,Marco Smith,marco.smith@example.org,India,54.45,7,381.15,2025-03-14,completed
+1060,Nina Patel,nina.patel@example.com,United Kingdom,258.31,5,1291.55,2025-03-26,pending
+1061,Kai Khan,kai.khan@example.com ,India,234.29,10,2342.90,2025-03-04,pending
+1062,Marco Smith,marco.smith@example.org,India,133.84,9,1204.56,2025-06-24,pending
+1063,Hana Khan,@example.com,United Kingdom,38.62,1,38.62,2025-05-04,pending
+1064,Quinn Taylor,quinn.taylor@example.net,United Kingdom,451.17,6,2707.02,2025-04-22,cancelled
+1065,Marco Wilson,marco.wilson@example.org,Germany,208.75,7,1461.25,2025-02-28,completed
+1066,Priya Khan,priya.khan@example.com,Canada,497.03,7,3479.21,2025-02-26,cancelled
+1067,Alice Khan,alice.khan@example.org,Canada,241.82,1,241.82,2025-08-06,refunded
+1068,Ben Lee,ben.lee@example.com,United States,76.42,10,764.20,2025-05-29,refunded
+1069,Chloe Wilson,chloe.wilson@example.org,New Zealand,89.11,10,891.10,2025-10-03,cancelled
+1070,Jade Chen,jade.chen@example.com,Singapore,63.16,9,568.44,2025-11-01,refunded
+1071,George Martin,george.martin@example.net,New Zealand,287.56,1,287.56,2025-06-15,pending
+1072,Chloe Patel,chloe.patel@example.com,Australia,278.06,5,1390.30,2025-03-30,refunded
+1073,Kai Smith,kai.smith@example.net,United Kingdom,435.79,6,2624.74,2025-12-01,pending
+1074,Emma Khan,emma.khan@example.net,Canada,374.28,9,3368.52,2025-05-19,completed
+1075,Lena Wilson,lena.wilson@example.org,Singapore,121.78,5,608.90,2025-05-17,cancelled
+1076,Ravi Nguyen,ravi.nguyen@example.net,Singapore,82.38,-3,494.28,2025-03-24,pending
+1077,Kai Lee,kai.lee@example.org,Germany,127.68,9,1149.12,2025-01-18,pending
+1078,Chloe Smith,chloe.smith@example.org,India,70.56,3,211.68,2025-09-01,refunded
+1079,Oscar Khan,oscar.khan@example.org,India,220.59,3,661.77,2025-07-02,completed
+1080,Priya Martin,priya.martin@example.net,Australia,44.61,5,223.05,2025-12-06,unknown
+1081,Jade Patel,jade.patel@example.net,New Zealand,295.92,2,601.84,2025-05-27,completed
+1082,Farah Smith,farah.smith@example.org,India,351.82,2,703.64,2025-01-31,Completed
+1083,Emma Taylor,emma.taylor@example.net,India,207.52,7,1452.64,2025-05-22,pending
+1084,Isaac Patel,isaac.patel@example.org,Singapore,22.56,1,22.56,2025-11-06,cancelled
+1085,Sofia Lee,sofia.lee@example.com,Germany,299.00,2,598.00,2025-02-28,cancelled
+1086,Kai Smith,kai.smith@example.net,United Kingdom,209.77,5,1048.85,2025-01-15,pending
+1087,Quinn Taylor,quinn.taylor@example.net,United Kingdom,133.47,8,1067.76,2025-08-01,pending
+1088,Kai Lee,kai.lee@example.org,Germany,410.61,10,4106.10,2025-11-02,cancelled
+1078,Chloe Smith,chloe.smith@example.org,India,70.56,3,211.68,2025-09-01,refunded
+1089,Hana Khan,hana.khan@example.com,United Kingdom,93.28,2,186.56,2025-06-22,
+1090,Ravi Silva,ravi.silva@example.net,United Kingdom,158.03,4,632.12,16 Jun 2025,pending
+1091,Chloe Smith,chloe.smith@example.org,India,77.48,2,154.96,2025-04-29,pending
+1092,Farah Nguyen,farah.nguyen@example.net,United Kingdom,187.89,8,1503.12,2025-01-01,pending
+1093,George Wilson,george.wilson@example.org,India,473.87,,947.74,2025-11-01,refunded
+1094,Quinn Taylor,quinn.taylor@example.net,United Kingdom,454.59,5,2272.95,2025-10-01,cancelled
+1095,Hana Martin,hana.martin@example.com,United Kingdom,317.15,1,317.15,2025-01-27,refunded
+1096,Priya Martin,priya.martin@example.net,australia,377.02,9,3393.18,2025-03-21,completed
+1097,Chloe Wilson,chloe.wilson@example.org,New Zealand,323.35,3,970.05,2025-05-20,cancelled
+1098,Kai Smith,kai.smith@example.net,United Kingdom,389.47,9,3505.23,2025-10-02,pending
+1099,Farah Smith, farah.smith@example.org,India,306.98,3,920.94,2025-02-27,cancelled
+1100,Alice Kumar,alice.kumar@example.com,Australia,$334.32,5,1671.60,2025-01-02,refunded
+1101,Sofia Khan,sofia.khan@example.net,New Zealand,382.79,7,2679.53,2025-06-02,pending
+1102,Priya Khan,priya.khan@example.com,Canada,47.53,6,285.18,2025-05-17,cancelled
+1103,Daniel Silva,daniel.silva@example.org,canada ,236.15,5,1180.75,2025-01-14,pending
+1104,Marco Wilson,marco.wilson@example.org,Germany,223.45,7,1564.15,2025-01-30,cancelled
+1105,  daniel lee,daniel.lee@example.com,India,491.45,9,4423.05,2025-05-04,pending
+1106,Isaac Smith,isaac.smith@example.com,United States,387.80,8,3102.40,2025-01-03,refunded
+1107,Lena Chen,lena.chen@example.net,United States,296.58,-1,2372.64,2025-04-05,cancelled
+1108,Isaac Silva,isaac.silva@example.net,India,132.10,10,1321.00,2025-06-19,pending
+1109,Priya Martin,priya.martin@example.net,Australia,378.13,1,378.13,2025-06-06,cancelled
+1110,Marco Smith,marco.smith@example.org,India,420.14,6,2520.84,2025-01-13, pending
+1111,Hana Lee,hana.lee@example.com,Canada,225.20,5,1126.00,2025-12-06,refunded
+1112,Lena Wilson,lena.wilson@example.org,Singapore,310.25,6,,2025-03-23,refunded
+1113,Alice  Nguyen,alice.nguyen@example.net,United States,44.81,7,313.67,2025-02-15,completed
+1114,Farah Nguyen,farah.nguyen@example.net,United Kingdom,406.63,7,2846.41,2025-05-03,refunded
+1115,Kai Khan,kai.khan@example.com,India,72.00,1,72.00,2025-03-05,cancelled
+1116,Marco Patel,marco.patel@example.org,,370.33,7,2592.31,2025-09-04,completed
+1117,Kai Khan,kai.khan@example.com,India,227.02,0,908.08,2025-02-21,pending
+1118,Quinn Wilson,quinn.wilson@example.com,Singapore,46.17,1,46.17,2025-09-01,
+1119,Oscar Wilson,oscar.wilson@example.com,New Zealand,337.04,9,3033.36,2025-10-04,completed
+1120,Isaac Patel,isaac.patel@example.org,Singapore,45.16,9,406.44,2025-04-18,pending
+1121,Tom Singh,tom.singh@example.org,Germany,127.85,7,894.95,2025-03-23,cancelled
+1122,Chloe Khan,chloe.khan@example.org,United States,289.46,2,578.92,2025-01-03,lost
+1123,Emma Walker,emma.walker@example.org,Canada,104.71,7,732.97,2025-02-15,cancelled
+1124,Kai Taylor,kai.taylor@example.org,India,267.31,8,2138.48,2025-06-05,pending
+1125,George Wilson,GEORGE.WILSON@EXAMPLE.ORG,India,159.24,3,477.72,2025-05-03,pending
+1126,Kai Taylor,kai.taylor@example.org,India,157.63,2,315.26,2025-06-19,pending
+1127,Isaac Smith,isaac.smith@example.com,United States,359.12,7,2513.84,2025-01-22,pending
+1128,Oscar Khan,oscar.khan@example.org,India,494.54,9,4450.86,2025-04-01,pending
+1129,Farah Silva,farah.silva@example.com,Australia,141.05,7,987.35,2025-06-01,completed
+1130,Chloe Walker,chloe.walker@example.net,Singapore,386.81,10,3868.10,2025-02-01,cancelled
+1131,Sofia Taylor,sofia.taylor@example.net,United Kingdom,342.95,9,3086.55,2025-10-05,cancelled
+1132,ravi chen   ,ravi.chen@example.org,United States,172.78,4,691.12,2025-10-05,refunded
+1133,Ravi Chen,ravi.chen@example.org,United States,77.50,7,542.50,2025-06-05,pending
+1134,Farah Smith,farah.smith@example.org,India,376.22,9,3385.98,2025-05-29,refunded
+1135,Farah Silva,farah.silva@example.com,Australia,411.74,7,2882.18,2025-03-03,cancelled
+1136,Marco Patel,marco.patel@example.org,United States,208.14,3,624.42,2025-02-17,pending
+1137,Daniel Lee,daniel.lee@EXAMPLE.COM,India,46.84,4,187.36,2025-04-27,pending
+1138,Hana Lee,hana.lee@example.com,Canada,325.26,8,2602.08,2025-11-06,CANCELLED 
+1139,Oscar Khan,oscar.khan@example.org,India,,8,3940.64,2025-09-06,refunded
+1140,Chloe Walker,chloe.walker@example.net,Singapore,260.77,4,1043.08,2025-04-17,
+1141,Jade Patel,jade.patel@example.net,New Zealand,253.37,9,2280.33,2025-03-22,pending
+1142,Isaac Patel,isaac.patel@example.org,Singapore,196.26,8,1570.08,2025-10-01,pending
+1143,Ravi Patel,ravi.patel.example.org,India,277.03,7,1939.21,2025-07-05,cancelled
+1144,Oscar Wilson,oscar.wilson@example.com,Atlantis,239.71,5,1198.55,2025-02-01,completed
+1145,Quinn Taylor,quinn.taylor@example.net,United Kingdom,378.66,9,3407.94,2025-01-03,completed
+1146,Marco Smith,marco.smith@example.org,India,442.89,2,885.78,2025-02-16,cancelled
+1147,Sofia Lee,sofia.lee@example.com,Germany,385.08,8,3080.64,2025-05-03,refunded
+1148,Ravi Khan,ravi.khan@example.net,Canada,375.77,1,375.77,2025-06-29,refunded
+1135,Farah Silva,farah.silva@example.com,Australia,411.74,7,2882.18,2025-03-03,cancelled
+1149,Sofia Lee,sofia.lee@example.com,Germany,155.80,7,1090.60,2025-03-21,cancelled
+1150,Emma Walker,emma.walker@example.org,Canada,402.18,7,2815.26,2025-02-01,completed
+1151,Hana Khan,hana.khan@example.com,United Kingdom,459.82,4,1839.28,2025-05-03,completed
+1152,Emma Walker,emma.walker@example.org,Canada,400.39,1,400.39,2025-03-26,refunded
+1153,Kai Smith,kai.smith@example.net,United Kingdom,400.54,1,400.54,2025-06-19,completed
+1154,Kai Khan,kai.khan@example.com,India,497.84,5,2489.20,2025-12-01,completed
+1109,Priya Martin,priya.martin@example.net,Australia,378.13,1,378.13,2025-06-06,cancelled
+1155,Tom Singh,tom.singh@example.org,Germany,111.50,1,111.50,2025-01-13,refunded
+1156, isaac BROWN,isaac.brown@example.com,New Zealand,16.73,5,83.65,2025-06-20,cancelled
+1157,Priya Martin,priya.martin@example.net,Australia,381.52,2,763.04,2025-04-06,refunded
+1158,Sofia Taylor,sofia.taylor@example.net,United Kingdom,174.12,6,1044.72,2025-02-28,completed
+1159,Ben Lee,ben.lee@example.com,United States,109.47,5,547.35,2025-02-03,refunded
+1160,Sofia Taylor,sofia.taylor@example.net,United Kingdom,5.33,9,47.97,2025-01-29,pending
+1161,DANIEL LEE ,daniel.lee@example.com,India,28.86,9,259.74,2025-03-24,refunded
+1162,Daniel Lee,daniel.lee@example.com,India,464.46,1,464.46,2025-06-30,cancelled
+1163,Alice Nguyen,alice.nguyen@example.net,United States,118.46,7,829.22,2025-04-01,refunded
+1164,Chloe Walker,chloe.walker@example.net,Singapore,abc,6,553.86,2025-11-05,refunded
+1165,Hana Martin,hana.martin@example.com,United Kingdom,417.33,4,1669.32,2025-06-20,pending
+1166,Nina Patel,nina.patel@example.com,United Kingdom,354.33,2,708.66,2025-04-13,completed
+1167,Ravi Chen,ravi.chen@example.org,United States,354.42,1,354.42,2025-06-14,completed
+1168,Daniel Lee,daniel.lee@example.com,India,15.52,5,77.60,2025-02-23,pending
+1169,George Rossi,george.rossi@example.org,Narnia,287.84,3,863.52,2025-07-04,pending
+1170,Alice Nguyen,alice.nguyen@example.net,United States,241.11,5,1205.55,,completed
+1171,Jade Chen,jade.chen@example.com,Singapore,222.69,1,232.69,2025-12-04,refunded
+1172,Chloe Wilson,chloe.wilson@,New Zealand,237.29,1,237.29,2025-05-27,pending
+1173,Chloe Smith,chloe.smith@example.org,India,288.53,3,865.59,2025-06-23,refunded
+1174,Tom Smith,tom.smith@example.org,United Kingdom,109.65,1,109.65,2025-10-02,refunded
+1175,Hana Martin,hana.martin@example.com,United Kingdom,343.21,10,3432.10,2025-03-25,cancelled
+1176,Jade Patel,jade.patel@example.net,New Zealand,36.59,4,146.36,2025-05-20,pending
+1177,Quinn Taylor,quinn.taylor@example.net,United Kingdom,138.08,1,138.08,2025-06-15,completed
+1178,Sofia Lee,sofia.lee@example.com,Germany,239.86,7,1679.02,2025-04-18,pending
+1179,Chloe Khan,chloe.khan@example.org,United States,402.22,10,4022.20,2025-02-18,cancelled
+1180,Chloe Wilson,chloe.wilson@example.org,New Zealand,323.71,8,2589.68,"March 16, 2025",cancelled
+1181,Chloe Smith,chloe.smith@example.org,India,435.94,2,871.88,2025-07-02,completed
+1182,Isaac Smith,isaac.smith@example.com,United States,201.42,4,805.68,2025-03-29,completed
+1183,Priya Martin,priya.martin@example.net,Australia,472.36,5,2361.80,2025-10-04,refunded
+1184,Lena Wilson,,Singapore,454.12,2,908.24,2025-05-30,pending
+1185,Lena Wilson,lena.wilson@example.org,Singapore,447.00,10,4470.00,2025-06-22,cancelled
+1186,Sofia Lee,sofia.lee@example.com,Germany,54.13,6,324.78,2025-05-29,pending
+1187,Marco Taylor,marco.taylor@example.net,Australia,385.82,10,3858.20,2025-01-06,refunded
+1188,Emma Walker,emma.walker@example.org,Canada,227.04,8,1816.32,2025-04-13,pending
+1189,Sofia Khan,sofia.khan@example.net,New Zealand,254.52,2,509.04,2025-03-06,cancelled
+1190,Tom Smith,tom.smith@example.org,United Kingdom,443.96,7,3107.72,2025-02-28,refunded
+1191,Lena Wilson,lena.wilson@example.org, Singapore ,102.28,10,1022.80,2025-05-30,completed
+1192,Oscar Khan,oscar.khan@example.org,India,473.74,4,1894.96,2025-06-15,pending
+1188,Emma Walker,emma.walker@example.org,Canada,227.04,8,1816.32,2025-04-13,pending
+1193,Oscar Wilson,oscar.wilson@example.com,New Zealand,404.96,7,2834.72,2025-03-23,cancelled
+1194,Marco Patel,marco.patel@example.org,United States,342.40,6,2054.40,2025-06-13,refunded
+1195,Ravi Chen,ravi.chen@example.org,United States,295.57,7,2068.99,2025-06-04,completed
+1120,Isaac Patel,ISAAC.PATEL@EXAMPLE.ORG,Singapore,45.16,9,406.44,2025-04-18,pending
+1196,Sofia Taylor,sofia.taylor@example.net,United Kingdom,401.31,7,2809.17,2025-05-28,refunded
+1197,Sofia Lee,sofia.lee@example.com,Germany,439.99,7,3079.93,2025-08-04,pending
+1198,,tom.singh@example.org,Germany,290.85,7,2035.95,2025-11-02,completed
+1199,Kai Khan,kai.khan@example.com,India,ten,3,464.22,2025-02-18,pending
+1200,George Rossi,george.rossi@example.org,Singapore,,7,2562.00,2025-01-31,completed
+1201,Isaac Silva,isaac.silva@example.net,India,412.37,4,1649.48,2025-06-18,pending
+1202,Marco Patel,marco.patel@example.org,United States,413.70,4,1654.80,2025-02-23,completed
+1203,Kai Lee,kai.lee@example.org,Germany,$131.96,5,659.80,2025-01-19,pending
+1127,Isaac Smith,isaac.smith@EXAMPLE.COM,United States,359.12,7,2513.84,2025-01-22,pending
+1204,Kai Smith,kai.smith@example.net,United Kingdom,35.07,9,315.63,2025-02-19,refunded
+1205,Isaac Brown,isaac.brown@example.com,New Zealand,21.59,6,129.54,2025-12-04,refunded
+1158,Sofia Taylor,Sofia.Taylor@example.net,United Kingdom,174.12,6,1044.72,2025-02-28,completed
+1206,Oscar Khan,oscar.khan@example.org,,172.73,6,1036.38,2025-05-24,refunded
+1207,George Martin,george.martin@example.net,New Zealand,$242.08,3,726.24,2025-03-21,cancelled
+1208,Marco Taylor,marco.taylor@example.net,Australia,413.89,7,2897.23,2025-02-27, Pending 
+1209,Hana Lee,hana.lee@example.com,Canada,244.87,5,1224.35,2025-05-30,refunded
+1210,Chloe Smith,chloe.smith@example.org,India,231.72,1,231.72,2025-01-29,pending
+1211,George Rossi,george.rossi@example.org,Singapore,202.68,2,405.36,2025-03-03,refunded
+1212,Marco Taylor,marco.taylor@example.net,Australia,182.60,6,1095.60,2025-06-30,refunded
+1195,Ravi Chen,ravi.chen@example.org,United States,295.57,7,2068.99,2025-06-04,completed
+1213,Kai Lee,kai.lee@example.org,Germany,237.22,3,711.66,2025-03-28,refunded
+1102,Priya Khan, priya.khan@example.com,Canada,47.53,6,285.18,2025-05-17,cancelled
+1214,Priya Khan,priya.khan@example.com,Canada,193.77,1,193.77,2025-05-01,cancelled
+1160,Sofia Taylor,sofia.taylor@example.net,United Kingdom,5.33,9,47.97,2025-01-29,pending
+1215,Daniel Silva,daniel.silva@example.org,Canada,369.54,9,3325.86,2025-05-24,cancelled
+1216,Kai Taylor,kai.taylor@example.org,India,374.81,9,,2025-06-05,pending
+1217,Hana Khan,hana.khan@example.com,UNITED KINGDOM,173.78,7,1216.46,2025-06-29,completed
+1218,George Wilson,george.wilson@example.org,India,392.19,6,2353.14,2025-10-06,pending
+1219,Hana Lee,hana.lee@example.com,Canada,23.69,3,71.07,2025-05-13,cancelled
+1220,Sofia Lee,sofia.lee@example.com,Germany,91.38,7,639.66,2025-02-19,completed
+1221,Marco Patel,marco.patel@example.org,United States,113.31,2,226.62,2025-12-05,completed
+1222,Hana Lee,hana.lee@example.com,Canada,39.17,6,235.02,2025-04-18,completed
+1223,Lena Chen,Lena.Chen@example.net,United States,150.31,7,1052.17,2025-08-02,refunded
+1222,Hana Lee,hana.lee@example.com,Canada,39.17,6,235.02,2025-04-18,completed
+1224,Hana Lee,hana.lee@example.com,Canada,98.80,2,197.60,2025-03-25,pending
+1225,Marco Smith,marco.smith@example.org,India,211.27,7,1478.89,2025-04-20,pending
+1226,Ravi Silva,ravi.silva@example.net,United Kingdom,334.31,9,3008.79,2025-04-18,cancelled
+1227,Marco Patel,marco.patel@example.org,United States,98.10,1,98.10,2025-06-17,cancelled
+1204,Kai Smith,kai.smith@example.net,United Kingdom,35.07,9,315.63,2025-02-19,refunded
+1228,Isaac Silva,isaac.silva@example.net,India,129.00,6,774.00,2025-11-03,refunded
+1229,Chloe Wilson,chloe.wilson@example.org,New Zealand,49.89,8,399.12,15 Mar 2025,refunded
+1224,Hana Lee, Hana.Lee@EXAMPLE.COM ,Canada,98.80,2,197.60,2025-03-25,pending
+1230,Priya Martin,priya.martin@example.net,Australia,222.53,5,1112.65,2025-05-22,completed
+1231,Alice Kumar,alice.kumar@example.com,Australia,469.97,8,3759.76,2025-04-01,cancelled
+1232,Emma Khan,emma.khan@example.net,Canada,436.05,7,3052.35,2025-04-25,completed
+1233,Tom Singh,tom.singh@example.org,Germany,98.18,10,981.80,2025-10-06,completed
+1225,Marco Smith,marco.smith@example.org,India,211.27,7,1478.89,2025-04-20,pending
+1234,Chloe Walker,chloe.walker@example.net,Singapore,210.87,4,843.48,2025-06-01,completed
+1227,Marco Patel,marco.patel@example.org ,United States,98.10,1,98.10,2025-06-17,cancelled

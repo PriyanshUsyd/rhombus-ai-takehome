@@ -48,14 +48,14 @@ Prerequisite: Phase 1 screenshots + codegen output. **No selector is written wit
 
 ## C. `api-tests/` — `requests`, marked `live`
 Prerequisite: `api-tests/network-contract.md`.
-- [ ] **[YOU]** (moved from Phase 1) With DevTools → Network open, perform: login, list pipelines, view a pipeline/run (and the failing S3 connect, for D1). For each useful request: right-click → Copy as cURL, **remove tokens/cookies/passwords/SAS strings**, paste to Claude.
-- [ ] **[CLAUDE]** (moved from Phase 1) Write `api-tests/network-contract.md` from the pasted requests only (method, path, auth mechanism shape, status, redacted response shape, date captured).
-- [ ] **[CLAUDE]** ≥2 tests on captured endpoints; ≥1 negative (no token or invalid token / invalid credentials).
-- [ ] Deviation D1 (see `PLAN.md`): the failing S3 connect request is a candidate negative API test — only if it is captured in `network-contract.md`.
-- [ ] Assert status code **and** response content, matching what was observed.
-- [ ] Each test docstring cites its captured endpoint + capture date.
-- [ ] Credentials from `.env`; never printed.
-- [ ] **[YOU]** Run `pytest api-tests -m live`; report results.
+- [x] **[YOU]** (moved from Phase 1) With DevTools → Network open, perform: login, list pipelines, view a pipeline/run (and the failing S3 connect, for D1). For each useful request: right-click → Copy as cURL, **remove tokens/cookies/passwords/SAS strings**, paste to Claude.
+- [x] **[CLAUDE]** (moved from Phase 1) Write `api-tests/network-contract.md` from the pasted requests only (method, path, auth mechanism shape, status, redacted response shape, date captured).
+- [x] **[CLAUDE]** ≥2 tests on captured endpoints; ≥1 negative (no token or invalid token / invalid credentials).
+- [x] Deviation D1 (see `PLAN.md`): the failing S3 connect request is a candidate negative API test — only if it is captured in `network-contract.md`. → Not captured, so no test (noted in `network-contract.md`).
+- [x] Assert status code **and** response content, matching what was observed.
+- [x] Each test docstring cites its captured endpoint + capture date.
+- [x] Credentials from `.env`; never printed.
+- [x] **[YOU]** Run `pytest api-tests -m live`; report results. → 2026-10-04: 10 passed (4 positive, 6 negative); expired-token path verified to skip.
 
 ## D. Repo-wide
 - [ ] `ruff check .` clean.
