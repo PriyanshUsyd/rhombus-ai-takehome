@@ -1,0 +1,9 @@
+# AI Builder chatbot exchange and retest (summary)
+# Sanitised excerpt, transcribed by the tester from the Rhombus AI UI on 2026-10-04 (project rhombus-takehome-v2, workflow 5257).
+# Long generated code truncated (…). Contains no emails, tokens, SAS strings or account IDs.
+
+Claimed transaction_date "is likely called something like date or txn_date" (actual: order_date).
+Fix = persistent column_guard renaming aliases (date→transaction_date, quantity→qty, customer_name→name, txn_status→status) and adding missing columns as NaN.
+Claimed the pipeline "will now handle … a file with renamed columns".
+Credits 4948→4943.
+Retest: warning "No results found after applying this LLM transformation" plus "Pipeline completed successfully".

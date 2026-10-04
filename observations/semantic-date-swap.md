@@ -24,7 +24,7 @@ Our validator flagged it through **one metric only**, the date range: the latest
   - every other cell, the header and the row count (250).
 - **Swap results are all valid:** the original month (1–6) becomes the day, and the original day (≤ 12) becomes the month. No slash formats are used, so the baseline policy rejects nothing new.
 - **Uploaded via:** Data Input → "From Device".
-- **Upload time:** TODO.
+- **Upload time:** not recorded.
 
 ## 2. Expected behaviour
 
@@ -50,16 +50,22 @@ Compared with baseline run 4 (`outputs/manual-dryrun-4.csv`):
 
 **Log oddity:**
 - **Two "Pipeline execution started" entries** (16:16:47 and 16:16:52) appeared for **one** completion (16:16:54).
+- This is recorded as an **intermittent log anomaly**. The run was triggered with ▶ only, and it exported successfully (`RhombusAI_output_1791091017015.csv`, 16:16:57).
 - Whether two runs were started and only one finished or logged, or one run was logged twice, is **not observed**. Only one output object was produced.
-- TODO: check the Executions tab for this time window.
+- The Executions tab wasn't checked for this time window.
 
 ## 4. Pre-state / post-state
 
 - **Pre-state:**
-  - The pipeline was the baseline version (TODO: confirm with a Version Control snapshot).
+  - Pipeline: no restore needed. Case 6 applied no fix, so the pipeline was still the version restored before case 6.
   - The AI Builder history was cleared before the case (D2 method note).
-  - TODO: schedule status, latest objects in `output`, last successful run.
-- **Post-state:** TODO, same fields. No pipeline change was made: there was no chatbot step.
+  - Schedule: Active, hourly, never fired (see `PLAN.md` → "Findings log").
+  - Last successful run (latest output blob before the case): `RhombusAI_output_1791090876827.csv` (16:14:36, case 6).
+  - Snapshot: not captured.
+- **Post-state:**
+  - Pipeline: unchanged (no chatbot step).
+  - Schedule: Active, hourly, never fired (see `PLAN.md` → "Findings log").
+  - Latest output: `RhombusAI_output_1791091017015.csv` (16:16:57).
 
 ## 5. Run identity
 
@@ -69,7 +75,7 @@ Compared with baseline run 4 (`outputs/manual-dryrun-4.csv`):
 
 ## 6. Logs
 
-- **Run log:** two "Pipeline execution started" entries, then "Pipeline completed successfully". No warning, and nothing about the date range or distribution. TODO: paste a short sanitised excerpt.
+- **Run log:** two "Pipeline execution started" entries, then "Pipeline completed successfully". No warning, and nothing about the date range or distribution. No separate log excerpt was captured.
 - **Clear?**
   - For the data, the platform had nothing to report, and the silence is the finding.
   - The duplicate start entry makes the run history harder to trust: you can't tell from the log how many runs happened.
@@ -80,7 +86,7 @@ Not used: the run had no error or warning. There was no fix, config diff or rete
 
 ## 8. Schedule afterwards
 
-Not testable. Per D2, the scheduler never fired for workflow 5257, so this case used a manual run. Schedule state after the case: TODO.
+Not testable. Per D2, the scheduler never fired for workflow 5257, so this case used a manual run. Schedule state after the case: Active, hourly, never fired (see `PLAN.md` → "Findings log").
 
 ## 9. Validation results
 
@@ -167,12 +173,10 @@ From a clean baseline:
 
 - `observations/evidence/validation-semantic-date-swap.json`: validator report.
 - `datasets/semantic_date_swap.csv` and `.manifest.json`: the input, including the list of swapped ids.
-- TODO (sanitised):
-  - the run log showing both "Pipeline execution started" entries and the single completion;
-  - the Executions tab for 16:16–16:17.
+- Run log screenshot (double "started", single completion): **not captured**. The run is evidenced by its output object `RhombusAI_output_1791091017015.csv` (16:16:57), its hash (section 5) and the validator report.
 - The output itself is in `outputs/` (gitignored).
 
 ## Limitations
 
-- **Duplicate start entry unexplained.** It's not known whether two runs were started (16:16:47 and 16:16:52). Only one output object is attributed to this case.
+- **Duplicate start entry unexplained.** An intermittent log anomaly: it's not known whether two runs were started (16:16:47 and 16:16:52). The run was triggered with ▶ only, and one output object (16:16:57) is attributed to this case. The same double-start pattern appears in the later ▶ Run regression (`PLAN.md` → "Findings log").
 - **The validator's catch depends on the data.** The date-range check works only because the baseline covers January–June (section 9). This dataset's design flattered the detector, and that is reported rather than claimed as a strength.

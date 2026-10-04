@@ -32,11 +32,11 @@ Note: Phase 5 code (generator, validator) is started early — the dataset gener
   - Auth = SAS connection strings (Rhombus-recommended).
 - **Update 2026-10-04 — Azure Blob source dropped.**
   - Azure Blob source auto-sync removes the file after initial setup. The file is still present in Azure: the SAS list API returns `baseline.csv` (21538 bytes).
-  - Reproduced several times on 2026-10-04; reported to Rhombus.
+  - Reproduced several times on 2026-10-04. Documented; not reported to Rhombus during the exercise (draft email unsent).
 - **Actual route (from 2026-10-04):** local upload via Data Input → "From Device" (`datasets/baseline.csv`) → AI-built pipeline → Azure Blob Storage container `output`.
   - New project `rhombus-takehome-v2` (workflow 5257).
   - Destination verified: `RhombusAI_output_1791083010935.csv` written to `output` 2026-10-04 14:03:30.
-  - Drift cases: upload the drifted CSV via From Device before each scheduled run. TODO: verify the schedule uses the newly uploaded file.
+  - Drift cases: upload the drifted CSV via From Device before each manual ▶ run (D2; the scheduler never fired).
   - Old project `rhombus-takehome` (workflow 5251) kept as evidence of the chatbot fix attempts.
 - **Scope:** everything else in all phases unchanged. Wherever a phase says S3 → read From Device upload of the dataset file; GCS → read Azure `output`.
 - **Repo changes:** `.env.example` uses `AZURE_*` variables (AWS/GCP dropped); `pyproject.toml` uses `azure-storage-blob` instead of `boto3` / `google-cloud-storage`.
@@ -49,15 +49,16 @@ Issues observed outside the drift scenarios. Observed by the user in the app unl
 | Date | Finding | Evidence |
 |---|---|---|
 | 2026-10-04 | S3 connection denied even with the generated policy and a whole-Rhombus-account test policy; error text says policy "missing or does not match". | `observations/setup-s3-connection-blocked.md` |
-| TODO: date | Reconnecting a source silently breaks the input node. The next run fails with a raw backend error in the user-facing logs: "No Dataset matches the given criteria: {'id': ..., 'project_id': 5251, 'user_id': <CustomUser:..." | TODO: sanitised log screenshot |
+| 2026-10-04 | Reconnecting a source silently breaks the input node. The next run fails with a raw backend error in the user-facing logs: "No Dataset matches the given criteria: {'id': ..., 'project_id': 5251, 'user_id': <CustomUser:..." | Screenshot not captured |
 | 2026-10-03 | Clicking Apply on the Data Output node triggers a pipeline run. | Observed 4:32 PM |
-| TODO: date | Only one third-party source is allowed at a time. | TODO: screenshot |
-| TODO: date | AI builder credits: build prompt cost 10, Rhombo question cost 6; credits also dropped 44 → 39 without a prompt being sent. | TODO: screenshots of credit counter |
-| 2026-10-04 | **Scheduler never fires** (workflow 5257, project `rhombus-takehome-v2`; input From Device, output Azure Blob). An active hourly schedule was set at minute 20, then edited to 27 (~15:25) and to 40 (~15:38). At 15:20, 15:27 and 15:40 AEDT: no log entry, Executions tab shows "No results", no output in Azure `output`, and "Next run" goes blank after each expected time. Manual runs of the same pipeline succeed (latest 15:11, output `RhombusAI_output_1791087076533.csv`). | `evidence-raw/` |
-| 2026-10-04 | **Chatbot schedule diagnosis is wrong or unverified.** It admitted it had no docs. It claimed a timezone cause, which is incorrect for an hourly-at-minute schedule. It suggested possibly expired credentials, which is incorrect: the SAS is valid to 2026-10-24 and the manual run wrote output at 15:11. It suggested From Device uploads can't be scheduled (unverified). | `evidence-raw/chatbot-schedule.txt` (TODO: add file) |
+| 2026-10-04 | Only one third-party source is allowed at a time. | Screenshot not captured |
+| 2026-10-04 | AI builder credits: build prompt cost 10, Rhombo question cost 6; credits also dropped 44 → 39 without a prompt being sent. | Screenshot not captured |
+| 2026-10-04 | **Scheduler never fires** (workflow 5257, project `rhombus-takehome-v2`; input From Device, output Azure Blob). An active hourly schedule was set at minute 20, then edited to 27 (~15:25) and to 40 (~15:38). At 15:20, 15:27 and 15:40 AEDT: no log entry, Executions tab shows "No results", no output in Azure `output`, and "Next run" goes blank after each expected time. Manual runs of the same pipeline succeed (latest 15:11, output `RhombusAI_output_1791087076533.csv`). | [`observations/evidence/schedule-never-fired.png`](observations/evidence/schedule-never-fired.png): "Active", "Hourly", "At minute 40", "Next run:" blank; Executions tab "No results." |
+| 2026-10-04 | **Chatbot schedule diagnosis is wrong or unverified.** It admitted it had no docs on schedule rules, then listed four causes: (1) a From Device upload isn't persistent for the server-side scheduler (unverified); (2) a blank "Next run" means the schedule errored, so re-save it (unverified; the schedule was edited and re-saved at ~15:25 and ~15:38 and still never fired); (3) the Azure output credentials may have expired (incorrect: the SAS is valid to 2026-10-24, and a manual run wrote output at 15:11); (4) timezone/UTC interpretation (doesn't fit an hourly-at-minute schedule). | `observations/evidence/chatbot-schedule.txt` (raw: `evidence-raw/chatbot-schedule.txt`) |
 | 2026-10-04 | **"From Web URL" is a web scraper.** A direct Azure Blob SAS URL to `baseline.csv` fails with "Failed to scrape ... document_antibot". | `evidence-raw/` |
 | 2026-10-04 | **Version Control has no automatic history.** It shows "No saved versions yet" until a version is saved manually. | `evidence-raw/` |
 | 2026-10-04 | **AI builder auto-run is inconsistent.** The pipeline ran after the first build in v1 (`rhombus-takehome`), but not after the build in v2 (`rhombus-takehome-v2`). | `evidence-raw/` |
+| 2026-10-04 | **Intermittent UI/backend state mismatch on ▶ Run: the UI shows the destination selected, but the backend sometimes reports none.** Workflow 5257; input `baseline.csv`. The Data Output panel shows the Azure Blob Storage destination `output` as selected ([`observations/evidence/data-output-selected.png`](observations/evidence/data-output-selected.png), captured at 18:30). Some ▶ runs log "Pipeline failed at src_output: A destination is required when remote export is selected." next to "Pipeline execution completed successfully.". The outcome varies (AEDT; blobs checked by Claude via the container listing): <br>• **~17:07, test 6, twice: failure logged, no export.** The first run's screenshot shows the `src_output` card at 05:07:32 PM, and the 300 s Azure poll timed out. No blob exists between 16:51:59 and 17:23:06. The second run's failure count used a page-wide locator that also matched old chat text, so only "no export" is established for it. Both one-press runs logged "Pipeline execution started." twice. <br>• **17:23, manual ▶ in a normal browser: no failure, exported** `RhombusAI_output_1791094986135.csv` (17:23:06). <br>• **17:24, test 6: no failure, exported** `…1791095070309.csv` (17:24:30), byte-identical to baseline run 4. <br>• **~18:03, test 6 (user run): no export.** No new blob at 18:04:33 or 18:05:38. Whether a `src_output` entry was logged isn't established (same page-wide locator issue). <br>• **18:06, test 6 with timestamp-scoped log checks: failure logged AND exported.** The log shows "Pipeline failed at src_output: …" at **06:06:43 PM**. `RhombusAI_output_1791097623381.csv` was created at **18:07:03**, 20 s later. It is byte-identical to baseline run 4 (validator: only the 3 known baseline failures; determinism pass). <br>• **Runs logged with no ▶ or Apply click:** 17:00:02 and 18:05:27, both during read-only Playwright sessions that only opened pages and panels. Both logged completion and produced no new blob. <br>Earlier, case 6's 16:14:26 `src_output` entry and case 7's double "started" entry were each followed by a successful ▶ export (intermittent log anomalies). **Cause not observed.** Not established: whether the Playwright session, the ~16:51 codegen actions (S3 Connect attempt, Apply on Data Output) or page loads are involved, or why a run that logged a `src_output` failure still exported. | `test-results/…run-pipeline…/test-failed-1.png` (gitignored; TODO sanitised copy); test 6 output; Azure listing; `outputs/ui-run-20261004-1806z.*` |
 
 ### Decision D2 (2026-10-04) — baseline and drift cases use manual runs
 - **What:** the baseline and drift cases run with manual ▶ runs. Each run is labelled `manual` in evidence and in the README.
@@ -73,7 +74,7 @@ Issues observed outside the drift scenarios. Observed by the user in the app unl
 
 | Scenario ID | Dataset | Run type | Run done | Output downloaded | Validator run | Observation file | Severity |
 |---|---|---|---|---|---|---|---|
-| baseline | `datasets/baseline.csv` | manual (D2) — run 4 | ✅ | ✅ `outputs/manual-dryrun-4.csv` | ✅ `validation-manual-dryrun-4.json` (fail: 2 known defects) | `observations/baseline.md` ⬜ | |
+| baseline | `datasets/baseline.csv` | manual (D2) — run 4 | ✅ | ✅ `outputs/manual-dryrun-4.csv` | ✅ `validation-manual-dryrun-4.json` (fail: 2 known defects) | ✅ `observations/baseline.md` | High (`None` names) / Low (trailing zeros) |
 | determinism | `datasets/baseline.csv` | manual (D2) — runs 1, 2, 4 | ✅ | ✅ | ✅ determinism pass (run 4 vs run 2) | (in baseline.md) | |
 | schema-drop-column | `datasets/schema_drop_column.csv` | manual (D2) + retest | ✅ | ✅ retest only (first run wrote nothing) | ✅ retest | ✅ `observations/schema-drop-column.md` | High |
 | schema-rename-column | `datasets/schema_rename_column.csv` | manual (D2) + retest | ✅ | ✅ retest only (first run wrote nothing) | ✅ retest | ✅ `observations/schema-rename-column.md` | High |
@@ -104,19 +105,19 @@ Evidence: observed in the app by the user on 2026-10-03 unless marked TODO. Sani
 | Credentials Rhombus needs for S3 | No access keys. Bucket + region (+ optional folder, source name, KMS ARN). Rhombus generates a read-only bucket policy or CloudFormation. (Blocked — see D1.) | Observed |
 | Credentials Rhombus needs for Azure Blob | SAS connection string + container name. | Observed |
 | Schedule intervals offered | Hourly (minute of hour 0–59), Daily, Weekly, Monthly, Custom. Shortest = Hourly. Notify-on-failure option exists. Schedules are managed per project. A schedule cannot be created until the input node has a dataset ("Some input nodes need a source selection before the pipeline can run."). | Observed |
-| Manual "run now" exists? | ▶ button on canvas (TODO: confirm). Clicking Apply on the Data Output node also triggers a pipeline run (observed 4:32 PM). | Observed / TODO |
+| Manual "run now" exists? | Yes: the ▶ button on the canvas (`data-testid=run-pipeline`; confirmed 2026-10-04 and used by `ui-tests` test 6). Clicking Apply on the Data Output node also triggers a pipeline run (observed 4:32 PM). | Observed |
 | Output object key templatable? | "Custom Filename" field (default `RhombusAI_output`), CSV/XLSX. Rhombus docs say exports go to container root with a timestamp added to the filename (TODO: verify on first run). | Observed / docs / TODO |
 | Upload / row limits | Data Input sampling enabled by default (100,000 rows, streaming). | Observed |
 | Pipeline config exportable? | No export seen. Wrench menu has Version Control (use it to snapshot before chatbot fixes), Undo/Redo, Mode Design/Big Data. | Observed |
 | Where run logs are shown | "Logs" tab on canvas; filter success/warning/error; each entry has "Ask Chatbot". | Observed |
 | Where the chatbot is accessed | "AI Builder" tab (Ask Rhombo). Credits limited: 50 per period; one question used 6 credits. Voucher available if exhausted. | Observed |
-| Azure source sync behaviour | Azure source syncs files into Rhombus ("Manual incremental syncing will be available once the initial setup is complete"). Drift swaps may need a manual sync before the scheduled run (TODO: verify in Phase 3). | Observed / TODO |
+| Azure source sync behaviour | Azure source syncs files into Rhombus ("Manual incremental syncing will be available once the initial setup is complete"). Obsolete: the Azure source was dropped on 2026-10-04 (D1 update), so drift files are uploaded via From Device. | Observed |
 
 **Observed quirk:** Azure blob `connection-test.csv` (28 B) is listed in Rhombus as `connection_test` (21.0 B).
 
 ### Answers that change later phases
 - **Apply triggers a run** → Phase 3/4 protocol: do not edit/Apply nodes between a file swap and the scheduled run.
-- **Azure sync** → Phase 3/4: a manual sync may be needed after each swap (TODO: verify in Phase 3).
+- **Azure sync** → obsolete: the Azure source was dropped (D1 update); drift files are uploaded via From Device.
 - **Chatbot credits (50/period, ~6 per question)** → roughly 8 questions per period; budget chatbot questions across the drift cases.
 - **No config export** → config "diffs" in Phase 3 use Version Control snapshots + screenshots.
 - **Hourly is the shortest schedule** → at most one scheduled scenario per hour.

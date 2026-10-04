@@ -9,7 +9,7 @@
 
 **Summary.** `price` changed from numbers to text (`222.97` → `USD 222.97`). The first run **carried on with no error**: it rejected every row and wrote a **header-only file (0 of 218 rows)** to Azure. The only signal was the warning "No results found after applying this LLM transformation".
 
-The chatbot didn't read the file and guessed the wrong column first. It also contradicted the build's claim that totals are compared as exact decimals. When told the real cause and asked to "change nothing else", it **re-applied every earlier fix that had been reverted** and added a USD strip. The retest output is **byte-identical to the first run: still 0 rows**.
+The chatbot didn't read the file and guessed the wrong column first. It also claimed the total check uses a 1e-9 tolerance, which contradicts the pipeline's own Custom node prompt ("…ROUND_HALF_UP via decimal.Decimal"; see section 7). When told the real cause and asked to "change nothing else", it **re-applied every earlier fix that had been reverted** and added a USD strip. The retest output is **byte-identical to the first run: still 0 rows**.
 
 ## 1. Change
 
@@ -20,7 +20,7 @@ The chatbot didn't read the file and guessed the wrong column first. It also con
   - The 4 prices that were empty or already text (`abc`, `ten`) are unchanged.
   - Every other cell is identical to the baseline (250 rows, 9 columns, same header).
 - **Uploaded via:** Data Input → "From Device".
-- **Upload time:** TODO.
+- **Upload time:** not recorded.
 
 ## 2. Expected behaviour
 
@@ -34,8 +34,8 @@ So the empty output follows the cleaning rules. The finding is that nothing trea
 
 | Run | Outcome | What reached Azure `output` |
 |---|---|---|
-| First `manual` run | **Carried on, no error.** Warning: "No results found after applying this LLM transformation". TODO: record the final run status and whether it said "Pipeline completed successfully", as in case 2. | Header-only file: **62 bytes, 0 data rows** (`outputs/schema-type-change.csv`). Object name: TODO. |
-| `retest` after the chatbot fix | TODO: run status and warnings | `RhombusAI_output_1791090159425.csv` (16:02:39): header-only, **62 bytes, 0 data rows** (`outputs/schema-type-change-retest.csv`) |
+| First `manual` run | **Carried on, no error.** Warning: "No results found after applying this LLM transformation". Final run status text: not recorded. | `RhombusAI_output_1791089840449.csv` (15:57:20; matched to `outputs/schema-type-change.csv` by time and size): header-only, **62 bytes, 0 data rows** |
+| `retest` after the chatbot fix | Run status and warnings: not recorded. | `RhombusAI_output_1791090159425.csv` (16:02:39): header-only, **62 bytes, 0 data rows** (`outputs/schema-type-change-retest.csv`) |
 
 Both outputs consist only of this line:
 ```
@@ -49,8 +49,14 @@ id,name,email,country,price,qty,total,transaction_date,status
 
 ## 4. Pre-state / post-state
 
-- **Pre-state:** TODO. Input file and SHA-256 are in section 1. Also record the pipeline config snapshot, schedule status, latest objects in `output`, and the last successful run. The earlier chatbot fixes from cases 1 and 2 had been reverted before this case (TODO: confirm with a snapshot).
-- **Post-state:** TODO, same fields. The pipeline now contains:
+- **Pre-state:**
+  - Input: section 1.
+  - Pipeline: **restored from the saved version** before this case. Confirmed: the canvas showed only Data Input → Custom → Data Output, with no `column_guard`.
+  - Schedule: Active, hourly, never fired (see `PLAN.md` → "Findings log").
+  - Last successful run (latest output blob before the case): `RhombusAI_output_1791089709537.csv` (15:55:09, case 2 retest; header-only).
+  - Snapshot: not captured.
+- **Unattributed blobs:** two more header-only objects were written between the first run and the retest, `RhombusAI_output_1791090030565.csv` (16:00:30) and `RhombusAI_output_1791090068666.csv` (16:01:08). They aren't attributed to a recorded run.
+- **Post-state:** schedule Active, hourly, never fired (see `PLAN.md` → "Findings log"); latest output `RhombusAI_output_1791090159425.csv` (16:02:39). The pipeline now contains:
   - the re-applied `column_guard`;
   - the re-applied prompt changes for `None` names and 2-decimal formatting;
   - a USD-strip step.
@@ -61,37 +67,42 @@ id,name,email,country,price,qty,total,transaction_date,status
 
 | Run | Started | Status | Output object | Local copy SHA-256 |
 |---|---|---|---|---|
-| `manual` | TODO | completed with a warning (TODO: exact status) | TODO | `260801d0552dc4ca9a28f8c641e41984e1e5e7c3dac33a45f8703a25df0afb3c` (62 bytes) |
-| `retest` | 16:02:39 (object time) | TODO | `RhombusAI_output_1791090159425.csv` | `260801d0552dc4ca9a28f8c641e41984e1e5e7c3dac33a45f8703a25df0afb3c` (62 bytes) |
+| `manual` | 15:57:20 (object time) | completed with a warning (exact status text not recorded) | `RhombusAI_output_1791089840449.csv` | `260801d0552dc4ca9a28f8c641e41984e1e5e7c3dac33a45f8703a25df0afb3c` (62 bytes) |
+| `retest` | 16:02:39 (object time) | not recorded | `RhombusAI_output_1791090159425.csv` | `260801d0552dc4ca9a28f8c641e41984e1e5e7c3dac33a45f8703a25df0afb3c` (62 bytes) |
 
 ## 6. Logs
 
-- **First run:** no error. Warning: "No results found after applying this LLM transformation". TODO: paste the verbatim sanitised excerpt.
+- **First run:** no error. Warning: "No results found after applying this LLM transformation". No separate log excerpt was captured.
 - **Clear? No.**
   - The warning doesn't say that every row was rejected, which rule rejected them (non-numeric price), or that `price` changed type.
   - The input has 250 rows and the output 0, and nothing in the run explains the gap.
 
 ## 7. Chatbot
 
-- **Prompt:** TODO, verbatim, from `evidence-raw/`.
-- **Cost:** 1 credit.
-- **First diagnosis: wrong.**
-  - It didn't read the input file, and guessed `transaction_date` as the cause first.
+- **Prompt (first question):** "My last run finished but clean_transactions shows "No results found after applying this LLM transformation". Why did all rows disappear, and what should I change?"
+- **Follow-up:** "price is now text like USD 222.97 … change nothing else".
+- **Applied (after the follow-up):** directly, with **no confirmation shown**.
+- **Cost:** 1 credit for the first reply (4943 → 4942).
+- **First diagnosis: wrong** (`observations/evidence/schema-type-change-chatbot.txt`).
+  - It didn't read the input file.
+  - It ranked the likely causes as the `transaction_date` format first, `price` second and `total` precision third, and asked "Tell me what type changed".
   - It didn't apply a fix automatically this time (unlike cases 1 and 2).
-- **Contradiction:** the chatbot said the total check uses a **1e-9 float tolerance**. That contradicts the AI builder's claim, when the pipeline was built, that totals are compared as **exact decimals**. The build prompt requires an exact decimal comparison (STEP 4). This case didn't test which is true. TODO: quote both statements verbatim.
-- **After being told the real cause, with "change nothing else":** it **re-applied every earlier fix that had been reverted**:
-  - the `column_guard` from cases 1 and 2 (the case 1 version blanked valid `$` prices and kept rows with bad prices);
-  - the prompt changes for `None` names and 2-decimal formatting;
-  - plus the USD strip that was asked for.
+- **Contradiction:** the chatbot stated that the Step 4 total check uses a **1e-9 tolerance**. The pipeline's own Custom node prompt (read in the app on 2026-10-04) says: "total present but not equal to round(price times qty, 2) ROUND_HALF_UP via decimal.Decimal". The AI builder's build reply said "total is present but does not equal price × qty rounded to 2 decimal places (round-half-up)". The build prompt requires an exact decimal comparison (STEP 4). This case didn't test which is true.
+- **After being told the real cause, with "change nothing else":** it reported re-adding `column_guard` plus three prompt fixes:
+  - `None`/`nan`/`NaT` → `np.nan`;
+  - strip 3-letter currency codes;
+  - format price and total with `.2f`.
+
+  So it **re-applied the earlier fixes that had been reverted**: the `column_guard` from cases 1 and 2 (the case 1 version blanked valid `$` prices and kept rows with bad prices), and the `None` and 2-decimal changes. The currency strip was the only change related to this case.
 
   The instruction to change nothing else was ignored.
-- **Config diff:** TODO. Use Version Control snapshots before and after. Version Control keeps no automatic history (see `PLAN.md` → "Findings log"), so a "before" exists only if saved manually.
+- **Config diff:** not captured. No Version Control snapshot was taken per fix; the fix is described from the chatbot's own reply (limitation, see README).
 - **Retest:** 0 rows (section 3).
 - **Fix grade: didn't work, harmful.** The output is still empty, and the pipeline now carries unrequested changes. One of them (the `column_guard`) silently corrupted data in case 1.
 
 ## 8. Schedule afterwards
 
-Not testable. Per D2, the scheduler never fired for workflow 5257, so this case used manual runs. Schedule state after the case: TODO.
+Not testable. Per D2, the scheduler never fired for workflow 5257, so this case used manual runs. Schedule state after the case: Active, hourly, never fired (see `PLAN.md` → "Findings log").
 
 ## 9. Validation results
 
@@ -162,10 +173,9 @@ From a clean baseline:
 - `observations/evidence/validation-schema-type-change.json`
 - `observations/evidence/validation-schema-type-change-retest.json`
 - `datasets/schema_type_change.csv` and `.manifest.json`: the input.
-- TODO (sanitised, from `evidence-raw/`):
-  - the first run's warning and run status
-  - the chatbot exchange: first guess, the 1e-9 tolerance claim, the "change nothing else" instruction and the changes applied
-  - the AI builder's original "exact Decimal" statement
+- `observations/evidence/schema-type-change-chatbot.txt`: chatbot exchange, covering the first guess, the 1e-9 claim, the "change nothing else" instruction and the changes applied (sanitised summary).
+- First run: the logged warning "No results found after applying this LLM transformation" (quoted in section 3) and its output object `RhombusAI_output_1791089840449.csv` (15:57:20, 62 bytes). Screenshot: **not captured**.
+- Raw (gitignored): `evidence-raw/case3-chatbot.txt`; the AI builder build reply is in `evidence-raw/ai-builder-baseline-reply.txt`.
 - Both outputs are in `outputs/` (gitignored). Each is the 62-byte header line reproduced in section 3.
 
 ## Limitations

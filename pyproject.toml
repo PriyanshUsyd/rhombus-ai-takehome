@@ -26,7 +26,10 @@ testpaths = ["ui-tests", "api-tests", "data-validation", "scripts"]
 pythonpath = ["scripts", "data-validation"]
 markers = [
     "live: hits the real Rhombus app or cloud buckets (opt-in: pytest -m live)",
+    "run_pipeline: runs the real pipeline once (opt-in: --run-pipeline, UI tests only)",
 ]
+# pytest-playwright: keep traces/screenshots only for failing tests (test-results/ is gitignored).
+addopts = "--tracing=retain-on-failure --screenshot=only-on-failure --output=test-results"
 
 [tool.ruff]
 line-length = 100

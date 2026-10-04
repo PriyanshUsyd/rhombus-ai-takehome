@@ -1,0 +1,9 @@
+# AI Builder chatbot answer about the schedule that never fired (summary)
+# Sanitised excerpt, transcribed by the tester from the Rhombus AI UI on 2026-10-04 (project rhombus-takehome-v2, workflow 5257).
+# Long generated code truncated (…). Contains no emails, tokens, SAS strings or account IDs.
+
+Admitted no docs on schedule rules; listed causes:
+(1) From Device upload not persistent for the server-side scheduler,
+(2) blank "Next run" = schedule errored, re-save it,
+(3) Azure output credentials may have expired,
+(4) timezone/UTC interpretation.

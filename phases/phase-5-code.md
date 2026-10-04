@@ -35,16 +35,16 @@ Order: validator is built **before Phase 3 runs** (offline, against local files)
 
 ## B. `ui-tests/` — Playwright for Python, marked `live`
 Prerequisite: Phase 1 screenshots + codegen output. **No selector is written without evidence.**
-- [ ] **[YOU]** (moved from Phase 1) Run `playwright codegen <app URL>` through the journey; paste the generated script to Claude (discovery only).
-- [ ] **[CLAUDE]** (moved from Phase 1) Note candidate stable locators (`get_by_role`/`get_by_label`/test IDs) from codegen + screenshots. Codegen output is not copied verbatim into tests.
-- [ ] **[CLAUDE]** `conftest.py`: login fixture that saves/reuses storage state (path gitignored); re-login if state lands on login page.
-- [ ] **[CLAUDE]** Page objects (actions + locators only; assertions in tests). Locators: `get_by_role` → `get_by_label` → real test IDs → CSS last resort.
-- [ ] **[CLAUDE]** Tests covering the journey with real-outcome assertions: S3 connection, AI-built pipeline, GCS destination, schedule.
-- [ ] **[CLAUDE]** Deviation D1 (see `PLAN.md`): the UI test may automate the S3 connection form up to the access-denied error and assert on that error (text taken from captured evidence only).
-- [ ] Waits: `expect(..., timeout=...)` only. No `time.sleep(N)` / `wait_for_timeout`.
-- [ ] Out-of-band completion: bounded condition poll on GCS (deadline + interval + last observed state in error). README explains why this is not a fixed sleep.
-- [ ] Traces/screenshots kept on failure only (gitignored).
-- [ ] **[YOU]** Run `pytest ui-tests -m live`; paste failures to Claude; iterate until green or document why not.
+- [x] **[YOU]** (moved from Phase 1) Run `playwright codegen <app URL>` through the journey; paste the generated script to Claude (discovery only).
+- [x] **[CLAUDE]** (moved from Phase 1) Note candidate stable locators (`get_by_role`/`get_by_label`/test IDs) from codegen + screenshots. Codegen output is not copied verbatim into tests.
+- [x] **[CLAUDE]** `conftest.py`: login fixture that saves/reuses storage state (path gitignored); re-login if state lands on login page. → Login needs an email one-time code, so the fixture skips with a clear message instead of logging in.
+- [x] **[CLAUDE]** Page objects (actions + locators only; assertions in tests). Locators: `get_by_role` → `get_by_label` → real test IDs → CSS last resort.
+- [x] **[CLAUDE]** Tests covering the journey with real-outcome assertions: S3 connection, AI-built pipeline, GCS destination, schedule.
+- [x] **[CLAUDE]** Deviation D1 (see `PLAN.md`): the UI test may automate the S3 connection form up to the access-denied error and assert on that error (text taken from captured evidence only).
+- [x] Waits: `expect(..., timeout=...)` only. No `time.sleep(N)` / `wait_for_timeout`.
+- [x] Out-of-band completion: bounded condition poll on GCS (deadline + interval + last observed state in error). README explains why this is not a fixed sleep.
+- [x] Traces/screenshots kept on failure only (gitignored).
+- [x] **[YOU]** Run `pytest ui-tests -m live`; paste failures to Claude; iterate until green or document why not. → 2026-10-04: 5 passed; opt-in `--run-pipeline` test fails on a real platform behaviour (▶ Run logs a `src_output` failure and writes no output; see PLAN Findings log).
 
 ## C. `api-tests/` — `requests`, marked `live`
 Prerequisite: `api-tests/network-contract.md`.

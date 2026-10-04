@@ -15,7 +15,7 @@
 - **Derived from:** `datasets/baseline.csv` (SHA-256 `f2c301dc…c2a2`).
 - **Exact change:** new column `channel` added as the **last** column. Its values are `web` / `store` / `app` (taken from the id), never empty. The first 9 columns are identical to the baseline (250 rows, 10 columns).
 - **Uploaded via:** Data Input → "From Device".
-- **Upload time:** TODO.
+- **Upload time:** not recorded.
 
 ## 2. Expected behaviour
 
@@ -28,32 +28,42 @@ Our expectation, not a Rhombus claim. The build prompt says "Keep exactly these 
 
 | Run | Outcome | What reached Azure `output` |
 |---|---|---|
-| `manual` | **Carried on, no error.** No warning reported (TODO: confirm the Logs tab shows no warning). | `RhombusAI_output_1791090284446.csv` (16:04:44) → `outputs/schema-add-column.csv` |
+| `manual` | **Carried on, no error.** No warning reported; Logs tab contents not recorded. | `RhombusAI_output_1791090284446.csv` (16:04:44) → `outputs/schema-add-column.csv` |
 
 - **Header:** `id,name,email,country,price,qty,total,transaction_date,status`. **`channel` is absent.** None of the values `web`, `store` or `app` appear anywhere in the file.
 - **Byte-identical to baseline run 4:** both files are 18,660 bytes with SHA-256 `ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda`. They are therefore data-identical too: 218 rows, the same ids, order and cell values.
 - **Known baseline defects** are present unchanged and are not new findings: 3 `None` names (ids 1017, 1039, 1198), and 70 money cells missing a trailing zero.
 
-**Limitation of this evidence:** for this input, the correct output is the same as the baseline output. So the output alone can't show the run read `schema_add_column.csv` rather than the earlier baseline input. The fresh object name and time show it was a new run, not that it used the new input. TODO: add a screenshot of the Data Input preview showing the `channel` column, or a log line naming the file.
+**Input confirmed by a re-run at 18:30.** For this input the correct output equals the baseline output, so the 16:04 output alone couldn't show which input was read.
+- [`observations/evidence/case4-input-preview.png`](evidence/case4-input-preview.png) shows the Data Input panel with **`schema_add_column.csv` selected**, and the input node labelled `schema_add_col…`.
+- Two ▶ runs at 18:30 (logged 18:30:12–18:30:15 and 18:30:25–18:30:29) wrote `RhombusAI_output_1791099018130.csv` (18:30:18) and `RhombusAI_output_1791099031596.csv` (18:30:31).
+- Both are **byte-identical to baseline run 4**, checked by Claude via the container listing.
+
+This reproduces the case 4 result with the drifted input visibly selected. The screenshot was taken at 18:30, so it doesn't directly show the input of the original 16:04 run.
 
 ## 4. Pre-state / post-state
 
 - **Pre-state:**
-  - The pipeline was restored to the baseline version after case 3 (TODO: confirm with a Version Control snapshot).
+  - Pipeline: **restored from the saved version** before this case.
   - **The AI Builder chat history was cleared before this case.** This is a method change: the chatbot re-applied reverted fixes in case 3, and clearing the history stops it doing that again.
-  - TODO: schedule status, latest objects in `output`, last successful run.
-- **Post-state:** TODO, same fields. The pipeline config didn't change during this case: there was no chatbot step.
+  - Schedule: Active, hourly, never fired (see `PLAN.md` → "Findings log").
+  - Last successful run (latest output blob before the case): `RhombusAI_output_1791090280649.csv` (16:04:40). It and `RhombusAI_output_1791090265384.csv` (16:04:25) are 18,660-byte objects not attributed to a recorded run. The latest attributed run was case 3's retest (16:02:39).
+  - Snapshot: not captured.
+- **Post-state:**
+  - Pipeline: unchanged (no chatbot step).
+  - Schedule: Active, hourly, never fired (see `PLAN.md` → "Findings log").
+  - Latest output: `RhombusAI_output_1791090284446.csv` (16:04:44).
 
 ## 5. Run identity
 
 | Run | Started | Status | Output object | Local copy SHA-256 |
 |---|---|---|---|---|
-| `manual` | 16:04:44 (object time) | completed (TODO: exact status text) | `RhombusAI_output_1791090284446.csv` | `ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda` (18,660 bytes) |
+| `manual` | 16:04:44 (object time) | completed (exact status text not recorded) | `RhombusAI_output_1791090284446.csv` | `ebedc745b23296ff1c77ced008d0dd27e051d7c1f091c1cd1efa43147310cdda` (18,660 bytes) |
 
 ## 6. Logs
 
-- **Errors or warnings:** none reported. TODO: paste a short sanitised excerpt of the run log.
-- **Clear?** There's nothing to explain about a failure. But the run doesn't say that an extra input column was dropped, which a user would want to know. TODO: confirm from the log.
+- **Errors or warnings:** none reported. No log excerpt was captured.
+- **Clear?** There's nothing to explain about a failure. But the run doesn't say that an extra input column was dropped, which a user would want to know. Whether the log mentions it: not recorded.
 
 ## 7. Chatbot
 
@@ -61,7 +71,7 @@ Not used: the run had no error or warning. There was no fix, config diff or rete
 
 ## 8. Schedule afterwards
 
-Not testable. Per D2, the scheduler never fired for workflow 5257, so this case used a manual run. Schedule state after the case: TODO.
+Not testable. Per D2, the scheduler never fired for workflow 5257, so this case used a manual run. Schedule state after the case: Active, hourly, never fired (see `PLAN.md` → "Findings log").
 
 ## 9. Validation results
 
@@ -108,12 +118,12 @@ From a clean baseline:
 
 - `observations/evidence/validation-schema-add-column.json`: validator report.
 - `datasets/schema_add_column.csv` and `.manifest.json`: the input.
-- TODO (sanitised):
-  - a screenshot of the Data Input preview showing `channel`, which proves the drifted input was used;
-  - the run log or status for `RhombusAI_output_1791090284446.csv`.
+- [`observations/evidence/case4-input-preview.png`](evidence/case4-input-preview.png): `schema_add_column.csv` selected; logs from the 18:30 re-runs (section 3).
+- Run log or status for the 16:04 run (`RhombusAI_output_1791090284446.csv`): **not captured** (see Limitations).
 - The output itself is in `outputs/` (gitignored). It's byte-identical to baseline run 4.
 
 ## Limitations
 
-- **Input use not proven.** The correct output for this input equals the baseline output, so the output alone can't prove the drifted input was read (section 3). The Data Input preview screenshot would close this gap.
+- **Input of the 16:04 run.** The drifted input is visibly selected in an 18:30 re-run that produced byte-identical output (section 3). There's no screenshot from the original 16:04 run itself.
+- **No log for the 16:04 run.** Its run log and status text were not captured. The run is evidenced by its Azure object (16:04:44), its hash and the validator report.
 - **Method change.** The AI Builder history was cleared before this case, so cases 1–3 and cases 4–7 ran under different conditions for the chatbot. That doesn't affect this case, which didn't use the chatbot.

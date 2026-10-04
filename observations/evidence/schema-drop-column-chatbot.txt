@@ -1,0 +1,9 @@
+# AI Builder chatbot exchange (summary of the reply)
+# Sanitised excerpt, transcribed by the tester from the Rhombus AI UI on 2026-10-04 (project rhombus-takehome-v2, workflow 5257).
+# Long generated code truncated (…). Contains no emails, tokens, SAS strings or account IDs.
+
+Root cause: src loads schema_drop_column.csv, which is missing country; the code ends with output_df = df[final_columns].copy() → KeyError.
+Fix applied automatically, no confirmation asked: new column_guard node between src and clean_transactions adds missing expected columns as empty np.nan.
+Pipeline: src → column_guard → clean_transactions → src_output.
+It suggested switching src back to baseline.csv.
+Credits 4963→4948.

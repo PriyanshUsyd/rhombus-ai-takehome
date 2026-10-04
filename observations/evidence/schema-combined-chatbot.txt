@@ -1,0 +1,7 @@
+# AI Builder chatbot exchange and retest (summary)
+# Sanitised excerpt, transcribed by the tester from the Rhombus AI UI on 2026-10-04 (project rhombus-takehome-v2, workflow 5257).
+# Long generated code truncated (…). Contains no emails, tokens, SAS strings or account IDs.
+
+Claimed root cause "ID instead of id, Transaction_Date instead of transaction_date".
+Fix = lowercase/strip headers at the start of the clean_transactions prompt; said "the clean_transactions node should execute cleanly".
+Retest: same error.

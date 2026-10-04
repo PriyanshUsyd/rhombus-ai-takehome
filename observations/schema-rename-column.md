@@ -15,7 +15,7 @@
 - **Derived from:** `datasets/baseline.csv` (SHA-256 `f2c301dc…c2a2`).
 - **Exact change:** header `transaction_date` renamed to `order_date`. Every value is identical to the baseline (250 rows, 9 columns).
 - **Uploaded via:** Data Input → "From Device".
-- **Upload time:** TODO.
+- **Upload time:** not recorded.
 
 ## 2. Expected behaviour
 
@@ -39,45 +39,55 @@ id,name,email,country,price,qty,total,transaction_date,status
 
 - The header has the 9 contract columns, including `transaction_date`, so the file *looks* structurally valid.
 - The baseline output for the same data has 218 rows. All of them are missing.
-- **Why the rows were dropped is not observed.** It is *consistent with* the following, but not confirmed: the alias map doesn't include `order_date`, so the guard added an empty `transaction_date`, and the existing "date missing → reject row" rule then rejected every row. The config diff (section 7) would confirm it.
+- **Why the rows were dropped is not observed directly.** The chatbot's own description of its fix makes the likely mechanism clear (section 7). The alias map has no `order_date`, and missing columns are added as NaN. So `transaction_date` would arrive empty, and the existing "date missing → reject row" rule would reject every row. The run log doesn't state the rejection reason, so this remains inferred.
 
 Known baseline defects (`None` names, missing trailing zeros) can't show up here because there are no rows. They aren't findings for this case.
 
 ## 4. Pre-state / post-state
 
-- **Pre-state:** TODO. Input file and SHA-256 are in section 1. Also record the pipeline config snapshot, schedule status, latest objects in `output`, and the last successful run.
-  - The first run had the same `code_sha` as case 1's first run. That suggests the pipeline had been restored to its pre-case-1 state, without case 1's `column_guard`. TODO: confirm.
-- **Post-state:** TODO, same fields. The pipeline now contains the chatbot's `column_guard` alias map.
+- **Pre-state:**
+  - Input: section 1.
+  - Pipeline: **restored from the saved version** before this case. Confirmed: the canvas showed no `column_guard`. The first run had the same `code_sha` as case 1's first run, which is consistent with that.
+  - Schedule: Active, hourly, never fired (see `PLAN.md` → "Findings log").
+  - Last successful run (latest output blob before the case): `RhombusAI_output_1791089361234.csv` (15:49:21, case 1 retest). The mistaken run on `baseline.csv` (`RhombusAI_output_1791089499109.csv`, 15:51:39) is excluded (see Limitations).
+  - Snapshot: not captured.
+- **Post-state:**
+  - Pipeline: contains the chatbot's `column_guard` alias map.
+  - Schedule: Active, hourly, never fired (see `PLAN.md` → "Findings log").
+  - Latest output: `RhombusAI_output_1791089709537.csv` (15:55:09).
 
 ## 5. Run identity
 
 | Run | Started | Status | Output object | Local copy SHA-256 |
 |---|---|---|---|---|
-| `manual` | TODO | failed (`['transaction_date'] not in index`) | none | — |
-| `retest` | TODO | completed with a warning | `RhombusAI_output_1791089709537.csv` | `260801d0552dc4ca9a28f8c641e41984e1e5e7c3dac33a45f8703a25df0afb3c` (`outputs/schema-rename-column-retest.csv`, 62 bytes) |
+| `manual` | 15:53:35–15:53:39 (log) | failed (`['transaction_date'] not in index`); the log also shows "Pipeline execution completed successfully." at 15:53:39 | none | — |
+| `retest` | 15:54:52–15:55:07 (log); object 15:55:09 | completed with a warning | `RhombusAI_output_1791089709537.csv` | `260801d0552dc4ca9a28f8c641e41984e1e5e7c3dac33a45f8703a25df0afb3c` (`outputs/schema-rename-column-retest.csv`, 62 bytes) |
 
 ## 6. Logs
 
-- **First run:** `['transaction_date'] not in index` at `clean_transactions`, with `code_sha` `5e6c1f84d511` and the raw trace. TODO: paste a short sanitised verbatim excerpt from `evidence-raw/`.
-- **Retest:** the warning "No results found after applying this LLM transformation" and the log line "Pipeline completed successfully" appeared together. TODO: paste the verbatim excerpt.
+- **First run** (`observations/evidence/schema-rename-column-log.txt`): `Pipeline failed at clean_transactions: LLM execution failed (code_sha=5e6c1f84d511): "['transaction_date'] not in index" …`, followed by the raw generated code.
+- **Retest** (`observations/evidence/schema-rename-column-chatbot.txt`): the warning "No results found after applying this LLM transformation" plus "Pipeline completed successfully".
 - **Clear?**
   - **First run: partly.** It names the missing column, but as a raw Python/pandas `KeyError` with code. It doesn't say the input schema changed, and it doesn't suggest `order_date`.
   - **Retest: no, misleading.** It reports success while delivering zero rows. The only signal is a warning that doesn't say every row was dropped or why.
 
 ## 7. Chatbot
 
-- **Prompt:** TODO, verbatim, from `evidence-raw/`.
-- **Diagnosis:** **partly correct.** It identified a missing date column, but **guessed** the new name was "likely date or txn_date" **without reading the input file**. The actual name, `order_date`, was in the uploaded file's header.
-- **Proposed change:** a `column_guard` node with an alias map for the date column.
-- **Applied:** **automatically**, not proposed for review first. TODO: confirm whether a confirmation step was shown.
-- **Cost:** 5 credits.
-- **Config diff:** TODO. Use Version Control snapshots before and after, or screenshots. Version Control keeps no automatic history (see `PLAN.md` → "Findings log"). The diff should show the alias list, and whether a missing column is added as empty.
+- **Prompt:** "Please help me fix the following error:" + the error text, sent by the "Ask Chatbot" button on the failed log entry.
+- **Diagnosis: partly correct, and a guess.** It said `transaction_date` "is likely called something like date or txn_date". It didn't read the input file: the actual name, `order_date`, was in the uploaded file's header.
+- **Change:** a **persistent** `column_guard` that:
+  - renames aliases: `date→transaction_date`, `quantity→qty`, `customer_name→name`, `txn_status→status`. **`order_date` is not in the list.**
+  - adds missing columns as NaN.
+- **Claim:** that the pipeline "will now handle … a file with renamed columns".
+- **Applied:** **automatically, with no confirmation shown.**
+- **Cost:** 5 credits (4948 → 4943).
+- **Config diff:** not captured. No Version Control snapshot was taken per fix; the fix is described from the chatbot's own reply (limitation, see README).
 - **Retest:** completed with a warning; header-only output (section 3).
 - **Fix grade:** **didn't work, harmful.** It replaced a loud failure that wrote nothing with a "successful" run that delivered an empty file to the destination.
 
 ## 8. Schedule afterwards
 
-Not testable. Per D2, the scheduler never fired for workflow 5257, so this case used manual runs. Schedule state after the case: TODO.
+Not testable. Per D2, the scheduler never fired for workflow 5257, so this case used manual runs. Schedule state after the case: Active, hourly, never fired (see `PLAN.md` → "Findings log").
 
 **Risk if a schedule did fire:** with this fix in place, each scheduled run on a renamed input would keep delivering empty files marked as successful.
 
@@ -141,11 +151,16 @@ From a clean baseline:
 
 - `observations/evidence/validation-schema-rename-column-retest.json`: validator report for the retest.
 - `datasets/schema_rename_column.csv` and `.manifest.json`: the input.
-- TODO (sanitised, from `evidence-raw/`):
-  - first-run log excerpt
-  - retest warning plus the "Pipeline completed successfully" log, ideally one screenshot showing both
-  - the chatbot exchange
-  - the `column_guard` alias map node
+- `observations/evidence/schema-rename-column-log.txt`: first-run log excerpt (sanitised).
+- `observations/evidence/schema-rename-column-chatbot.txt`: chatbot exchange and retest messages (sanitised summary).
+- [`observations/evidence/rename-retest-warning.png`](evidence/rename-retest-warning.png): it shows, together:
+  - the retest warning "No results found after applying this LLM transformation";
+  - "Pipeline completed successfully" at 15:55:07;
+  - the first run's failure (15:53:39);
+  - the chatbot's `column_guard` alias map reply (`date → transaction_date`, `quantity → qty`, `customer_name → name`, `txn_status → status`), with the extra node on the canvas;
+  - the credit balance (4,943).
+- **Also visible but not attributed:** a failure at 15:53:10 with `['country'] not in index`.
+- Raw (gitignored): `evidence-raw/case2-log.txt`, `evidence-raw/case2-chatbot.txt`.
 - The retest output itself is in `outputs/` (gitignored). It is only a 62-byte header, reproduced in full in section 3.
 
 ## Limitations

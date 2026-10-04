@@ -24,7 +24,7 @@ The chatbot **made up a root cause**: an upper-case `ID` and `Transaction_Date`,
   Every other cell is identical to the baseline (250 rows, 9 columns).
 - **Input header:** `name,email,country,price,qty,total,order_date,status,channel`
 - **Uploaded via:** Data Input → "From Device".
-- **Upload time:** TODO.
+- **Upload time:** not recorded.
 
 ## 2. Expected behaviour
 
@@ -50,22 +50,27 @@ It should not write output, and it should not rewrite the pipeline from a guesse
 ## 4. Pre-state / post-state
 
 - **Pre-state:**
-  - The pipeline was the baseline version, consistent with the same `code_sha` as earlier first runs (TODO: confirm with a Version Control snapshot).
+  - Pipeline: **restored from the saved version** before this case, consistent with the same `code_sha` as earlier first runs.
   - The AI Builder chat history was cleared before case 4 (method change), so the chatbot started this case without the earlier fixes in its history.
-  - TODO: schedule status, latest objects in `output`, last successful run.
-- **Post-state:** TODO, same fields. The pipeline prompt now includes the chatbot's header-lowercasing change, so it **is not the baseline pipeline**. It must be restored before case 6.
+  - Schedule: Active, hourly, never fired (see `PLAN.md` → "Findings log").
+  - Last successful run (latest output blob before the case): `RhombusAI_output_1791090284446.csv` (16:04:44, case 4).
+  - Snapshot: not captured.
+- **Post-state:**
+  - Pipeline: the prompt includes the chatbot's header-lowercasing change, so it **is not the baseline pipeline**. It was restored before case 6.
+  - Schedule: Active, hourly, never fired (see `PLAN.md` → "Findings log").
+  - Latest output: unchanged (neither run wrote output).
 
 ## 5. Run identity
 
 | Run | Started | Status | Output object |
 |---|---|---|---|
-| `manual` | TODO | failed (`['id', 'transaction_date'] not in index`) | none |
-| `retest` | TODO | failed (identical error) | none |
+| `manual` | not recorded (one failure entry at 16:09:55 is visible in `dollars-to-cents-log.png`; whether it's this run or the retest isn't established) | failed (`['id', 'transaction_date'] not in index`) | none |
+| `retest` | not recorded | failed (identical error) | none |
 
 ## 6. Logs
 
-- **First run:** `['id', 'transaction_date'] not in index` at `clean_transactions`, `code_sha` `5e6c1f84d511`. TODO: paste a short sanitised verbatim excerpt from `evidence-raw/case5-log.txt` (the file isn't in `evidence-raw/` yet).
-- **Retest:** the identical error. TODO: excerpt from `evidence-raw/case5-retest-log.txt` (the file isn't in `evidence-raw/` yet).
+- **First run** (`observations/evidence/schema-combined-log.txt`): `Pipeline failed at clean_transactions: LLM execution failed (code_sha=5e6c1f84d511): "['id', 'transaction_date'] not in index" …`, followed by the raw generated code.
+- **Retest:** the same error (`observations/evidence/schema-combined-chatbot.txt`).
 - **Clear? Partly, and incomplete.**
   - It names 2 missing columns, but as a raw Python/pandas `KeyError`.
   - It doesn't mention the `price` type change or the added `channel` column.
@@ -74,21 +79,21 @@ It should not write output, and it should not rewrite the pipeline from a guesse
 
 ## 7. Chatbot
 
-- **Prompt:** TODO, verbatim, from `evidence-raw/case5-chatbot.txt` (the file isn't in `evidence-raw/` yet).
-- **Diagnosis: made up.** The chatbot said the input had `ID` instead of `id`, and `Transaction_Date` instead of `transaction_date`.
+- **Prompt:** "Please help me fix the following error:" followed by the error text. This is the app's "Ask Chatbot" message, seen in the AI Builder history on 2026-10-04.
+- **Diagnosis: made up** (`observations/evidence/schema-combined-chatbot.txt`). The chatbot claimed the root cause was "ID instead of id, Transaction_Date instead of transaction_date".
   - **Neither exists in the file.** The real header is `name,email,country,price,qty,total,order_date,status,channel`: `id` is **absent**, and the date column is `order_date`.
   - The claim sounds plausible but isn't based on the actual input. As in cases 2 and 3, the chatbot didn't read the file.
-- **Proposed change:** lowercase all headers, added to the pipeline prompt.
-- **Applied:** **automatically**. TODO: confirm whether a confirmation step was shown.
-- **Cost:** TODO (credits).
-- **Config diff:** TODO. Use Version Control snapshots before and after; the diff should show the header-lowercasing instruction.
+- **Change:** lowercase and strip the headers at the start of the `clean_transactions` prompt. It said "the clean_transactions node should execute cleanly".
+- **Applied:** **automatically, with no confirmation shown.**
+- **Cost:** not recorded.
+- **Config diff:** not captured. No Version Control snapshot was taken per fix; the fix is described from the chatbot's own reply (limitation, see README).
 - **Retest:** identical error.
 - **Fix grade: didn't work.** Lowercasing headers can't help: `id` doesn't exist and `order_date` doesn't lowercase to `transaction_date`.
 - **Effect on the baseline:** not observed. The change may be harmless there, since the baseline headers are already lowercase, but it still changed the pipeline.
 
 ## 8. Schedule afterwards
 
-Not testable. Per D2, the scheduler never fired for workflow 5257, so this case used manual runs. Schedule state after the case: TODO.
+Not testable. Per D2, the scheduler never fired for workflow 5257, so this case used manual runs. Schedule state after the case: Active, hourly, never fired (see `PLAN.md` → "Findings log").
 
 ## 9. Validation results
 
@@ -124,12 +129,9 @@ From a clean baseline:
 ## 13. Evidence
 
 - `datasets/schema_combined.csv` and `.manifest.json`: the input.
-- Raw, gitignored (**not yet in `evidence-raw/`**): `case5-log.txt`, `case5-chatbot.txt`, `case5-retest-log.txt`.
-- TODO (sanitised copies in `observations/evidence/`):
-  - the first-run error excerpt
-  - the chatbot's made-up diagnosis (verbatim) next to the real input header
-  - the applied prompt change
-  - the retest error excerpt
+- `observations/evidence/schema-combined-log.txt`: first-run error excerpt (sanitised).
+- `observations/evidence/schema-combined-chatbot.txt`: the chatbot's made-up diagnosis, the applied change and the retest result (sanitised summary).
+- Raw (gitignored): `evidence-raw/case5-log.txt`, `evidence-raw/case5-chatbot.txt`. There's no separate retest log file; the retest result is recorded in the chatbot file.
 - No validator report: there was no output.
 
 ## Limitations

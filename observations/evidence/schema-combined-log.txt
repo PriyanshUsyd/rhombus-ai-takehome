@@ -1,0 +1,5 @@
+# Run log, first manual ▶ run (retest: identical error)
+# Sanitised excerpt, transcribed by the tester from the Rhombus AI UI on 2026-10-04 (project rhombus-takehome-v2, workflow 5257).
+# Long generated code truncated (…). Contains no emails, tokens, SAS strings or account IDs.
+
+Pipeline failed at clean_transactions: LLM execution failed (code_sha=5e6c1f84d511): "['id', 'transaction_date'] not in index" …

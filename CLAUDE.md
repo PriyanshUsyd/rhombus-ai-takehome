@@ -9,7 +9,7 @@ They grade judgement, test quality and clarity of reporting — not the platform
 
 ## Documented deviation D1 (decided 2026-10-03, updated 2026-10-04) — route is local upload → Azure Blob
 - **Amazon S3 source is BLOCKED** (access-denied despite the Rhombus-generated bucket policy). **Google Cloud Storage is NOT used** (GCP billing requires a card; none available). Full record in `PLAN.md` → "Deviations".
-- **Azure Blob source dropped (2026-10-04):** Azure Blob source auto-sync removes the file after initial setup, although the file is still in Azure (SAS list API returns `baseline.csv`, 21538 bytes). Reproduced several times on 2026-10-04; reported to Rhombus.
+- **Azure Blob source dropped (2026-10-04):** Azure Blob source auto-sync removes the file after initial setup, although the file is still in Azure (SAS list API returns `baseline.csv`, 21538 bytes). Reproduced several times on 2026-10-04; documented, not reported to Rhombus during the exercise.
 - **Actual route:** local upload via Data Input → "From Device" (`datasets/baseline.csv`) → AI-built cleaning pipeline → Azure Blob Storage container `output` (storage account `priyanshrhombus`, SAS connection string). Verified: `RhombusAI_output_1791083010935.csv` written 2026-10-04 14:03:30.
 - **Projects:** current = `rhombus-takehome-v2` (workflow 5257). Old `rhombus-takehome` (workflow 5251) is kept as evidence of the chatbot fix attempts.
 - **Drift cases:** the drifted CSV is uploaded via From Device before each manual run (see run-mode rule D2).

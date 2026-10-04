@@ -60,16 +60,10 @@ Rhombus's requests reach the bucket and are denied, even when the bucket policy 
 
 ## Evidence
 
-Sanitised files to be added to `observations/evidence/` (account IDs above are already in this note; strip any access keys, session tokens or ARNs of other resources before committing):
-
-- TODO: `observations/evidence/s3-rhombus-error.png` — Rhombus connection error message
-- TODO: `observations/evidence/s3-access-setup-prefix-text.png` — "AWS access setup" text saying "this prefix only" with Folder / path blank
-- TODO: `observations/evidence/s3-bucket-settings.png` — Block Public Access ON, SSE-S3
-- TODO: `observations/evidence/s3-bucket-policy-applied.png` — generated policy as applied
-- TODO: `observations/evidence/s3-cloudtrail-8PQHB8577D4KQ776.json` — 01:36:16Z, before policy
-- TODO: `observations/evidence/s3-cloudtrail-FJ2FK5RFX099RJHW.json` — 01:43:18Z, after generated policy
-- TODO: `observations/evidence/s3-cloudtrail-G32T2NSDBFHACFJC.json` — 01:50:33Z, after account-root test policy
-- TODO: `observations/evidence/s3-rhombo-chatbot-reply.png` — chatbot reply
+- [`observations/evidence/s3-denied.png`](evidence/s3-denied.png): the Rhombus error notification above the generated policy. Principals: Rhombus account `730335216038`; resource `arn:aws:s3:::priyansh-rhombus-s3-src/*`. Taken in project `rhombus-takehome` (workflow 5251).
+- **CloudTrail events:** the full JSON for the three `GetBucketLocation` events is **not published** (raw evidence retained privately). Their key fields are in the table above: time, caller principalId, `AccessDenied` (403) and requestID (`8PQHB8577D4KQ776`, `FJ2FK5RFX099RJHW`, `G32T2NSDBFHACFJC`).
+- **Other S3 setup screenshots:** **not published** (raw evidence retained privately). These are the "AWS access setup" text saying "this prefix only" with Folder / path blank, the bucket settings (Block Public Access ON, SSE-S3) and the generated policy as applied. Their content is described under "Steps followed" and "Usability observations".
+- **Rhombo chatbot reply:** summary only, with no screenshot published. It cost 6 credits and returned a generic checklist that didn't identify the cause (see `PLAN.md`).
 
 ## Follow-up
 

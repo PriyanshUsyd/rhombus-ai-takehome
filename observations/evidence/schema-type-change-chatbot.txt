@@ -1,0 +1,6 @@
+# AI Builder chatbot exchange (summary)
+# Sanitised excerpt, transcribed by the tester from the Rhombus AI UI on 2026-10-04 (project rhombus-takehome-v2, workflow 5257).
+# Long generated code truncated (…). Contains no emails, tokens, SAS strings or account IDs.
+
+First reply guessed transaction_date format as most likely, price second, total precision third; stated the Step 4 total check uses a 1e-9 tolerance; asked "Tell me what type changed"; no auto-fix; credits 4943→4942.
+After I said "price is now text like USD 222.97 … change nothing else", it reported re-adding column_guard plus three prompt fixes (None/nan/NaT→np.nan, strip 3-letter currency codes, format price/total with .2f).

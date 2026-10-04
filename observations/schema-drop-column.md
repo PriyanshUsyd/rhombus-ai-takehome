@@ -20,7 +20,7 @@ A loud failure was turned into silent bad output.
 - **Derived from:** `datasets/baseline.csv` (SHA-256 `f2c301dc…c2a2`).
 - **Exact change:** column `country` removed; every other cell is identical to the baseline (250 rows, 8 columns).
 - **Uploaded via:** Data Input → "From Device".
-- **Upload time:** TODO.
+- **Upload time:** not recorded.
 
 ## 2. Expected behaviour
 
@@ -34,7 +34,7 @@ Our expectation, not a Rhombus claim. The cleaning policy (`datasets/cleaning-po
 | Run | Outcome | What reached Azure `output` |
 |---|---|---|
 | First `manual` run | **Stopped.** Failed at step `clean_transactions` with `['country'] not in index`. | Nothing (no output written). |
-| `retest` after the chatbot fix | **Carried on.** Completed with no error or warning seen (TODO: confirm no warning in the Logs tab). | `RhombusAI_output_1791089361234.csv` |
+| `retest` after the chatbot fix | **Carried on.** Completed; no error seen. Whether a warning was shown: not recorded. | `RhombusAI_output_1791089361234.csv` |
 
 ### What is wrong in the retest output
 
@@ -53,29 +53,39 @@ Known baseline defects, not new findings: the 3 `None` names (ids 1017, 1039, 11
 
 ## 4. Pre-state / post-state
 
-- **Pre-state:** TODO. Input file and SHA-256 are in section 1. Also record the pipeline config snapshot, schedule status, latest objects in `output`, and the last successful run.
-- **Post-state:** TODO, same fields. The pipeline now contains the chatbot's `column_guard` node.
+- **Pre-state:**
+  - Input: section 1.
+  - Pipeline: not separately recorded. This was the first drift case after baseline run 4.
+  - Schedule: Active, hourly, never fired (see `PLAN.md` → "Findings log").
+  - Last successful run (latest output blob before the case): `RhombusAI_output_1791087076533.csv` (15:11:16, baseline run 4).
+  - Snapshot: not captured.
+- **Post-state:**
+  - Pipeline: contains the chatbot's `column_guard` node.
+  - Schedule: Active, hourly, never fired (see `PLAN.md` → "Findings log").
+  - Latest output: `RhombusAI_output_1791089361234.csv` (15:49:21).
 
 ## 5. Run identity
 
 | Run | Started | Status | Output object | Local copy SHA-256 |
 |---|---|---|---|---|
-| `manual` | TODO | failed | none | — |
-| `retest` | TODO | completed | `RhombusAI_output_1791089361234.csv` | `9a6c4db4cca57097a13e2b6c9439c4e56aa1d0968e91501fc2b1b0d3970a2729` (`outputs/schema-drop-column-retest.csv`) |
+| `manual` | 15:46:21–15:46:26 (log) | failed; the log also shows "Pipeline execution completed successfully." at 15:46:26 | none | — |
+| `retest` | 15:49:21 (object time) | completed | `RhombusAI_output_1791089361234.csv` | `9a6c4db4cca57097a13e2b6c9439c4e56aa1d0968e91501fc2b1b0d3970a2729` (`outputs/schema-drop-column-retest.csv`) |
 
 ## 6. Logs
 
-- **Excerpt:** the error was `['country'] not in index` at step `clean_transactions`. The log entry also contained the raw generated pipeline code. TODO: paste a short sanitised verbatim excerpt from `evidence-raw/case1-log.txt` (the file isn't in `evidence-raw/` yet).
+- **Excerpt** (`observations/evidence/schema-drop-column-log.txt`): `Pipeline failed at clean_transactions: LLM execution failed (code_sha=5e6c1f84d511): "['country'] not in index" --- Generated code --- import pandas as pd import numpy as np def _safe_to_timedelta_wrapper(arg, *args, **kwargs): …`
+- The user-facing log entry contains the raw generated pipeline code after the error.
 - **Clear?** **Partly.** It names the missing column, so a developer can work out the cause. But it's a raw Python/pandas `KeyError` message plus generated code. It doesn't say "input column `country` is missing", and it doesn't point to the input file or the schema change.
 
 ## 7. Chatbot
 
-- **Prompt:** TODO, verbatim, from `evidence-raw/case1-chatbot.txt` (the file isn't in `evidence-raw/` yet).
-- **Diagnosis:** correct. It identified the missing `country` column as the cause.
-- **Proposed change:** it inserted a `column_guard` node that adds missing columns as empty.
-- **Applied:** the change was **applied automatically** and wasn't proposed for review first. TODO: confirm whether a confirmation step was shown.
-- **Cost:** 15 credits.
-- **Config diff:** TODO. Use a Version Control snapshot before and after, or screenshots. Version Control keeps no automatic history (see `PLAN.md` → "Findings log"), so a "before" exists only if one was saved manually. The diff must show whether the price handling changed.
+- **Prompt:** "Please help me fix the following error:" + the error text, sent by the "Ask Chatbot" button on the failed log entry.
+- **Diagnosis: correct** (`observations/evidence/schema-drop-column-chatbot.txt`). `src` loads `schema_drop_column.csv`, which has no `country`, and the generated code ends with `output_df = df[final_columns].copy()`, raising a `KeyError`.
+- **Change:** a new `column_guard` node between `src` and `clean_transactions` that adds any missing expected column as empty (`np.nan`). The pipeline became `src → column_guard → clean_transactions → src_output`.
+- **Applied: automatically, with no confirmation asked.**
+- **Also suggested:** switching `src` back to `baseline.csv`.
+- **Cost:** 15 credits (4963 → 4948).
+- **Config diff:** not captured. No Version Control snapshot was taken per fix; the fix is described from the chatbot's own reply (limitation, see README). So why price handling changed is not established.
 - **Retest:** completed. Output as described in section 3.
 - **Fix grade:** **didn't work, harmful.** The run completes, but:
   - the output is silently wrong: `country` is empty everywhere and nothing tells the user;
@@ -83,7 +93,7 @@ Known baseline defects, not new findings: the 3 `None` names (ids 1017, 1039, 11
 
 ## 8. Schedule afterwards
 
-Not testable. Per D2, the scheduler never fired for workflow 5257, so this case used manual runs. Schedule state after the case: TODO (record whether it's still ON and what "Next run" shows).
+Not testable. Per D2, the scheduler never fired for workflow 5257, so this case used manual runs. Schedule state after the case: Active, hourly, never fired (see `PLAN.md` → "Findings log").
 
 ## 9. Validation results
 
@@ -138,13 +148,18 @@ From a clean baseline:
 
 - `observations/evidence/validation-schema-drop-column-retest.json`: validator report for the retest.
 - `datasets/schema_drop_column.csv` and `.manifest.json`: the input.
-- TODO (sanitised, from `evidence-raw/`):
-  - `observations/evidence/schema-drop-column-log.txt`: run log excerpt
-  - `observations/evidence/schema-drop-column-chatbot.txt`: chatbot exchange
-  - screenshots of the failed run, the chatbot fix, the `column_guard` node and the retest run
-- Raw (gitignored, not published): `evidence-raw/case1-log.txt` and `evidence-raw/case1-chatbot.txt`. Neither is on disk yet.
-- The retest output itself is in `outputs/`, which is gitignored. TODO: decide whether to publish a sanitised copy.
+- `observations/evidence/schema-drop-column-log.txt`: run log excerpt (sanitised).
+- `observations/evidence/schema-drop-column-chatbot.txt`: chatbot exchange (sanitised summary).
+- [`observations/evidence/drop-column-guard.png`](evidence/drop-column-guard.png): it shows, together:
+  - the failed run (15:46:21 started; 15:46:26 failed, next to a "completed successfully" entry);
+  - the chatbot's reply, "Fix applied: A new column_guard node was inserted between src and clean_transactions", with its suggestion to switch `src` back to `baseline.csv`;
+  - the extra node on the canvas;
+  - the credit balance (4,948).
+- Retest run screenshot: **not captured** (see Limitations). The retest is identified by its output object and hash (section 5).
+- Raw (gitignored, not published): `evidence-raw/case1-log.txt`, `evidence-raw/case1-chatbot.txt`.
+- [`observations/evidence/schema-drop-column-retest-output.csv`](evidence/schema-drop-column-retest-output.csv): the retest output, published unchanged (SHA-256 `9a6c4db4…2729`). It contains only synthetic data; its emails use reserved `example.*` domains.
 
 ## Limitations
 
+- **No screenshot of the retest run.** It was not captured; the retest is evidenced by its Azure object (`RhombusAI_output_1791089361234.csv`, 15:49:21), its hash and the validator report.
 - **Fixed pipeline not tested on the baseline.** The pipeline was restored before the baseline could be run through the version with the chatbot's `column_guard`. So it's **not observed** whether that version would also blank `$` prices and keep bad-price rows on the baseline input, which would mean silent corruption on every future run. Severity stays at High. If it had, it would have been Critical.

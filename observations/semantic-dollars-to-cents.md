@@ -20,7 +20,7 @@
   - Header, column order, row count (250) and every other cell are identical to the baseline.
   - price × qty = total still holds wherever it held before.
 - **Uploaded via:** Data Input → "From Device".
-- **Upload time:** TODO.
+- **Upload time:** not recorded.
 
 ## 2. Expected behaviour
 
@@ -34,8 +34,8 @@ The brief's question is whether Rhombus notices a change in meaning when the str
 
 | Time (AEDT) | Event | What reached Azure `output` |
 |---|---|---|
-| 16:14:26 | Log: "Pipeline failed at src_output: A destination is required when remote export is selected". Probably triggered by clicking Apply (see Limitations). | Nothing |
-| 16:14:31–16:14:34 | **`manual` run: "Pipeline completed successfully", no warning** | `RhombusAI_output_1791090876827.csv` → `outputs/semantic-dollars-to-cents.csv` |
+| 16:14:23–16:14:26 | A run started at 16:14:23. At 16:14:26 it logged both "Pipeline execution completed successfully." and "Pipeline failed at src_output: A destination is required when remote export is selected." Intermittent log anomaly (see Limitations). | Nothing |
+| 16:14:31–16:14:34 | **`manual` ▶ run: "Pipeline completed successfully", no warning** | `RhombusAI_output_1791090876827.csv` → `outputs/semantic-dollars-to-cents.csv` |
 
 Compared with baseline run 4 (`outputs/manual-dryrun-4.csv`):
 - **Rows:** 218, with the same ids in the same order.
@@ -51,22 +51,27 @@ Compared with baseline run 4 (`outputs/manual-dryrun-4.csv`):
 ## 4. Pre-state / post-state
 
 - **Pre-state:**
-  - The pipeline was the baseline version, restored after case 5 (TODO: confirm with a Version Control snapshot).
+  - Pipeline: **restored from the saved version** before this case (removing case 5's header-lowercasing change).
   - The AI Builder history was cleared before the case (D2 method note).
-  - TODO: schedule status, latest objects in `output`, last successful run.
-- **Post-state:** TODO, same fields. No pipeline change was made: there was no chatbot step.
+  - Schedule: Active, hourly, never fired (see `PLAN.md` → "Findings log").
+  - Last successful run (latest output blob before the case): `RhombusAI_output_1791090284446.csv` (16:04:44, case 4).
+  - Snapshot: not captured.
+- **Post-state:**
+  - Pipeline: unchanged (no chatbot step).
+  - Schedule: Active, hourly, never fired (see `PLAN.md` → "Findings log").
+  - Latest output: `RhombusAI_output_1791090876827.csv` (16:14:36).
 
 ## 5. Run identity
 
 | Run | Started–finished | Status | Output object | Local copy SHA-256 |
 |---|---|---|---|---|
-| (Apply-triggered, not a test run) | 16:14:26 | failed at `src_output` | none | — |
+| (log anomaly, not a test run) | 16:14:23–16:14:26 | "completed successfully" and failed at `src_output`, in the same second | none | — |
 | `manual` | 16:14:31–16:14:34 | completed successfully | `RhombusAI_output_1791090876827.csv` | `0d4ab83ac114be1e9a798970e16c1e3caab6169c97f44563c878047c700997a5` (19,166 bytes) |
 
 ## 6. Logs
 
-- **Test run:** "Pipeline completed successfully". There is no warning, and nothing about value ranges or a change in scale. TODO: paste a short sanitised excerpt.
-- **Earlier failed run (16:14:26):** "Pipeline failed at src_output: A destination is required when remote export is selected". TODO: paste the excerpt. The message suggests the export node had no destination configured at that moment. Why is **not observed**: the Azure destination was configured, and the run 5 seconds later wrote to it.
+- **Test run:** "Pipeline completed successfully". There is no warning, and nothing about value ranges or a change in scale. No separate log excerpt was captured.
+- **Earlier failed run (16:14:26):** "Pipeline failed at src_output: A destination is required when remote export is selected" (quoted from the log; no separate excerpt file). The message suggests the export node had no destination configured at that moment. Why is **not observed**: the Azure destination was configured, and the run 5 seconds later wrote to it.
 - **Clear?** For the test run, there was nothing to explain from the platform's side. The silence *is* the finding.
 
 ## 7. Chatbot
@@ -75,7 +80,7 @@ Not used: the run had no error or warning. There was no fix, config diff or rete
 
 ## 8. Schedule afterwards
 
-Not testable. Per D2, the scheduler never fired for workflow 5257, so this case used a manual run. Schedule state after the case: TODO.
+Not testable. Per D2, the scheduler never fired for workflow 5257, so this case used a manual run. Schedule state after the case: Active, hourly, never fired (see `PLAN.md` → "Findings log").
 
 ## 9. Validation results
 
@@ -140,14 +145,14 @@ From a clean baseline:
 
 - `observations/evidence/validation-semantic-dollars-to-cents.json`: validator report.
 - `datasets/semantic_dollars_to_cents.csv` and `.manifest.json`: the input.
-- TODO (sanitised):
-  - the run log showing "Pipeline completed successfully" with no warning (16:14:31–16:14:34);
-  - the 16:14:26 `src_output` failure log.
+- [`observations/evidence/dollars-to-cents-log.png`](evidence/dollars-to-cents-log.png): `semantic_dollars_to_cents.csv` selected as the input. It shows the test run (16:14:31 started; 16:14:34 "Pipeline completed successfully", no warning) and the earlier 16:14:23–16:14:26 run that logged both success and the `src_output` failure.
 - The output itself is in `outputs/` (gitignored).
 
 ## Limitations
 
-- **Extra failed run.** A failed run at **16:14:26** ("A destination is required when remote export is selected") came 5 seconds before the test run. It was probably triggered by clicking Apply, which the protocol says not to do between the file swap and the run.
-  - It failed at `src_output` and wrote nothing, so it doesn't affect the measured run, which started at 16:14:31.
-  - The message itself (a missing destination while one was configured) is unexplained and not observed further.
+- **Intermittent `src_output` failure in the log.** At **16:14:26**, 5 seconds before the test run, the log shows "Pipeline failed at src_output: A destination is required when remote export is selected".
+  - **Not caused by Apply:** all drift runs were triggered with ▶ only.
+  - **Measured run unaffected:** the ▶ run that followed (16:14:31) exported successfully (`RhombusAI_output_1791090876827.csv`, 16:14:36).
+  - It is recorded as an intermittent log anomaly; its cause is not observed.
+  - From about 16:51 the same message appears on **every** ▶ run and nothing is exported (see `PLAN.md` → "Findings log"). This earlier entry may be an early sign of that, but that is not established.
 - **Scale-check sensitivity.** The validator's scale check compares against one reference run (baseline run 4). It flags a ×100 change easily, but it would miss smaller unit changes within its [0.5, 2.0] ratio bounds.
